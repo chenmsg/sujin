@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{44E478CC-806A-435A-AAA5-1F08BA1396DF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Clump.Data.Models</RootNamespace>
+    <AssemblyName>Clump.Data.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MySql.Data, Version=6.3.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Clump.Lib\Data\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Host\ArticleCategoryModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\ArticleCommentModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\ArticleCommentPortraitModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\ArticleInfoModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\ArticlePictureModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\BasicInfoModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\Context\BaseEntityAction.cs" />
+    <Compile Include="Host\Context\BaseViewAction.cs" />
+    <Compile Include="Host\Context\RunConnection.cs" />
+    <Compile Include="Host\DailyCostCategoryModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\DailyCostModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\EmotionalInfoModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\Host1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\MessageFeedbackModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\NavigationInfoModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\NotepadInfoModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\RegionInfoModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\UserInfoModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\WeixinMenuModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\WorkArticleModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\WorkCategoryModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\WorkCommentModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\WorkCommentPortraitModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\WorkLogModel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Host\Host.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Host1.cs</LastGenOutput>
+    </None>
+    <None Include="Host\MY_SQL_MultipleOutputHelper.ttinclude" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Clump.Core\Clump.Core.csproj">
+      <Project>{3d4e242c-4b6a-4c0a-bdbd-44157d42252b}</Project>
+      <Name>Clump.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Clump.Utility.UI\Clump.Utility.UI.csproj">
+      <Project>{7d6f1a81-0513-440b-a037-7a5d1d8ad68d}</Project>
+      <Name>Clump.Utility.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{32E31BE7-104E-40F8-AF65-8B713085B275}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ITOrm.Host.BLL</RootNamespace>
+    <AssemblyName>ITOrm.Host.BLL</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\AccountQueueBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\AccountRecordBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TimedTaskBLL.cs" />
+    <Compile Include="BankTreatyApplyBLL.cs" />
+    <Compile Include="Core\AccountBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\AdminUserBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\AreaCodeBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\BankBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\BankQuotaBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\BankTreatyApplyBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\ChannelBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\Host.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Core\KeyValueBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\MasgetUserBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\PayCashierBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\PayRecordBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\SendMsgBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\TimedTaskBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\UserBankCardBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\UserEventRecordBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\UserImageBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\UsersBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\ViewBankQuotaBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\ViewPayRecordBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\WithDrawBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\YeepayLogBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\YeepayLogParasBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\YeepayUserBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BankBLL.cs" />
+    <Compile Include="MasgetUserBLL.cs" />
+    <Compile Include="PayCashierBLL.cs" />
+    <Compile Include="SendMsgBLL.cs" />
+    <Compile Include="UserBankCardBLL.cs" />
+    <Compile Include="WithDrawBLL.cs" />
+    <Compile Include="PayRecordBLL.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserEventRecordBLL.cs" />
+    <Compile Include="UserImageBLL.cs" />
+    <Compile Include="YeepayLogBLL.cs" />
+    <Compile Include="YeepayLogParasBLL.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ITOrm.Helper\ITOrm.Utility\ITOrm.Utility.csproj">
+      <Project>{1d0cb421-cbbd-4ae9-8055-2ca2a1bad9fe}</Project>
+      <Name>ITOrm.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ITOrm.Core\ITOrm.Core.csproj">
+      <Project>{3d4e242c-4b6a-4c0a-bdbd-44157d42252b}</Project>
+      <Name>ITOrm.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ITOrm.Host.DAL\ITOrm.Host.DAL.csproj">
+      <Project>{5f486d46-f6cf-42a6-907b-fda7f0e22fcb}</Project>
+      <Name>ITOrm.Host.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ITOrm.Host.Models\ITOrm.Host.Models.csproj">
+      <Project>{18cc4721-6267-4d05-a082-d59e5b02aa18}</Project>
+      <Name>ITOrm.Host.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ITOrm.Utility.UI\ITOrm.Core.Utility.csproj">
+      <Project>{7d6f1a81-0513-440b-a037-7a5d1d8ad68d}</Project>
+      <Name>ITOrm.Core.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Core\Host.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Host.cs</LastGenOutput>
+    </None>
+    <None Include="Core\MY_SQL_MultipleOutputHelper.ttinclude" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

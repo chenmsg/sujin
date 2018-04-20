@@ -1,0 +1,72 @@
+﻿using ITOrm.Core.Dictionary;
+using ITOrm.Dapper.Models.Host;
+using System;
+using System.Collections.Generic;
+
+namespace ITOrm._08I.Work.Cache
+{
+    public class ArticleCache
+    {
+
+        private static int cacheTime = 200;//缓存的时间
+        private static readonly Cache<ArticleModel> cacheinfo;
+
+        static ArticleCache()
+        {
+            cacheinfo = new Cache<ArticleModel>();
+        }
+
+        public static List<ArticleInfo> GetList()
+        {
+            string key = "1";
+            if (!cacheinfo.HasKey(key))
+            {
+                cacheinfo.Add(key, GetByID(key));
+            }
+            ArticleModel model = cacheinfo.Get(key, _GetByID);
+            return model.CateArticleInfoList;
+        }
+
+        /// <summary>
+        /// 根据分类iD得到一个分类的信息
+        /// </summary>
+        /// <returns></returns>
+        static ArticleModel GetByID(string key)
+        {
+            ArticleModel list = cacheinfo.Get(key, _GetByID);
+            if (list.CacheTime.AddHours(cacheTime) < DateTime.Now)
+            {
+                cacheinfo.Remove(key);
+            }
+            else
+            {
+                list = cacheinfo.Get(key, _GetByID);
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 从数据库得到数据
+        /// </summary>
+        /// <returns></returns>
+        static ArticleModel _GetByID(string key)
+        {
+            ArticleModel model = new ArticleModel();
+            model.CacheTime = DateTime.Now;
+            model.Key = key;
+            model.CateArticleInfoList = ArticleInfo.GetQuery(" Tag != 'a' and Author != 'Anonymity1' ");
+            return model;
+        }
+    }
+
+    /// <summary>
+    /// 被缓存的实体对象
+    /// </summary>
+    public class ArticleModel
+    {
+        public string Key { get; set; }
+        public DateTime CacheTime { set; get; }
+        public List<ArticleInfo> CateArticleInfoList { get; set; }
+    }
+
+}

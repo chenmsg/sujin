@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <form action="/itapi/Yeepay/Register" method="post"  >
+        <p>注册</p>
+        <input type="text" name="UserId" value="100056" />
+        <input type="text" name="IdCard" value="130702198603051226" />
+        <input type="text" name="RealName" value="刘慧敏" />
+        <input type="text" name="BankName" value="工商银行" />
+        <input type="text" name="BankAccountNumber" value="6212260200098556638" />
+        <input type="text" name="AreaCode" value="1000" />
+        <input type="text" name="BankCardPhoto" value="1000017" />
+        <input type="text" name="IdCardPhoto" value="1000018" />
+        <input type="text" name="IdCardBackPhoto"  value="1000019" />
+        <input type="text" name="PersonPhoto" value="1000020" />
+        <input type="submit" />
+    </form>
+
+    <form action="/itapi/Yeepay/ReceiveApi" method="post">
+        <p>收款</p>
+        <input type="text" name="UserId" value="100056" />
+        <input type="text" name="Amount" value="100" />
+        <input type="text" name="BankCard" value="6253624000780286" />
+        <input type="submit" />
+    </form>
+
+    <form action="http://notice.itorm.com/notice/backpayNotice" method="post">
+        <input type="text" name="Appid" value="402862423" />
+        <input type="text" name="Data" value="5JuUVmDLj4r9d-7FhjaEn1LtxEUAdBv3Aco2lYdyOhzPEWt-ZFCPe8vHFDaPvrc8AG4s0cH1lJ393A1aSWCRTTGEp5rDl0aYCp2ijBlN_jyAp8HwEDdYpGyKE5PkO8XGLmjbPPyj3zLXVNuHvgHuhTRiQ5pNgNTj6ZG2vSqsmednikP5MOEo4HBQX_mTMpzi_P_fnTFHfK4MlVmPamHqxdG1uOeu2vLPJjVB01crohdtiEBU-ZE6WHsRwmgxVPrcUdWCSzsipukK4Ebgfzz34F8d4ZBcOnR0aNz7_ZB-xDLK66yNBnhI7V6fY-Pg_oaqK13Cc9tJYssbzqPX4S5Ek29KX4lous7BCyjvYYJmp_3MTbDU0Sq1t_A8IMUeNI8K4iHyubHYnS2-vclmwIY0_YnYqOSuZASS12juzDR_nDyFzf_k5iWbMQ_E6vEoGTz0Vmq-r93rDZkpcXeS2TRYjnkZNXSRvihdqL3ZA4BtCt9uRDQ02E3hemJDetnCGAYRfm8d_yoHQhc_GNcIXA_MQt-lzVT2Cp1Qj2kPDBxjZyVm7SlL_ticf44MvitGpxxueDOywcJkV0Az0iVyWsjuAXDJovBaoSCA-AZAi35jYcV3_O0hv1Qne9juWhDm7JKh_OGEP2qVf8MfgNDNB8yOXK258UMoEfQEfzk5uQT3txjmq75BqpwEXrpA44AjEBTpxSvbIYID-crcBrYbhHpzP3X1zMJXh3TeAerTC-QigIx4u6FdDMXyzFD9PpyFft2kixCnf1P0xL1azAYRlD6H7UmgJC-wfZR-eFR3_hrbC8RymD8AVdwiJGzSikPERAIXcQbF760M4qIfATg71WC6lirRuL-wRrFwCtbrcurzHxp95kUMSlF1UH0XI5p7S6GZ" />
+        <input type="text" name="Method" value="paymentreport" />
+        <input type="text" name="Sign" value="b6609c9bf0b74b23249a733c9dd2524e" />
+        <input type="submit" />
+    </form>
+</body>
+</html>

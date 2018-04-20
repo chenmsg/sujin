@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    }
+    @section js
+    {
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+    }
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+        .form-group {
+            float:left;
+            margin-right:8px;
+        }
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">收款统计</li>
+</ul>
+
+<div class="bs-docs-example">
+
+        
+        <div class="form-group">
+            <label for="exampleInputEmail1">查询月份</label>
+            <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("time")" onfocus="WdatePicker({ readOnly: true, dateFmt: 'yyyy-MM' })" name="time" id="time" placeholder="查询月份">
+        </div>
+        <div class="form-group ">
+            <label for="exampleInputEmail1">搜索</label>
+            <button class="btn btn-default" type="button" id="btnSubmit">提交</button>
+
+        </div>
+        <div style="clear:both;"></div>
+
+</div>
+
+<div id="container"></div>
+<script type="text/javascript">
+    var chart = null; // 定义全局变量
+   
+    requestData();
+    function requestData() {
+        var time = $("#time").val();
+        $.post("/PayRecord/QueryPayRecordBydate", { time: time }, function (data) {
+
+
+            chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',
+                    type: 'line'
+                },
+                title: {
+                    text: data.Title
+                },
+                yAxis:{
+                    title:{
+                        text:'交易金额（RMB）'
+                    }
+                },
+                subtitle: {
+                    text: ''
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true          // 开启数据标签
+                        },
+                        enableMouseTracking: true // 关闭鼠标跟踪，对应的提示框、点击事件会失效
+                    }
+                },
+                series: data.series,
+                xAxis: data.xAxis,
+                credits: {
+                    enabled: false // 禁用版权信息
+                }
+            });
+            
+        }, "json")
+    }
+    $(function () {
+        $("#btnSubmit").click(function () {
+            requestData();
+        });
+    })
+</script>

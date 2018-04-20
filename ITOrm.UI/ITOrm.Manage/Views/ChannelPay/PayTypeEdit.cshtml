@@ -1,0 +1,76 @@
+﻿@model KeyValue
+@{
+    ViewBag.Title = "支付类型编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    JObject data = new JObject();
+    if (Model.ID > 0)
+    {
+        data = JObject.Parse(Model.Value);
+    }
+    else
+    {
+        data["PayType"] = 0;
+        data["PayName"] = "";
+        data["Quota"] = "";
+        data["Fee"] = 0;
+        data["WithDraw"] = "";
+        data["Time"] = "";
+        data["Remark"] = "";
+    }
+}
+
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">支付类型编辑</li>
+</ul>
+
+
+
+<div class="bs-docs-example">
+    <form method="post">
+        <div class="form-group">
+            <label for="exampleInputEmail1">主键ID</label>
+            <input type="text" class="form-control" readonly="readonly" name="Id" value="@Model.ID" placeholder="Id">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">PayType值</label>
+            @{
+                List<SelectListItem> listR = new List<SelectListItem>();
+                listR.Add(new SelectListItem() { Value = "0", Text = "积分 " });
+                listR.Add(new SelectListItem() { Value = "1", Text = "无积分" });
+            }
+            @Html.MyRadio(listR, data["PayType"].ToString(), "PayType")
+            @*<input type="text" class="form-control" name="State" value="@Model.State" placeholder="状态">*@
+            <div class="alert alert-danger" role="alert">
+                <strong>注意!</strong>这里谨慎修改，是App接口交互参数.
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">支付类型名称</label>
+            <input type="text" class="form-control" name="PayName" value="@data["PayName"].ToString()" placeholder="支付类型名称">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">限额</label>
+            <input type="text" class="form-control" name="Quota" style="width: 565px;" value="@data["Quota"].ToString()" placeholder="限额">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">结算</label>
+            <input type="text" class="form-control" name="WithDraw" style="width: 565px;" value="@data["WithDraw"].ToString()" placeholder="结算">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">时间</label>
+            <input type="text" class="form-control" name="Time" style="width: 565px;" value="@data["Time"].ToString()" placeholder="时间">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">备注</label>
+            <textarea class="form-control" name="Remark" style="width: 565px; height: 215px;" rows="5" placeholder="备注">@data["Remark"].ToString()</textarea>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">排序</label>
+            <input type="text" class="form-control" name="Sort" value="@Model.Sort" placeholder="数字，越大越靠前">
+        </div>
+        <button type="submit" class="btn btn-default">提交</button>
+    </form>
+</div>

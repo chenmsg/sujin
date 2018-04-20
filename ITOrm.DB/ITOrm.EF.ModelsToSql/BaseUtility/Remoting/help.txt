@@ -1,0 +1,33 @@
+﻿完整配置示例
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<configSections>
+		<sectionGroup name="SuperDOTNET">
+			<section name="remoting" type="SuperDOTNET.ConfigHandler,SuperDOTNET"/>
+		</sectionGroup>
+	</configSections>
+	<SuperDOTNET>
+		<remoting>
+			<client name="" lbEnabled="true" pollingInterval="10">
+				<host default="127.0.0.1">
+					<add name="127.0.0.1" url="tcp://127.0.0.1:8888"/>
+					<add name="10.0.0.111" url="tcp://10.0.0.111:8888"/>
+					<add name="10.0.0.222" url="tcp://10.0.0.111:9999"/>
+				</host>
+				<wellknown>
+					<add objectUri="SuperDOTNET.Common.Test" type="SuperDOTNET.Common.ITest"/>
+					<add objectUri="RemotingTest.RemoteObjects.TestItem1" type="RemotingTest.Common.ITestItem1"/>
+					<add objectUri="ITOrm.EF.Models.Remoting.HostMonitorService" type="ITOrm.EF.Models.Remoting.HostMonitorService"/>
+				</wellknown>
+			</client>
+
+			<!-- not use -->
+			<server channelType="" address="" port="">
+				<wellknown>
+					<add objectUri="" type="" mode=""/>
+				</wellknown>
+			</server>
+		</remoting>
+	</SuperDOTNET>
+</configuration>
+

@@ -1,0 +1,45 @@
+﻿@model  ITOrm.Payment.Yeepay.respQueryFeeSetApiModel
+@{
+    ViewBag.Title = "子商户费率查询";
+}
+
+<form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">用户ID</label>
+        <input type="text" class="form-control" name="UserId" value="@TQuery.GetSafeString("UserId")" placeholder="用户ID">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">费率类型</label>
+        @{ 
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem() {  Value="1", Text= "交易费率"});
+            list.Add(new SelectListItem() { Value = "2", Text = "T1自助结算" });
+            list.Add(new SelectListItem() { Value = "3", Text = "T0自助结算基本" });
+            list.Add(new SelectListItem() { Value = "4", Text = "T0自助结算工作日额外" });
+            list.Add(new SelectListItem() { Value = "5", Text = "T0自助结算非工作日额外" });
+        }
+        @Html.MyDrop(list, "", "", TQuery.GetSafeString("ProductType"), new { @name = "ProductType", @class= "form-control" })
+   
+    </div>
+    <button type="submit" class="btn btn-default">提交</button>
+</form>
+<div class="alert alert-block alert-info fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">查询消息:</h4>
+    <p>@(Model.message)</p>
+
+</div>
+
+
+<div class="alert alert-block alert-info fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">费率：</h4>
+    <p>@Model.rate</p>
+
+</div>
+<div class="alert alert-block alert-error fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">返回报文</h4>
+    <p>@(JsonConvert.SerializeObject(Model))</p>
+
+</div>

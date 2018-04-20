@@ -1,0 +1,39 @@
+﻿@model respQueryRJTBalanceModel
+@{
+    ViewBag.Title = "垫资额度查询接口";
+}
+
+
+
+<div class="alert alert-block alert-info fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">查询消息:</h4>
+    <p>@(Model.message)</p>
+
+</div>
+
+
+@if (Model.backState == 0)
+{
+    <div class="alert alert-block alert-info fade in">
+        <button data-dismiss="alert" class="close" type="button">×</button>
+        <h4 class="alert-heading">查询信息：</h4>
+        <p>代理商固定垫资额度:@(Model.fixedLimit)</p>
+        <p>代理商临时垫资额度:@(Model.tempLimit)</p>
+        <p>T0可用总额度:@(Model.totalLimit)</p>
+        <p>垫资配比:@(Model.percentage)</p>
+        <p>剩余额度:@(Model.leftLimit)</p>
+        <p>查询时间:@(Model.currentDate)</p>
+    </div>
+}
+
+<div class="alert alert-block alert-error fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">返回报文</h4>
+    <p>@(JsonConvert.SerializeObject(Model))</p>
+
+</div>
+
+
+
+

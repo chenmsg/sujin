@@ -1,0 +1,166 @@
+﻿
+@{
+    ViewBag.Title = "LeftMenu";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>理财团后台管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <link href="/Themes/plugins/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen" />
+    <link href="/Themes/css/docs.css" rel="stylesheet" />
+    <script src="/Themes/js/jquery-1.11.2.min.js"></script>
+    <link href="/Themes/css/base.css" rel="stylesheet" />
+    <script src="/Themes/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .bs-docs-sidebar ul li {
+            position: relative;
+            left: -215px;
+        }
+
+        .bs-docs-sidenav {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid" style=" min-height:800px;">
+        <div class="row-fluid">
+            <div class="bs-docs-sidebar level1" style=" float:left">
+                <ul class="nav nav-list bs-docs-sidenav ">
+                    <li class=""><a href="/home/main" target="_blank"><i class="icon-chevron-right"></i> 主页</a></li>
+                    <li class=""><a href="/debug/debugapi" target="_blank"><i class="icon-chevron-right"></i>调试API</a></li>
+                    <li class=""><a href="/users/index" target="_blank"><i class="icon-chevron-right"></i> 会员管理</a></li>
+                    <li class=""><a href="/payrecord/index" target="_blank"><i class="icon-chevron-right"></i> 收款记录</a></li>
+                    <li class=""><a href="/withdraw/index" target="_blank"><i class="icon-chevron-right"></i> 结算记录</a></li>
+                    <li class=""><a href="/debug/Memcached" target="_blank"><i class="icon-chevron-right"></i> 缓存管理</a></li>
+                    <li class=""><a href="/yeepay/index" target="_blank"><i class="icon-chevron-right"></i> 易宝查询</a></li>
+                </ul>
+            </div>
+            @*<div class="bs-docs-sidebar level1" style=" float:left" >
+                    <ul class="nav nav-list bs-docs-sidenav ">
+                        <li class=""><a href="#overview"><i class="icon-chevron-right"></i> 主页</a></li>
+                        <li class=""><a href="#transitions"><i class="icon-chevron-right"></i> 系统配置</a></li>
+                        <li class=""><a href="#modals"><i class="icon-chevron-right"></i> 会员管理</a></li>
+                        <li class=""><a href="#dropdowns"><i class="icon-chevron-right"></i> 产品管理</a></li>
+                        <li class="active"><a href="#buttons"><i class="icon-chevron-right"></i> 统计管理</a></li>
+                    </ul>
+                </div>*@
+            @*<div class="bs-docs-sidebar level2"  style="margin-left: 0px; display: none;float:left">
+                    <ul class="nav nav-list bs-docs-sidenav ">
+                        <li class="active"><a href="#overview"><i class="icon-chevron-right"></i> 返回</a></li>
+                        <li class=""><a href="#transitions"><i class="icon-chevron-right"></i> 权限管理</a></li>
+                        <li class=""><a href="#modals"><i class="icon-chevron-right"></i> 角色管理</a></li>
+                        <li class=""><a href="#dropdowns"><i class="icon-chevron-right"></i> 用户管理</a></li>
+                    </ul>
+                </div>*@
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade in" id="_modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+         style="display: block;">
+        <div class="modal-dialog" role="document" style="width: 1100px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="modalLabel">流水日志记录</h4>
+                </div>
+                <div id="_modalDialog_body" class="modal-body">
+                    <!--  设置这个div的大小，超出部分显示滚动条 -->
+                    <div id="selectTree" class="ztree" style="height:300px;overflow:auto; ">
+
+                        <div class="alert alert-block alert-info fade in">
+                            <button data-dismiss="alert" class="close" type="button">×</button>
+                            <h4 class="alert-heading">2018-02-23</h4>
+                            <p>后台易宝查询功能</p>
+
+                        </div>
+
+
+                        <div class="alert alert-block alert-info fade in">
+                            <button data-dismiss="alert" class="close" type="button">×</button>
+                            <h4 class="alert-heading">2016-1-15</h4>
+                            <p>引入IOC castle</p>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>  
+
+    <script type="text/javascript">
+
+    function selectLog(requestId)
+    {
+
+        $('.modal').modal({ keyboard: false })
+        //获取modal的宽度  
+        var modalWidth = $(".modal").width();
+
+        //计算偏移量  
+        var left = "-" + parseInt(modalWidth) / 2 + "px";
+
+        //modal居中  
+        $(".modal").modal("show").css({ "margin-left": left });
+    }
+    selectLog(1);
+    </script>
+
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+
+        $('.level1 ul li').each(function (i) {
+            leftanimate($(this), i * 100);
+        })
+        //菜单点击
+        $(".level1 ul li").click(function () {
+            $('.level1 ul li').each(function (i) {
+                $(this).removeClass("active")
+            })
+            $(this).addClass("active");
+        })
+        //$(".level1").click(function () {
+        //    $(this).hide();
+        //    $('.level2').show().find("ul li").css("left","-215px");
+        //    $('.level2 ul li').each(function (i) {
+        //        leftanimate($(this), i * 100);
+        //    })
+        //})
+        ////菜单点击
+        //$(".level2").click(function () {
+        //    $(this).hide();
+        //    $('.level1').show().find("ul li").css("left", "-215px");
+        //    var list = $('.level1 ul li');
+        //    $(list).each(function (i) {
+        //        rightanimate($(this), i * 100);
+        //    })
+        //})
+    })
+    function leftanimate(obj, time)
+    {
+        setTimeout(function () {
+            obj.animate({ left: '0px' });
+        },time)
+    }
+    function rightanimate(obj, time) {
+        setTimeout(function () {
+            obj.animate({ left: '0px' });
+        }, time)
+    }
+</script>

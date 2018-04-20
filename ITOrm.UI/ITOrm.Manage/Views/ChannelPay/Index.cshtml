@@ -1,0 +1,114 @@
+﻿@model ResultModel<KeyValue>
+@{
+    ViewBag.Title = "支付通道";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">支付通道</li>
+</ul>
+
+<div class="bs-docs-example" style="text-align:right;">
+    <a class="btn btn-default" href="/channelpay/edit" style="" role="button">新增</a>
+</div>
+
+<table class="table table-hover table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>渠道名称</th>
+            <th>运营时间</th>
+            <th>交易费率</th>
+            <th>结算费率</th>
+            <th>是否积分</th>
+            <th>渠道备注</th>
+            <th>创建时间</th>
+            <th>修改时间</th>
+            <th>排序</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.list)
+        {
+            JObject data = JObject.Parse(item.Value);
+            <tr>
+                <td>@item.ID</td>
+                <td>@(((Logic.ChannelType)item.KeyId).ToString())</td>
+                <td>@data["StartTime"].ToString()-@data["EndTime"].ToString()</td>
+                <td>@data["Rate1"].ToDecimal().ToString("F4")</td>
+                <td>@data["Rate3"].ToDecimal().ToString("F1")</td>
+                <td>@(item.Value2=="0"?"是":"否")</td>
+                <td>@item.Remark</td>
+                <td>@(item.CTime.ToString("yyyy-MM-dd HH:mm:ss"))</td>
+                <td>@(item.UTime.ToString("yyyy-MM-dd HH:mm:ss"))</td>
+                <td>@item.Sort</td>
+                <td>
+                    @(item.State==0?"可用":"不可用")
+                </td>
+                <td>
+                    <a href="/channelpay/edit/@item.ID">编辑</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Pager("pageIndex", 10, Model.totalCount)
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">您确定要删除这条信息吗？</h3>
+    </div>
+    <div class="modal-body" style=" max-height:300px;">
+        @*<table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@@mdo</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@@fat</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>
+
+                            ddddddd
+                        </td>
+                    </tr>
+                </tbody>
+            </table>*@
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</button>
+        <button class="btn ">取消</button>
+    </div>
+</div>

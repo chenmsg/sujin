@@ -1,0 +1,392 @@
+﻿@model Users
+@{
+    UserBankCardBLL userBankCardDao = new UserBankCardBLL();
+    UserImageBLL userImageDao = new UserImageBLL();
+    ViewPayRecordBLL viewPayRecordDao = new ViewPayRecordBLL();
+    var ukb = userBankCardDao.Single("UserId=@UserId and TypeId=0", new { Model.UserId });
+    ViewBag.Title = "Index";
+}
+
+
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+<style type="text/css">
+    .content {
+        height: 900px;
+    }
+
+    div {
+        margin-left: 30px;
+    }
+</style>
+<script type="text/javascript" src="http://static.anxin.com/js/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+        $(".nav-tabs li").click(function () {
+            var link = $(this).find("a").attr("data-link");
+            ///$("#myFrame").attr("src", "/yeepay/" + link );
+            var index = $(".nav-tabs li").index($(this));
+            $(".nav-tabs li").removeClass("active");
+            $(this).addClass("active");
+            $(".content").hide();
+            $(".content").eq(index).show();
+
+        })
+    })
+</script>
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">用户信息</li>
+</ul>
+<form id="form1" style="width:100%;margin:auto;">
+
+    <div>
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="javascript:;" >基本信息</a></li>
+            <li role="presentation"><a href="javascript:;" >上传照片</a></li>
+            <li role="presentation"><a href="javascript:;" >交易记录</a></li>
+            <li role="presentation"><a href="javascript:;" >用户事件日志</a></li>
+            <li role="presentation"><a href="javascript:;" >用户银行卡</a></li>
+
+        </ul>
+    </div>
+    @*基本信息*@
+    <div class="content" style="display:block;">
+        <div class="bs-docs-example">
+            <table class="table table-bordered table-striped" style="padding:10px;width:900px ">
+                <thead>
+                    <tr>
+                        <th>列名</th>
+                        <th>值</th>
+                        <th>列名</th>
+                        <th>值</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row"><code>用户ID</code></th>
+                        <td>@Model.UserId</td>
+                        <th scope="row"><code>手机号码</code></th>
+                        <td>@Model.Mobile</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><code>真实姓名</code></th>
+                        <td>@Model.RealName</td>
+                        <th scope="row"><code>身份证号码</code></th>
+                        <td>@Model.IdCard</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><code>结算银行</code></th>
+                        <td>@(ukb==null?"":ukb.BankName)</td>
+                        <th scope="row"><code>结算卡号</code></th>
+                        <td>@(ukb == null ? "" : ukb.BankCard)</td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><code>注册时间</code></th>
+                        <td>@(Model.CTime)</td>
+                        <th scope="row"><code>实名时间</code></th>
+                        <td>@(Model.IsRealState>0?Model.RealTime.ToString(): "--")</td>
+                    
+                    </tr>
+                    <tr>
+                        <th scope="row"><code>用户类型</code></th>
+                        <td>
+                            @{
+                                Logic.VipType vip = (Logic.VipType)Model.VipType;
+                                switch (vip)
+                                {
+                                    case Logic.VipType.顶级用户:
+                            @Html.MySpan(vip.ToString(), "red");
+                                    break;
+                                case Logic.VipType.普通用户:
+                            @Html.MySpan(vip.ToString(), "");
+                                    break;
+                                case Logic.VipType.Vip用户:
+                            @Html.MySpan(vip.ToString(), "green");
+                                    break;
+                                default:
+                                    break;
+                            }
+                            }
+                        </td>
+                        <th scope="row"><code>用户状态</code></th>
+                        <td>
+                            @if (Model.State == -1)
+                            {
+                            @Html.MySpan("冻结", "red")
+                            }
+                            else
+                            {
+                            @Html.MySpan("正常", "green")
+                            }
+
+                        </td>
+                    </tr>
+                    <tr>
+                        @{
+                        Users baseUser = null;
+                        if (Model.BaseUserId > 0)
+                        {
+                            UsersBLL usersDao = new UsersBLL();
+                            baseUser = usersDao.Single(Model.BaseUserId);
+                        }
+
+                        }
+                        <th scope="row"><code>邀请人</code></th>
+                        <td><a href="/users/info/@Model.BaseUserId" target="_blank">@(baseUser==null?"":baseUser.RealName)</a> </td>
+                        <th scope="row"><code>来源</code></th>
+                        <td>@(((Logic.Platform)Model.PlatForm).ToString())</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @*上传照片*@
+    <div class="content" style="display:none;">
+        <div class="bs-docs-example">
+            @if (Model.IdCardPhoto > 0)
+            {
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://api.sujintech.com/@(userImageDao.GetUrl(Model.IdCardPhoto))" alt="身份证正面">
+                        <div class="caption">
+                            <h3>身份证正面</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+
+            @if (Model.IdCardPhoto > 0)
+            {
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://api.sujintech.com/@(userImageDao.GetUrl(Model.IdCardBackPhoto))" alt="身份证反面">
+                        <div class="caption">
+                            <h3>身份证反面</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+            @if (Model.BankCardPhoto > 0)
+            {
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://api.sujintech.com/@(userImageDao.GetUrl(Model.BankCardPhoto))" alt="银行卡照片">
+                        <div class="caption">
+                            <h3>银行卡照片</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+            @if (Model.PersonPhoto > 0)
+            {
+            <div class="row">
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <img src="http://api.sujintech.com/@(userImageDao.GetUrl(Model.PersonPhoto))" alt="三证合一">
+                        <div class="caption">
+                            <h3>三证合一</h3>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+    @*交易记录*@
+    <div class="content" style="display:none;">
+        <div class="bs-docs-example">
+            @{
+
+                var list =viewPayRecordDao.GetQuery(20,"UserId=@UserId",new { Model.UserId}," order by ID desc");
+
+            }
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>请求流水号</th>
+                        <th>交易金额</th>
+                        <th>实际到帐</th>
+                        <th>交易时间</th>
+                        <th>银行卡号</th>
+                        <th>银行名称</th>
+                        <th>匹配通道</th>
+                        <th>交易状态</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in list)
+                    {
+                    <tr>
+                        <td>@item.RequestId</td>
+
+                        <td>@item.Amount</td>
+                        <td>@item.ActualAmount</td>
+                        <td>@item.CTime</td>
+                        <td>@item.BankCard</td>
+                        <td>@item.BankName</td>
+                        <td>@(((Logic.ChannelType)item.ChannelType))</td>
+                        <td>
+                            @{
+                                string color = "red";
+                                int State = item.State;
+                                switch (State)
+                                {
+                                    case 10:
+                                        color = "green";
+                                        break;
+                                    case 5:
+                                        color = "#FD9D06";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            @Html.MySpan(((ITOrm.Payment.Yeepay.Enums.PayRecordState)State).ToString(), color)
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @*用户事件日志*@
+    <div class="content" style="display:none;">
+        <div class="bs-docs-example">
+            <div class="alert alert-block alert-info fade in">
+                @*<button data-dismiss="alert" class="close" type="button">×</button>*@
+                @*<h4 class="alert-heading">提示</h4>*@
+                <p>只展示最新20条</p>
+
+            </div>
+
+
+
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Action</th>
+                        <th>Cmd</th>
+                        <th>发生时间</th>
+                        <th>IP</th>
+                        <th>数据</th>
+                        <th>来源</th>
+                        <th>状态</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        UserEventRecordBLL userEventRecordDao = new UserEventRecordBLL();
+                        var eventList = userEventRecordDao.GetQuery(20, "UserId=@UserId", new { Model.UserId }, "order by id desc");
+                        if (eventList != null)
+                        {
+                            foreach (var item in eventList)
+                            {
+                                <tr>
+                                    <td>@item.ID</td>
+                                    <td>@item.Action</td>
+                                    <td>@item.Cmd</td>
+                                    <td>@item.CTime</td>
+                                    <td>@item.IP</td>
+                                    <td>@item.Data</td>
+                                    <td>@((Logic.Platform)item.PlatForm)</td>
+                                    <td>
+                                        @if (item.State == 1)
+                                        {
+                                            @Html.MySpan("成功", "green")
+                                        }
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    @*用户银行卡*@
+    <div class="content" style="display:none;">
+        <div class="bs-docs-example">
+
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>银行编码</th>
+                        <th>银行名称</th>
+                        <th>卡号</th>
+                        <th>类型</th>
+                        <th>CVN2</th>
+                        <th>到期(月/年)</th>
+                        <th>状态</th>
+                        <th>创建时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var userBankCardList = userBankCardDao.GetQuery(50, "UserId=@UserId", new { Model.UserId }, "order by id desc");
+                        if (userBankCardList != null)
+                        {
+                            foreach (var item in userBankCardList)
+                            {
+                                <tr>
+                                    <td>@item.ID</td>
+                                    <td>@item.BankCode</td>
+                                    <td>@item.BankName</td>
+                                    <td>@item.BankCard</td>
+                                    <td>
+                                        @if (item.TypeId == 0)
+                                        {
+                                            @Html.MySpan("结算卡", "red")
+                                        }
+                                        else
+                                        {
+                                            @Html.MySpan("支付卡", "green")
+                                        }
+                                    </td>
+                                    <td>@item.CVN2</td>
+                                    <td>@(item.ExpiresMouth+ item.ExpiresYear)</td>
+                                    <td>
+                                        @if (item.State == 1)
+                                        {
+                                            @Html.MySpan("锁定", "green")
+                                        }
+                                        else
+                                        {
+                                            @Html.MySpan("可修改", "red")
+                                        }
+                                    </td>
+                                    <td>@item.CTime</td>
+                                </tr>
+                            }
+                        }
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</form>

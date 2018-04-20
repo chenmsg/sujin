@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+    }
+    @section js
+    {
+    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
+    <script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+    }
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">主页</a> <span class="divider">/</span></li>
+    @*<li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">角色权限</li>*@
+</ul>
+<div class="bs-docs-example" >
+    <div id="container" ></div>
+</div>
+
+<script type="text/javascript">
+    var chart = null; // 定义全局变量
+   
+    requestData();
+    function requestData() {
+        $.post("/PayRecord/QueryPayRecordBydate", {}, function (data) {
+
+
+            chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container',
+                    type: 'line'
+                },
+                title: {
+                    text: data.Title
+                },
+                yAxis:{
+                    title:{
+                        text:'交易金额（RMB）'
+                    }
+                },
+                subtitle: {
+                    text: ''
+                },
+                plotOptions: {
+                    line: {
+                        dataLabels: {
+                            enabled: true          // 开启数据标签
+                        },
+                        enableMouseTracking: true // 关闭鼠标跟踪，对应的提示框、点击事件会失效
+                    }
+                },
+                series: data.series,
+                xAxis: data.xAxis,
+                credits: {
+                    enabled: false // 禁用版权信息
+                }
+            });
+            
+        }, "json")
+    }
+
+
+
+
+</script>

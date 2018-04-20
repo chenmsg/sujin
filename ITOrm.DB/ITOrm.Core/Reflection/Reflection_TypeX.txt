@@ -1,0 +1,46 @@
+ /// <summary>
+        /// 执行更改操作时，返回实体对象，并给各个字段赋值
+        /// </summary>
+        /// <param name="typeName">完整实体名称， [命名空间.实体名称]</param>
+        /// <param name="rval">表单集合字符串</param>
+        /// <param name="keyID">要更改的实体，主键值</param>
+        /// <returns></returns>
+        public static object GetFormEntity(this string typeName, string rval, int keyID)
+        {
+            TypeX EntityType = TypeX.Create(TypeX.GetType(typeName, true));//根据类的完整名称建立类的类型,用于动态创建类 如： SuperNet.Entity.SuperMVC.News_Info
+            MethodInfoX method = MethodInfoX.Create(EntityType, "Single", new Type[] { typeof(object) });//通过参数类型查找动态生成类中的方法
+            TypeX typeEntity = TypeX.Create(EntityType);//动态加载类 实体类
+            Object objEntity = typeEntity.CreateInstance();//动态建立类的对象 实体类的对象
+            objEntity = method.Invoke(objEntity, keyID);//参数一为对象，参数二为实参
+            //Set Property Value
+            PropertyInfoX.SetValue(objEntity,"Title","abcddddddddddd"+DateTime.Now);
+            PropertyInfoX.SetValue(objEntity, "Click", 456);
+
+
+            object timeStr = "2013-08-25 17:14:15.220";
+            if ((PropertyInfoX.Create(EntityType, "AddTime")).Property.PropertyType.Name == typeof(DateTime).ToString().Substring(typeof(DateTime).ToString().IndexOf(".")+1))
+            {
+                timeStr = Convert.ToDateTime(timeStr);
+            }
+
+
+
+
+            PropertyInfoX.SetValue(objEntity, "AddTime", timeStr);
+            
+
+            
+            
+            //Update
+            MethodInfoX methodUpdate = MethodInfoX.Create(EntityType, "Update");//通过参数类型查找动态生成类中的方法
+            object result = 0;
+            result = methodUpdate.Invoke(objEntity);
+
+
+
+
+
+
+
+            return result;
+        }

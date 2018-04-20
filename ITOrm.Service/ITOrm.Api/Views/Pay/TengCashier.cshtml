@@ -1,0 +1,279 @@
+﻿@model ITOrm.Utility.Helper.ResultModel
+@{
+    Layout = null;
+  
+}
+
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: 59.151.25.126:6330 shouyin.yeepay.com 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *">
+
+    <title>收银台</title>
+    <style>
+        .pme-popup .pme-bind-card {
+            height: auto;
+        }
+
+        .pme-bind-card .error-info {
+            padding-right: 5px;
+            font-size: 12px;
+            color: #9f9f9f;
+        }
+
+        .pme-bind-card .bank-data.disabled {
+            background-color: #cec8c8;
+            opacity: .3;
+        }
+
+        .gray {
+            background-color: gray;
+        }
+        .btn-disabled {
+            color: #999999;
+            cursor: default;
+            border-color: #f0f0f0;
+        }
+
+
+        
+    </style>
+    
+    <link href="/Themes/css/bootstrap.css" rel="stylesheet" />
+    <link href="/Themes/css/mobile-pay.css" rel="stylesheet" />
+    <script src="/Themes/js/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body cz-shortcut-listen="true">
+
+    <i class="iconfont pme-go-back" onclick="javascript:window.history.back();"></i><header class="pme-order-info" id="mod-orderInfo">
+        <p class="amount" style="margin-top:0px; font-size:30px;">￥@(Model.data["amount"])</p>
+        <label for="mod-detailsSwitch"></label>
+    </header>
+    <div class="pme-order-details-wrapper" id="mod-orderDetails">
+        <input class="details-switch" id="mod-detailsSwitch" type="checkbox">
+
+        <div class="order-details" style="">
+            <div class="details-info">
+                <div style="color:#9e9e9e;">商品名称</div>
+                <div>SJ商品</div>
+            </div>
+            <div class="details-info">
+                <div style="color:#9e9e9e;">订单编号</div>
+                <div>@Model.data["ordernumber"]</div>
+            </div>
+        </div>
+        <span class="details-switch-trigger"></span>
+    </div>
+    <div id="J-bindedCard">
+        <div class="mt10">
+            <div class="pme-bind-card" id="mod-bindCard">
+                <div><img src="/Themes/img/@(Model.data["BankCode"]).png" height="30"></div>
+                <div class="ml10">
+                    <p class="f18">@Model.data["BankName"].ToString()</p>
+
+                    <p class="mt5 card-num">
+                        尾号@(Model.data["BankCard"].ToString().ToBankLastFour())<span class="ml20">
+                            信用卡
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="mt10">
+            <form id="J-cardInfo" class="pme-form"  onsubmit="return submitValidate()" method="post">
+                <figure class="input-box">
+                    <label>
+                        <mark>手机号</mark>
+                        <input maxlength="11"  placeholder="预留手机号" value="@(Model.data["Mobile"])" disabled="disabled"  type="tel">     
+                    </label>
+                </figure>
+                <figure class="input-box">
+                    <label>
+                        <mark>验证码</mark>
+                        <input maxlength="6"  id="J_verifycode" placeholder="短信验证码" name="code" type="tel">
+                        <i class="clear iconfont"></i>
+                        <button onclick="getCode(this)" type="button" style=""   id="J_getCode" class="pme-btn pme-btn-sm ">获取验证码</button>
+                    </label>
+                </figure>
+
+
+                <div class="pme-wrapper">
+                    <button type="submit"  class="J-payBtn  @(Model.backState == -200?"gray":"")">确认支付</button>
+                </div>
+                <input type="hidden" name="payId" id="payId" value="@(ITOrm.Utility.StringHelper.TQuery.GetInt("payid"))" />
+                <input type="hidden" name="tengGuid" id="tengGuid" value=""  />
+            </form>
+        </div>
+    </div>
+
+    <!-- Small modal -->
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="myModal" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+               <span style="float:right;" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true">&times;</span>
+                    <h2 class="modal-title" id="myModalTitle" style="text-align:center;" >提示</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="alert " id="alertDiv" style="text-align:center;" role="alert">
+                        <strong style="font-size:1.3em" id="myModalMessage">支付成功</strong>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>*@
+                    <button type="button" data-dismiss="modal" style="background-color:#f3f4f4;color:#333; " class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $('#myModal').on('show.bs.modal', centerModals);
+        //禁用空白处点击关闭
+        $('#myModal').modal({
+            backdrop: 'static',
+            keyboard: false,//禁止键盘
+            show: false
+        });
+    })
+    function centerModals() {
+        $('#myModal').each(function (i) {
+            var $clone = $(this).clone().css('display', 'block').appendTo('body');
+            var top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
+            top = top > 0 ? top : 0;
+            $clone.remove();
+            $(this).find('.modal-content').css("margin-top", top);
+        });
+    };
+    function MyModal(error, str) {
+
+        $("#alertDiv").addClass(error);
+        $("#myModalMessage").html(str);
+        $('#myModal').on('show.bs.modal', centerModals);
+        $('#myModal').modal({
+            backdrop: 'static',
+            keyboard: false,//禁止键盘
+            show: true
+        });
+    }
+
+
+    function submitValidate()
+    {
+        var code = $("#J_verifycode").val();
+        if (code == "")
+        {
+            return false;
+        }
+
+
+
+        if ($(".J-payBtn").hasClass("gray")) {
+            return false;
+        }
+
+
+
+        if(/[^\d]/.test(code))
+        {
+            MyModal("alert-danger", '验证码必须为数字');
+            return false;
+        }
+        var tengGuid=$("#tengGuid").val();
+        if (tengGuid == "")
+        {
+            MyModal("alert-danger", '请先获取短信');
+            return false;
+        }
+        timeop();
+        return true;
+    }
+
+    function timeop()
+    {
+        $(".J-payBtn").html("提交中..." ).addClass("gray");
+        var k = 3;
+        setInterval(function () {
+            var dian = "";
+            for (var i = 0; i < k; i++) {
+                dian += ".";
+            }
+            $(".J-payBtn").html("提交中" + dian);
+            k--;
+            if (k < 1) {
+                k = 3;
+            }
+        }, 500)
+    }
+
+    var setIntervalId;
+    var num = 60;
+    var flag = false;
+    function getCode(obj)
+    {
+
+        if ($(".J-payBtn").hasClass("gray")) {
+            return false;
+        }
+        if (flag)
+        {
+            return;
+        }
+        var payid = $("#payId").val();
+        $.post("/itapi/pay/TengSendMsgCode", { payid: payid }, function (data) {
+            if (data.backState == 0) {
+                $(obj).css("color", "#999999");
+                $(obj).css("cursor", "default");
+                $(obj).css("border-color", "#f0f0f0");
+                setIntervalId = setInterval(otime, 1000);
+                flag = true;
+                $("#tengGuid").val(data.Data.tengGuid)
+            }
+            else {//发送失败
+                MyModal("alert-danger", data.message);
+            }
+        }, "json");
+    }
+
+
+    function otime()
+    {
+
+        $("#J_getCode").html(num + "秒后重发");
+        if (num == 0)
+        {
+            $("#J_getCode").html("获取验证码");
+            $("#J_getCode").removeAttr("style");
+            clearInterval(setIntervalId);
+            num = 60;
+            flag = false;
+        }
+        num--;
+    }
+
+
+</script>
+
+@if (Model.backState == -100)
+{
+    <script type="text/javascript">
+
+        MyModal("alert-danger", '@Model.message');
+    </script>
+}
+
+@if (Model.backState == -200)
+{
+    <script type="text/javascript">
+        MyModal("alert-success", '@Model.message');
+    </script>
+}

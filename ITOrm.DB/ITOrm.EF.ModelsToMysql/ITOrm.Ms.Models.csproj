@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3EFE8614-E8D6-487A-A180-C372F857CA90}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ITOrm.Ms.Models</RootNamespace>
+    <AssemblyName>ITOrm.Ms.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\Clump.Lib\Data\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseUtility\Context\BaseEntity.cs" />
+    <Compile Include="BaseUtility\Helper\ConfigHelper.cs" />
+    <Compile Include="BaseUtility\Helper\CustomHelper.cs" />
+    <Compile Include="BaseUtility\Helper\MssqlDbHelper.cs" />
+    <Compile Include="BaseUtility\Helper\MssqlProvider.cs" />
+    <Compile Include="BaseUtility\Helper\RandomHelper.cs" />
+    <Compile Include="BaseUtility\Helper\TimeHelper.cs" />
+    <Compile Include="BaseUtility\Helper\Util.cs" />
+    <Compile Include="BaseUtility\Logging\Config\ConfigHandler.cs" />
+    <Compile Include="BaseUtility\Logging\Config\FormatterConfig.cs" />
+    <Compile Include="BaseUtility\Logging\Config\LoggerConfig.cs" />
+    <Compile Include="BaseUtility\Logging\Config\LoggingConfig.cs" />
+    <Compile Include="BaseUtility\Logging\Config\TargetConfig.cs" />
+    <Compile Include="BaseUtility\Logging\DefaultFormatter.cs" />
+    <Compile Include="BaseUtility\Logging\ExceptionEventArgs.cs" />
+    <Compile Include="BaseUtility\Logging\Formatters\DateTimeFormatter.cs" />
+    <Compile Include="BaseUtility\Logging\Formatters\ExceptionFormatter.cs" />
+    <Compile Include="BaseUtility\Logging\Formatters\IPartFormatter.cs" />
+    <Compile Include="BaseUtility\Logging\Formatters\LogLevelFormatter.cs" />
+    <Compile Include="BaseUtility\Logging\Formatters\MessageFormatter.cs" />
+    <Compile Include="BaseUtility\Logging\Formatters\StackTraceFormatter.cs" />
+    <Compile Include="BaseUtility\Logging\Formatters\TextFormatter.cs" />
+    <Compile Include="BaseUtility\Logging\Formatters\ThreadIdFormatter.cs" />
+    <Compile Include="BaseUtility\Logging\IFormatter.cs" />
+    <Compile Include="BaseUtility\Logging\ILogable.cs" />
+    <Compile Include="BaseUtility\Logging\ILogger.cs" />
+    <Compile Include="BaseUtility\Logging\ILogProvider.cs" />
+    <Compile Include="BaseUtility\Logging\ITarget.cs" />
+    <Compile Include="BaseUtility\Logging\LogEntry.cs" />
+    <Compile Include="BaseUtility\Logging\Logger.cs" />
+    <Compile Include="BaseUtility\Logging\LogLevel.cs" />
+    <Compile Include="BaseUtility\Logging\LogManager.cs" />
+    <Compile Include="BaseUtility\Logging\LogProvider.cs" />
+    <Compile Include="BaseUtility\Logging\MultiLogger.cs" />
+    <Compile Include="BaseUtility\Logging\NullLogger.cs" />
+    <Compile Include="BaseUtility\Logging\Targets\ConsoleTarget.cs" />
+    <Compile Include="BaseUtility\Logging\Targets\DbTarget.cs" />
+    <Compile Include="BaseUtility\Logging\Targets\EventLogTarget.cs" />
+    <Compile Include="BaseUtility\Logging\Targets\FileTarget.cs" />
+    <Compile Include="BaseUtility\Logging\Targets\RemotingTarget.cs" />
+    <Compile Include="BaseUtility\PagerWebdiyer\IPagedList.cs" />
+    <Compile Include="BaseUtility\PagerWebdiyer\PagedList.cs" />
+    <Compile Include="BaseUtility\PagerWebdiyer\PageLinqExtensions.cs" />
+    <Compile Include="BaseUtility\PagerWebdiyer\PagerBuilder.cs" />
+    <Compile Include="BaseUtility\PagerWebdiyer\PagerHelper.cs" />
+    <Compile Include="BaseUtility\PagerWebdiyer\PagerItem.cs" />
+    <Compile Include="BaseUtility\PagerWebdiyer\PagerOptions.cs" />
+    <Compile Include="BaseUtility\Reflection\AssemblyX.cs" />
+    <Compile Include="BaseUtility\Reflection\AttributeX.cs" />
+    <Compile Include="BaseUtility\Reflection\ConstructorInfoX.cs" />
+    <Compile Include="BaseUtility\Reflection\DictionaryCache.cs" />
+    <Compile Include="BaseUtility\Reflection\DynamicAssembly.cs" />
+    <Compile Include="BaseUtility\Reflection\EmitHelper.cs" />
+    <Compile Include="BaseUtility\Reflection\FastIndexAccessor.cs" />
+    <Compile Include="BaseUtility\Reflection\FastTest.cs" />
+    <Compile Include="BaseUtility\Reflection\FieldInfoX.cs" />
+    <Compile Include="BaseUtility\Reflection\Func.cs" />
+    <Compile Include="BaseUtility\Reflection\IIndexAccessor.cs" />
+    <Compile Include="BaseUtility\Reflection\ListX.cs" />
+    <Compile Include="BaseUtility\Reflection\MemberInfoX.cs" />
+    <Compile Include="BaseUtility\Reflection\MethodInfoX.cs" />
+    <Compile Include="BaseUtility\Reflection\PropertyInfoX.cs" />
+    <Compile Include="BaseUtility\Reflection\TypeX.cs" />
+    <Compile Include="BaseUtility\Reflection\WeakReference.cs" />
+    <Compile Include="BaseUtility\Remoting\ChannelType.cs" />
+    <Compile Include="BaseUtility\Remoting\Client\Host.cs" />
+    <Compile Include="BaseUtility\Remoting\Client\HostManager.cs" />
+    <Compile Include="BaseUtility\Remoting\Client\RemotingClientHelper.cs" />
+    <Compile Include="BaseUtility\Remoting\Client\RemotingClientProxy.cs" />
+    <Compile Include="BaseUtility\Remoting\Config\ClientConfig.cs" />
+    <Compile Include="BaseUtility\Remoting\Config\RemotingConfig.cs" />
+    <Compile Include="BaseUtility\Remoting\Config\ServerConfig.cs" />
+    <Compile Include="BaseUtility\Remoting\Service\HostMonitorService.cs" />
+    <Compile Include="BaseUtility\Remoting\Service\LoggingService.cs" />
+    <Compile Include="BaseUtility\Specification\AndSpecification.cs" />
+    <Compile Include="BaseUtility\Specification\CompositeSpecification.cs" />
+    <Compile Include="BaseUtility\Specification\DirectSpecification.cs" />
+    <Compile Include="BaseUtility\Specification\ExpressionBuilder.cs" />
+    <Compile Include="BaseUtility\Specification\ISpecification.cs" />
+    <Compile Include="BaseUtility\Specification\ISpecificationExtensions.cs" />
+    <Compile Include="BaseUtility\Specification\NotSpecification.cs" />
+    <Compile Include="BaseUtility\Specification\OrSpecification.cs" />
+    <Compile Include="BaseUtility\Specification\ParameterRebinder.cs" />
+    <Compile Include="BaseUtility\Specification\Specification.cs" />
+    <Compile Include="BaseUtility\Specification\SpecificationBuilder.cs" />
+    <Compile Include="BaseUtility\Context\BaseEntityAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseUtility\Context\BaseEntityAction123321.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseUtility\Context\BaseEntityDbContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseUtility\Context\BaseSqlContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseUtility\Context\BaseView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseUtility\Context\BaseViewAction.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseUtility\Context\BaseViewDbContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BaseUtility\Context\CustomSQL.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Host\Abc.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\Bbb.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\Host1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Host\WorkLog.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Host\Host.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Host1.cs</LastGenOutput>
+    </None>
+    <None Include="Host\MY_SQL_MultipleOutputHelper.ttinclude" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BaseUtility\Logging\help.txt" />
+    <Content Include="BaseUtility\Reflection\Reflection_TypeX.txt" />
+    <Content Include="BaseUtility\Remoting\help.txt" />
+    <Content Include="BaseUtility\Remoting\memo.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,186 @@
+﻿@model ResultModel
+@{
+    ViewBag.Title = "用户管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+        .form-group {
+            float:left;
+            margin-right:8px;
+        }
+
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">用户管理</li>
+</ul>
+
+<div class="bs-docs-example">
+    <form >
+        <div class="form-group">
+            <label for="exampleInputEmail1">按用户</label>
+
+            @{
+            List<SelectListItem> listType = new List<SelectListItem>();
+            listType.Add(new SelectListItem() { Value="0",Text="ID"});
+            listType.Add(new SelectListItem() { Value = "1", Text = "手机号" });
+            listType.Add(new SelectListItem() { Value = "2", Text = "姓名" });
+            listType.Add(new SelectListItem() { Value = "3", Text = "身份证" });
+            }
+            @Html.MyDrop(listType, "请选择", "-1", TQuery.GetString("Type"), new { @name = "Type", @style="width:80px"})
+            <input type="text" style="width:150px" value="@TQuery.GetString("KeyValue")" class="form-control" name="KeyValue" placeholder="按类型搜索">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">实名认证</label>
+            @{
+        List<SelectListItem> listReal = new List<SelectListItem>();
+        listReal.Add(new SelectListItem() { Value = "0", Text = "未实名" });
+        listReal.Add(new SelectListItem() { Value = "1", Text = "已实名" });
+            }
+            @Html.MyDrop(listReal, "全部", "-1", TQuery.GetString("IsRealState"), new { @name = "IsRealState", @style = "width:80px" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Vip类型</label>
+            @{
+                var listVip =ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(Logic.VipType));
+            }
+            @Html.MyDrop(listVip, "全部", "-1", TQuery.GetString("VipType"), new { @name = "VipType", @style = "width:100px" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">注册时间</label>
+            <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("StartTime")" onfocus="WdatePicker({ readOnly: true})" name="StartTime" placeholder="开始检索时间">
+            <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("EndTime")" onfocus="WdatePicker({ readOnly: true})" name="EndTime" placeholder="结束检索时间">
+        </div>
+        <div class="form-group ">
+            <label for="exampleInputEmail1">搜索</label>
+            <button class="btn btn-default" type="submit">提交</button>
+
+        </div>
+        <div style="clear:both;"></div>
+    </form>
+</div>
+
+<table class="table table-hover table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>用户ID</th>
+            <th>手机号码</th>
+            <th>姓名</th>
+            <th>注册时间</th>
+            <th>实名时间</th>
+            <th>来源</th>
+            <th>用户类型</th>
+            <th>用户状态</th>
+            <th>邀请人</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (var item in Model.list)
+        {
+            <tr>
+                <td>@item["UserId"].ToInt()</td>
+                <td>@item["Mobile"]</td>
+                <td>
+                    @if (item["IsRealState"].ToInt() == 1)
+                    {
+                        string[] contents = new string[] { "身份证：" + item["IdCard"].ToString(),"结算银行："+item["BankName"], "卡号："+item["BankCard"] };
+                        @Html.MyTips(item["RealName"].ToString(), "详细信息", contents);
+                    }
+                </td>
+                <td>@(item["CTime"].ToDateTime().ToString("yyyy-MM-dd HH:mm:ss"))</td>
+                <td>
+                    @(item["IsRealState"].ToInt() > 0?item["RealTime"].ToDateTime().ToString("yyyy-MM-dd HH:mm:ss") :"--")
+                 
+   
+                </td>
+                <td>@(((Logic.Platform)item["PlatForm"].ToInt()).ToString())</td>
+                <td>
+                    @{ 
+                        Logic.VipType vip=(Logic.VipType)item["VipType"].ToInt();
+                        switch (vip)
+                        {
+                            case Logic.VipType.顶级用户:
+                                @Html.MySpan(vip.ToString(), "red");
+                                break;
+                            case Logic.VipType.普通用户:
+                                @Html.MySpan(vip.ToString(), "");
+                                break;
+                            case Logic.VipType.Vip用户:
+                                @Html.MySpan(vip.ToString(), "green");
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+               
+                </td>
+                <td>
+                    @if (item["State"].ToInt() == 0)
+                    {
+                        @Html.MySpan("正常", "green");
+                    }
+                    else
+                    {
+                        @Html.MySpan("注销", "red");
+                    }
+                </td>
+
+                <td>@(item["BaseRealName"])@(item["BaseUserId"].ToInt()>0?"("+item["BaseUserId"] +")":"")</td>
+                <td>
+
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            操作 <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="/users/info/@item["UserId"]">查看</a></li>
+                            <li><a href="/users/AuditMerchant?UserId=@item["UserId"]">审核通过</a></li>
+                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=0">设置顶级用户</a></li>
+                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=2">设置Vip用户</a></li>
+                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=1">设置普通用户</a></li>
+                        </ul>
+                    </div>
+                    
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Pager("pageIndex", 10, Model.totalCount)
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">查看用户上传照片</h3>
+    </div>
+    <div class="modal-body" style="max-height:300px;">
+        <div class="row">
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <img src="..." alt="...">
+                    <div class="caption">
+                        <h3>Thumbnail label</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</button>
+        <button class="btn ">取消</button>
+    </div>
+</div>
+
+
+

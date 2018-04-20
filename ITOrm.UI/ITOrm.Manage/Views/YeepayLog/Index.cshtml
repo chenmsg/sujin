@@ -1,0 +1,259 @@
+﻿@model ResultModel<YeepayLog>
+@{
+    ViewBag.Title = "交互日志";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+
+        .form-group {
+            float: left;
+            margin-right: 8px;
+        }
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">交互日志</li>
+</ul>
+
+<div class="bs-docs-example">
+    <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">按用户</label>
+
+            @{
+                List<SelectListItem> listType = new List<SelectListItem>();
+                listType.Add(new SelectListItem() { Value = "0", Text = "ID" });
+                listType.Add(new SelectListItem() { Value = "1", Text = "手机号" });
+                listType.Add(new SelectListItem() { Value = "2", Text = "姓名" });
+                listType.Add(new SelectListItem() { Value = "3", Text = "身份证" });
+            }
+            @Html.MyDrop(listType, "请选择", "-1", TQuery.GetString("Type"), new { @name = "Type", @style = "width:80px" })
+            <input type="text" style="width:150px" value="@TQuery.GetString("KeyValue")" class="form-control" name="KeyValue" placeholder="按类型搜索">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">通道名称</label>
+            @{
+                string ChannelType = TQuery.GetString("ChannelType");
+                var listChannelType = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(Logic.ChannelType));
+
+            }
+            @Html.MyDrop(listChannelType, "全部", "-1", ChannelType, new { @name = "ChannelType", @id = "ChannelType", @style = "width:120px" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">事件</label>
+            @if (ChannelType == "0")
+            {
+                var listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.Yeepay.Enums.YeepayType));
+                @Html.MyDrop(listTypeId, "全部", "-1", TQuery.GetString("TypeId"), new { @name = "TypeId", @id = "TypeId", @style = "width:100px" })
+            }
+            else if (ChannelType == "1" || ChannelType == "2")
+            {
+                var listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.Masget.Enums.MasgetType));
+                @Html.MyDrop(listTypeId, "全部", "-1", TQuery.GetString("TypeId"), new { @name = "TypeId", @id = "TypeId", @style = "width:100px" })
+            }
+            else if (ChannelType == "3")
+            {
+                var listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.Teng.Enums.TengType));
+                @Html.MyDrop(listTypeId, "全部", "-1", TQuery.GetString("TypeId"), new { @name = "TypeId", @id = "TypeId", @style = "width:100px" })
+            }
+            else
+            {
+                var listTypeId = new List<SelectListItem>();
+                @Html.MyDrop(listTypeId, "全部", "-1", TQuery.GetString("TypeId"), new { @name = "TypeId", @id = "TypeId", @style = "width:100px" })
+            }
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">状态</label>
+            @{
+                var listYeepayLogState = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(Logic.YeepayLogState));
+
+            }
+            @Html.MyDrop(listYeepayLogState, "全部", "-200", TQuery.GetString("State"), new { @name = "State", @style = "width:100px" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">发生时间</label>
+            <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("StartTime")" onfocus="WdatePicker({ readOnly: true})" name="StartTime" placeholder="开始检索时间">
+            <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("EndTime")" onfocus="WdatePicker({ readOnly: true})" name="EndTime" placeholder="结束检索时间">
+        </div>
+        <div class="form-group ">
+            <label for="exampleInputEmail1">搜索</label>
+            <button class="btn btn-default" type="submit">提交</button>
+
+        </div>
+        <div style="clear:both;"></div>
+    </form>
+</div>
+
+<table class="table table-hover table-bordered table-striped">
+    <thead>
+        <tr>
+            <td>流水号</td>
+            <th>用户ID</th>
+            <th>通道名称</th>
+            <th>事件</th>
+            <th>关联ID</th>
+            <th>发生时间</th>
+            <th>更新时间</th>
+            <th>来源</th>
+            <th>IP</th>
+            <th>返回码</th>
+            <th>返回消息</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.list != null && Model.list.Count > 0)
+        {
+            foreach (var item in Model.list)
+            {
+                <tr>
+                    <td>
+                    
+                        <a href="javascript:selectLog(@item.ID);"> @item.ID</a>
+                  </td>
+                    <td>@item.UserId</td>
+                    <td>
+                        @{
+                            Logic.ChannelType ct = (Logic.ChannelType)item.ChannelType;
+                            string cttxt = "";
+                        }
+                        @ct
+                    </td>
+                    <td>
+                        @switch (ct)
+                        {
+                            case Logic.ChannelType.易宝:
+                                cttxt = ((ITOrm.Payment.Yeepay.Enums.YeepayType)item.TypeId).ToString();
+                                break;
+                            case Logic.ChannelType.荣邦科技积分:
+                            case Logic.ChannelType.荣邦科技无积分:
+                                cttxt = ((ITOrm.Payment.Masget.Enums.MasgetType)item.TypeId).ToString();
+                                break;
+                            case Logic.ChannelType.腾付通:
+                                cttxt = ((ITOrm.Payment.Teng.Enums.TengType)item.TypeId).ToString();
+                                break;
+                            default:
+                                cttxt = "未知";
+                                break;
+                        }
+                        @Html.MyTips(cttxt, "TypeId", item.TypeId.ToString())
+                    </td>
+                    <td>@item.KeyId</td>
+                    <td>@item.CTime</td>
+                    <td>@item.UTime</td>
+                    <td>@((Logic.Platform)item.Platfrom)</td>
+                    <td>@item.IP</td>
+                    <td>@item.Code</td>
+                    <td>@item.Msg</td>
+                    <td>
+                        @{
+                            var StateTxt = ((Logic.YeepayLogState)item.State).ToString();
+                        }
+                        @if (item.State == 1)
+                        {
+                            @Html.MySpan(StateTxt, "blue")
+                        }
+                        else if (item.State == 5)
+                        {
+                            @Html.MySpan(StateTxt, "#FD9D06")
+                        }
+                        else if (item.State == 10)
+                        {
+                            @Html.MySpan(StateTxt, "green")
+                        }
+                        else
+                        {
+                            @Html.MySpan(StateTxt, "red")
+                        }
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+@Html.Pager("pageIndex", 10, Model.totalCount)
+
+
+ <!-- Modal -->
+<div class="modal fade in" id="_modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+     style="display: none;">
+    <div class="modal-dialog" role="document" style="width: 1100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="modalLabel">流水日志记录</h4>
+            </div>
+            <div id="_modalDialog_body" class="modal-body">
+                <!--  设置这个div的大小，超出部分显示滚动条 -->
+                <div id="selectTree" class="ztree" style="height:600px;overflow:auto; ">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-dismiss="modal">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function selectLog(requestId)
+    {
+
+        $.post("/YeepayLog/QueryLogRecord", { requestId: requestId }, function (data) {
+
+            if (data != null)
+            {
+                var htmlTag = "";
+                for (var i = 0, l = data.length; i < l; i++) {
+
+                    htmlTag += '<div class="alert alert-block alert-info fade in">';
+                    htmlTag += '       <button data-dismiss="alert" class="close" type="button">×</button>';
+                    htmlTag += '         <h4 class="alert-heading">' + data[i].title + '</h4>';
+                    htmlTag += '        <p style="word-wrap: break-word;">' + data[i].content + '</p>';
+                    htmlTag += ' </div>';
+                }
+                $("#selectTree").html(htmlTag);
+                $('.modal').modal({ keyboard: false })
+                //获取modal的宽度
+                var modalWidth = $(".modal").width();
+
+                //计算偏移量
+                var left = "-" + parseInt(modalWidth) / 2 + "px";
+
+                //modal居中
+                $(".modal").modal("show").css({ "margin-left": left });
+            }
+        },"json")
+
+
+
+    }
+    $(function () {
+
+        $("#ChannelType").change(function () {
+            var ChannelType = $(this).val();
+            $.post("/yeepaylog/getselectbox", { ChannelType: ChannelType }, function (data) {
+                $("#TypeId").empty();
+                $("#TypeId").append('<option value="-1">全部</option>');
+                for (var i = 0; i < data.length; i++) {
+                    $("#TypeId").append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                }
+            }, "json");
+        })
+    })
+</script>

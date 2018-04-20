@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3D4E242C-4B6A-4C0A-BDBD-44157D42252B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ITOrm.Core</RootNamespace>
+    <AssemblyName>ITOrm.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Service\ITOrm.Api\bin\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Bin\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Memcached.ClientLibrary">
+      <HintPath>..\..\ITOrm.Bin\Memcached.ClientLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\ITOrm.Bin\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\ITOrm.Bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dapper\Adapter\ISqlAdapter.cs" />
+    <Compile Include="Dapper\Adapter\MySqlAdapter.cs" />
+    <Compile Include="Dapper\Adapter\PostgresAdapter.cs" />
+    <Compile Include="Dapper\Adapter\SQLiteAdapter.cs" />
+    <Compile Include="Dapper\Adapter\SqlServerAdapter.cs" />
+    <Compile Include="Dapper\Attributes\AssemblyNeutralAttribute.cs" />
+    <Compile Include="Dapper\Attributes\ComputedAttribute.cs" />
+    <Compile Include="Dapper\Attributes\ExplicitConstructorAttribute.cs" />
+    <Compile Include="Dapper\Attributes\KeyAttribute.cs" />
+    <Compile Include="Dapper\Attributes\TableAttribute.cs" />
+    <Compile Include="Dapper\Attributes\WriteAttribute.cs" />
+    <Compile Include="Dapper\BaseEntity.cs" />
+    <Compile Include="Dapper\CacheInfo.cs" />
+    <Compile Include="Dapper\CommandDefinition.cs" />
+    <Compile Include="Dapper\CommandFlags.cs" />
+    <Compile Include="Dapper\Context\BaseEntityAction.cs" />
+    <Compile Include="Dapper\Context\BasicEntityAction.cs" />
+    <Compile Include="Dapper\Context\BaseViewAction.cs" />
+    <Compile Include="Dapper\Context\BasicConnection.cs" />
+    <Compile Include="Dapper\Context\DapperHelper.cs" />
+    <Compile Include="Dapper\Context\RunConnection.cs" />
+    <Compile Include="Dapper\DapperRow.cs" />
+    <Compile Include="Dapper\DapperRowMetaObject.cs" />
+    <Compile Include="Dapper\DapperTable.cs" />
+    <Compile Include="Dapper\DeserializerState.cs" />
+    <Compile Include="Dapper\DontMap.cs" />
+    <Compile Include="Dapper\Dynamic\DynamicModel.cs" />
+    <Compile Include="Dapper\FeatureSupport.cs" />
+    <Compile Include="Dapper\GridReader.cs" />
+    <Compile Include="Dapper\Identity.cs" />
+    <Compile Include="Dapper\Interface\CustomPropertyTypeMap.cs" />
+    <Compile Include="Dapper\Interface\DataTableHandler.cs" />
+    <Compile Include="Dapper\Interface\DbString.cs" />
+    <Compile Include="Dapper\Interface\DefaultTypeMap.cs" />
+    <Compile Include="Dapper\Interface\DynamicParameters.cs" />
+    <Compile Include="Dapper\Interface\ICustomQueryParameter.cs" />
+    <Compile Include="Dapper\Interface\IDynamicParameters.cs" />
+    <Compile Include="Dapper\Interface\IMemberMap.cs" />
+    <Compile Include="Dapper\Interface\IParameterCallbacks.cs" />
+    <Compile Include="Dapper\Interface\IParameterLookup.cs" />
+    <Compile Include="Dapper\Interface\ITypeHandler.cs" />
+    <Compile Include="Dapper\Interface\ITypeMap.cs" />
+    <Compile Include="Dapper\Interface\IWrappedDataReader.cs" />
+    <Compile Include="Dapper\Interface\SimpleMemberMap.cs" />
+    <Compile Include="Dapper\Interface\TableValuedParameter.cs" />
+    <Compile Include="Dapper\Interface\TypeHandler.cs" />
+    <Compile Include="Dapper\Interface\UdtTypeHandler.cs" />
+    <Compile Include="Dapper\Interface\WrappedReader.cs" />
+    <Compile Include="Dapper\Link.cs" />
+    <Compile Include="Dapper\ObjectExtensions.cs" />
+    <Compile Include="Dapper\ProxyGenerator.cs" />
+    <Compile Include="Dapper\SqlMapper.cs" />
+    <Compile Include="Dapper\SqlMapperExtensions.cs" />
+    <Compile Include="Dapper\TypeHandlerCache.cs" />
+    <Compile Include="Dictionary\Cache.cs" />
+    <Compile Include="Dictionary\Disposable.cs" />
+    <Compile Include="Dictionary\LockType.cs" />
+    <Compile Include="Dictionary\ReaderWriterLockSlimHelper.cs" />
+    <Compile Include="DynamicHelper.cs" />
+    <Compile Include="Helper\ConfigHelper.cs" />
+    <Compile Include="Helper\CustomHelper.cs" />
+    <Compile Include="Helper\EncryptionHelper.cs" />
+    <Compile Include="Helper\MssqlDbHelper.cs" />
+    <Compile Include="Helper\MssqlProvider.cs" />
+    <Compile Include="Helper\RandomHelper.cs" />
+    <Compile Include="Helper\RmbHelper.cs" />
+    <Compile Include="Helper\SqlSecurity.cs" />
+    <Compile Include="Helper\TimeHelper.cs" />
+    <Compile Include="Helper\Util.cs" />
+    <Compile Include="Logging\Config\ConfigHandler.cs" />
+    <Compile Include="Logging\Config\FormatterConfig.cs" />
+    <Compile Include="Logging\Config\LoggerConfig.cs" />
+    <Compile Include="Logging\Config\LoggingConfig.cs" />
+    <Compile Include="Logging\Config\TargetConfig.cs" />
+    <Compile Include="Logging\DefaultFormatter.cs" />
+    <Compile Include="Logging\ExceptionEventArgs.cs" />
+    <Compile Include="Logging\Formatters\DateTimeFormatter.cs" />
+    <Compile Include="Logging\Formatters\ExceptionFormatter.cs" />
+    <Compile Include="Logging\Formatters\IPartFormatter.cs" />
+    <Compile Include="Logging\Formatters\LogLevelFormatter.cs" />
+    <Compile Include="Logging\Formatters\MessageFormatter.cs" />
+    <Compile Include="Logging\Formatters\StackTraceFormatter.cs" />
+    <Compile Include="Logging\Formatters\TextFormatter.cs" />
+    <Compile Include="Logging\Formatters\ThreadIdFormatter.cs" />
+    <Compile Include="Logging\IFormatter.cs" />
+    <Compile Include="Logging\ILogable.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\ILogProvider.cs" />
+    <Compile Include="Logging\ITarget.cs" />
+    <Compile Include="Logging\LogEntry.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\LogManager.cs" />
+    <Compile Include="Logging\LogProvider.cs" />
+    <Compile Include="Logging\MultiLogger.cs" />
+    <Compile Include="Logging\NullLogger.cs" />
+    <Compile Include="Logging\Targets\ConsoleTarget.cs" />
+    <Compile Include="Logging\Targets\DbTarget.cs" />
+    <Compile Include="Logging\Targets\EventLogTarget.cs" />
+    <Compile Include="Logging\Targets\FileTarget.cs" />
+    <Compile Include="Logging\Targets\RemotingTarget.cs" />
+    <Compile Include="Memcached\IMemcachedDao.cs" />
+    <Compile Include="Memcached\Impl\MemcachedDao.cs" />
+    <Compile Include="PetaPoco\Column.cs" />
+    <Compile Include="PetaPoco\Database.cs" />
+    <Compile Include="PetaPoco\ExplicitColumns.cs" />
+    <Compile Include="PetaPoco\Ignore.cs" />
+    <Compile Include="PetaPoco\IMapper.cs" />
+    <Compile Include="PetaPoco\Page.cs" />
+    <Compile Include="PetaPoco\PrimaryKey.cs" />
+    <Compile Include="PetaPoco\ResultColumn.cs" />
+    <Compile Include="PetaPoco\Sql.cs" />
+    <Compile Include="PetaPoco\TableName.cs" />
+    <Compile Include="PetaPoco\Transaction.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\AssemblyX.cs" />
+    <Compile Include="Reflection\AttributeX.cs" />
+    <Compile Include="Reflection\ConstructorInfoX.cs" />
+    <Compile Include="Reflection\DictionaryCache.cs" />
+    <Compile Include="Reflection\DynamicAssembly.cs" />
+    <Compile Include="Reflection\EmitHelper.cs" />
+    <Compile Include="Reflection\FastIndexAccessor.cs" />
+    <Compile Include="Reflection\FastTest.cs" />
+    <Compile Include="Reflection\FieldInfoX.cs" />
+    <Compile Include="Reflection\Func.cs" />
+    <Compile Include="Reflection\IIndexAccessor.cs" />
+    <Compile Include="Reflection\ListX.cs" />
+    <Compile Include="Reflection\MemberInfoX.cs" />
+    <Compile Include="Reflection\MethodInfoX.cs" />
+    <Compile Include="Reflection\PropertyInfoX.cs" />
+    <Compile Include="Reflection\TypeX.cs" />
+    <Compile Include="Reflection\WeakReference.cs" />
+    <Compile Include="Remoting\ChannelType.cs" />
+    <Compile Include="Remoting\Client\Host.cs" />
+    <Compile Include="Remoting\Client\HostManager.cs" />
+    <Compile Include="Remoting\Client\RemotingClientHelper.cs" />
+    <Compile Include="Remoting\Client\RemotingClientProxy.cs" />
+    <Compile Include="Remoting\Config\ClientConfig.cs" />
+    <Compile Include="Remoting\Config\RemotingConfig.cs" />
+    <Compile Include="Remoting\Config\ServerConfig.cs" />
+    <Compile Include="Remoting\Service\HostMonitorService.cs" />
+    <Compile Include="Remoting\Service\LoggingService.cs" />
+    <Compile Include="Security\CheckUtil.cs" />
+    <Compile Include="Security\Common.cs" />
+    <Compile Include="Security\HashAlgorithmType.cs" />
+    <Compile Include="Security\HashCryto.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dictionary\help.txt" />
+    <Content Include="Logging\help.txt" />
+    <Content Include="PetaPoco\_Helper.txt" />
+    <Content Include="Reflection\Reflection_TypeX.txt" />
+    <Content Include="Remoting\help.txt" />
+    <Content Include="Remoting\memo.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

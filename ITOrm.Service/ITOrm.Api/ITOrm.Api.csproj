@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{43B4E07E-9726-4F98-BD55-9A55250EB466}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ITOrm.Api</RootNamespace>
+    <AssemblyName>ITOrm.Api</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Memcached.ClientLibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=42c0400964dcc297, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Bin\Memcached.ClientLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Bin\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Bin\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Bin\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Bin\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Bin\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Bin\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ITOrm.Bin\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\CacheConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ConfigController.cs" />
+    <Compile Include="Controllers\DebugController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\ForgetController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\PayController.cs" />
+    <Compile Include="Controllers\ServerController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\YeepayController.cs" />
+    <Compile Include="Filters\Aysn.cs" />
+    <Compile Include="Filters\HandleErrorFilter.cs" />
+    <Compile Include="Filters\IPFilter.cs" />
+    <Compile Include="Filters\ValidateAtrributeFilter.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="html\banksbin.txt" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="index.html" />
+    <Content Include="Themes\css\bootstrap-theme.css" />
+    <Content Include="Themes\css\bootstrap.css" />
+    <Content Include="Themes\css\mobile-pay.css" />
+    <Content Include="Themes\dialog2-master\.gitattributes" />
+    <Content Include="Themes\dialog2-master\.gitignore" />
+    <Content Include="Themes\dialog2-master\dist\css\dialog.css" />
+    <Content Include="Themes\dialog2-master\dist\css\tmpl.css" />
+    <Content Include="Themes\dialog2-master\dist\demos\index.html" />
+    <Content Include="Themes\dialog2-master\dist\images\icon\fail.png" />
+    <Content Include="Themes\dialog2-master\dist\images\icon\loading.gif" />
+    <Content Include="Themes\dialog2-master\dist\images\icon\success.png" />
+    <Content Include="Themes\dialog2-master\dist\js\dialog.js" />
+    <Content Include="Themes\dialog2-master\dist\js\dialog.min.js" />
+    <Content Include="Themes\dialog2-master\dist\js\example.js" />
+    <Content Include="Themes\dialog2-master\dist\lib\highlight.js" />
+    <Content Include="Themes\dialog2-master\dist\lib\jquery-1.9.1.min.js" />
+    <Content Include="Themes\dialog2-master\dist\lib\zepto.min.js" />
+    <Content Include="Themes\dialog2-master\Gruntfile.js" />
+    <Content Include="Themes\css\dialog.css" />
+    <Content Include="Themes\dialog2-master\src\css\tmpl.css" />
+    <Content Include="Themes\dialog2-master\src\demos\index.html" />
+    <Content Include="Themes\dialog2-master\src\demos\tap.html" />
+    <Content Include="Themes\dialog2-master\src\images\icon\fail.png" />
+    <Content Include="Themes\dialog2-master\src\images\icon\loading.gif" />
+    <Content Include="Themes\dialog2-master\src\images\icon\success.png" />
+    <Content Include="Themes\dialog2-master\src\js\dialog.js" />
+    <Content Include="Themes\dialog2-master\src\js\example.js" />
+    <Content Include="Themes\dialog2-master\src\js\ripple.js" />
+    <Content Include="Themes\dialog2-master\src\js\tapEvent.js" />
+    <Content Include="Themes\dialog2-master\src\lib\highlight.js" />
+    <Content Include="Themes\dialog2-master\src\lib\jquery-1.9.1.min.js" />
+    <Content Include="Themes\dialog2-master\src\lib\zepto.min.js" />
+    <Content Include="Themes\dialog2-master\src\templates\alert.html" />
+    <Content Include="Themes\dialog2-master\src\templates\css\dialog.css" />
+    <Content Include="Themes\dialog2-master\src\templates\css\style.css" />
+    <Content Include="Themes\dialog2-master\src\templates\images\icon\fail.png" />
+    <Content Include="Themes\dialog2-master\src\templates\images\icon\loading.gif" />
+    <Content Include="Themes\dialog2-master\src\templates\images\icon\success.png" />
+    <Content Include="Themes\dialog2-master\src\templates\js\example.js" />
+    <Content Include="Themes\dialog2-master\src\templates\lib\jquery-1.9.1.min.js" />
+    <Content Include="Themes\dialog2-master\src\templates\lib\zepto.min.js" />
+    <Content Include="Themes\dialog2-master\src\templates\notice.html" />
+    <Content Include="Themes\dialog2-master\src\templates\toast.html" />
+    <Content Include="Themes\img\ABC.png" />
+    <Content Include="Themes\img\BCCB.png" />
+    <Content Include="Themes\img\BCM.png" />
+    <Content Include="Themes\img\BOC.png" />
+    <Content Include="Themes\img\CCB.png" />
+    <Content Include="Themes\img\CEB.png" />
+    <Content Include="Themes\img\CIB .png" />
+    <Content Include="Themes\img\CMB.png" />
+    <Content Include="Themes\img\CMBC.png" />
+    <Content Include="Themes\img\ECITIC.png" />
+    <Content Include="Themes\img\GDB.png" />
+    <Content Include="Themes\img\HX.png" />
+    <Content Include="Themes\img\ICBC.png" />
+    <Content Include="Themes\img\SPDB.png" />
+    <Content Include="Themes\img\SZPA.png" />
+    <Content Include="Themes\img\BOSC.png" />
+    <Content Include="Themes\img\PSBC.png" />
+    <Content Include="Themes\js\dialog.js" />
+    <Content Include="Themes\js\jquery.js" />
+    <Content Include="Themes\js\zepto.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Views\Config\" />
+    <Folder Include="Views\Forget\" />
+    <Folder Include="Views\News\" />
+    <Folder Include="Views\Server\" />
+    <Folder Include="Views\Upload\" />
+    <Folder Include="Views\Users\" />
+    <Folder Include="Views\Yeepay\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ITOrm.DB\ITOrm.Core\ITOrm.Core.csproj">
+      <Project>{3d4e242c-4b6a-4c0a-bdbd-44157d42252b}</Project>
+      <Name>ITOrm.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ITOrm.DB\ITOrm.Host.BLL\ITOrm.Host.BLL.csproj">
+      <Project>{32e31be7-104e-40f8-af65-8b713085b275}</Project>
+      <Name>ITOrm.Host.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ITOrm.DB\ITOrm.Host.Models\ITOrm.Host.Models.csproj">
+      <Project>{18cc4721-6267-4d05-a082-d59e5b02aa18}</Project>
+      <Name>ITOrm.Host.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ITOrm.DB\ITOrm.Utility.UI\ITOrm.Core.Utility.csproj">
+      <Project>{7d6f1a81-0513-440b-a037-7a5d1d8ad68d}</Project>
+      <Name>ITOrm.Core.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ITOrm.Helper\ITOrm.Payment\ITOrm.Payment.csproj">
+      <Project>{6d2c67f5-29af-41fb-993d-e17bd0bd90d0}</Project>
+      <Name>ITOrm.Payment</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ITOrm.Helper\ITOrm.Utility\ITOrm.Utility.csproj">
+      <Project>{1d0cb421-cbbd-4ae9-8055-2ca2a1bad9fe}</Project>
+      <Name>ITOrm.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Castle.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\api.itorm.com.pubxml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Debug\tool.cshtml" />
+    <Content Include="Views\Pay\Cashier.cshtml" />
+    <Content Include="Themes\iconfont\iconfont.woff" />
+    <Content Include="Themes\dialog2-master\.jshintrc" />
+    <Content Include="Themes\dialog2-master\package.json" />
+    <Content Include="Themes\dialog2-master\README.md" />
+    <Content Include="Themes\dialog2-master\src\scss\dialog.scss" />
+    <Content Include="Themes\dialog2-master\src\scss\highlight.scss" />
+    <Content Include="Themes\dialog2-master\src\scss\mobile.scss" />
+    <Content Include="Themes\dialog2-master\src\scss\reset.scss" />
+    <Content Include="Themes\dialog2-master\src\scss\ripple.scss" />
+    <Content Include="Themes\dialog2-master\src\scss\tablet.scss" />
+    <Content Include="Themes\dialog2-master\src\scss\tmpl.scss" />
+    <Content Include="Themes\dialog2-master\src\templates\scss\dialog.scss" />
+    <Content Include="Themes\dialog2-master\src\templates\scss\style.scss" />
+    <Content Include="Themes\dialog2-master\_config.json" />
+    <Content Include="Views\Debug\Optimal.cshtml" />
+    <Content Include="Views\Pay\TengCashier.cshtml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>63557</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:63557/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

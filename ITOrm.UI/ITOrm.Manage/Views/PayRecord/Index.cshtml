@@ -1,0 +1,239 @@
+﻿@model ResultModel
+@{
+    ViewBag.Title = "收款列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+        .form-group {
+            float:left;
+            margin-right:8px;
+        }
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">收款列表</li>
+</ul>
+
+<div class="bs-docs-example">
+    <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">按用户</label>
+
+            @{
+                List<SelectListItem> listType = new List<SelectListItem>();
+                listType.Add(new SelectListItem() { Value = "0", Text = "ID" });
+                listType.Add(new SelectListItem() { Value = "1", Text = "手机号" });
+                listType.Add(new SelectListItem() { Value = "2", Text = "姓名" });
+                listType.Add(new SelectListItem() { Value = "3", Text = "身份证" });
+            }
+            @Html.MyDrop(listType, "请选择", "-1", TQuery.GetString("Type"), new { @name = "Type", @style = "width:80px" })
+            <input type="text" style="width:150px" value="@TQuery.GetString("KeyValue")" class="form-control" name="KeyValue" placeholder="按类型搜索">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">支付状态</label>
+            @{
+                var listState = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.Yeepay.Enums.PayRecordState));
+            }
+            @Html.MyDrop(listState, "全部", "-200", TQuery.GetString("State"), new { @name = "State", @style = "width:120px" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">平台</label>
+            @{
+                var listPlatform = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(Logic.Platform));
+            }
+            @Html.MyDrop(listPlatform, "全部", "-1", TQuery.GetString("Platform"), new { @name = "Platform", @style = "width:100px" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">匹配通道</label>
+            @{
+                var listChannelType = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(Logic.ChannelType));
+            }
+            @Html.MyDrop(listChannelType, "全部", "-1", TQuery.GetString("ChannelType"), new { @name = "ChannelType", @style = "width:150px" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">支付时间</label>
+            <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("StartTime")" onfocus="WdatePicker({ readOnly: true})" name="StartTime" placeholder="开始检索时间">
+            <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("EndTime")" onfocus="WdatePicker({ readOnly: true})" name="EndTime" placeholder="结束检索时间">
+        </div>
+        <div class="form-group ">
+            <label for="exampleInputEmail1">搜索</label>
+            <button class="btn btn-default" type="submit">提交</button>
+
+        </div>
+        <div style="clear:both;"></div>
+    </form>
+</div>
+
+<table class="table table-hover table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>请求流水号</th>
+            <th>用户ID</th>
+            <th>姓名</th>
+            <th>交易金额</th>
+            <th>实际到帐</th>
+            <th>手续费</th>
+            <th>收益</th>
+            <th>平台</th>
+            <th>支付时间</th>
+            <th>到帐时间</th>
+            <th>支付卡号</th>
+            <th>银行名称</th>
+            <th>匹配通道</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.list)
+        {
+            <tr>
+                <td>
+                    <a href="javascript:selectLog(@item["RequestId"]);"> @item["RequestId"].ToString()</a>
+              
+                </td>
+                <td>
+                    @{
+                        string[] strs = new string[] { "rid:" + item["ID"].ToString(), "Ip:" + item["Ip"].ToString() };
+                    }
+                    @Html.MyTips(item["UserId"].ToString(), "其它信息", strs)
+                </td>
+                <td>
+                @Html.MyTips(item["RealName"].ToString(), "手机号", item["Mobile"].ToString())
+                
+                
+                </td>
+                <td>@item["Amount"]</td>
+                <td>
+                   
+
+                @item["ActualAmount"]</td>
+                <td>
+                @{ 
+                    decimal Fee3 = item["Fee3"].ToDecimal();
+                    decimal Fee = item["Fee"].ToDecimal() + Fee3;
+                    string[] content = new string[]{ "交易费率:"+item["Rate"].ToDecimal().perCent(),"结算费率："+item["Fee3"]+"元","结算金额:"+item["WithDrawAmount"] };
+
+                }
+                    @Html.MyTips(Fee.ToString("F2"), "详细信息", content)
+
+
+                </td>
+                <td>
+                    @{ 
+                        decimal Income = item["Income"].ToDecimal();
+                        decimal DrawIncome = item["DrawIncome"].ToDecimal();
+                        content = new string[] { "结算收益:"+DrawIncome.ToString("F2"),"基本收益："+(Income- DrawIncome).ToString("F2") };
+                    }
+                    @Html.MyTips(Income.ToString("F2"), "详细信息", content)
+                </td>
+                <td>@(((Logic.Platform)item["Platform"].ToInt()))</td>
+                <td>@(item["CTime"].ToDateTime().ToString("yyyy-MM-dd HH:mm:ss"))</td>
+                <td>@(item["State"].ToInt()==10? item["HandleTime"].ToDateTime().ToString("yyyy-MM-dd HH:mm:ss"):"--")</td>
+
+                <td>@item["BankCard"]</td>
+                <td>@item["BankName"]</td>
+                <td>@((Logic.ChannelType)item["ChannelType"].ToInt())</td>
+                <td>
+                    @{ 
+                        string color = "red";
+                        int State = item["State"].ToInt();
+                        switch (State)
+                        {
+                            case 10:
+                                color = "green";
+                                break;
+                            case 5:
+                                color = "#FD9D06";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    @Html.MySpan(((ITOrm.Payment.Yeepay.Enums.PayRecordState)State).ToString(),color)
+    
+
+                </td>
+                <td>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Pager("pageIndex", 10, Model.totalCount)
+
+<div class="alert alert-block alert-info fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading" style="text-align:center;">总交易金额：@ViewBag.TotalAmount 总收益：@ViewBag.TotalIncome 结算收益：@ViewBag.TotalDrawIncome</h4>
+</div>
+
+
+ <!-- Modal -->
+<div class="modal fade in" id="_modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+     style="display: none;">
+    <div class="modal-dialog" role="document" style="width: 1100px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="modalLabel">流水日志记录</h4>
+            </div>
+            <div id="_modalDialog_body" class="modal-body">
+                <!--  设置这个div的大小，超出部分显示滚动条 -->
+                <div id="selectTree" class="ztree" style="height:600px;overflow:auto; ">
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-dismiss="modal">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function selectLog(requestId)
+    {
+       
+        $.post("/YeepayLog/QueryLogRecord", { requestId: requestId }, function (data) {
+    
+            if (data != null)
+            {
+                var htmlTag = "";
+                for (var i = 0, l = data.length; i < l; i++) {
+                    
+                    htmlTag += '<div class="alert alert-block alert-info fade in">';
+                    htmlTag += '       <button data-dismiss="alert" class="close" type="button">×</button>';
+                    htmlTag += '         <h4 class="alert-heading">' + data[i].title + '</h4>';
+                    htmlTag += '        <p style="word-wrap: break-word;">' + data[i].content + '</p>';
+                    htmlTag += ' </div>';
+                }
+                $("#selectTree").html(htmlTag);
+                $('.modal').modal({ keyboard: false })
+                //获取modal的宽度
+                var modalWidth = $(".modal").width();
+
+                //计算偏移量
+                var left = "-" + parseInt(modalWidth) / 2 + "px";
+
+                //modal居中
+                $(".modal").modal("show").css({ "margin-left": left });
+            }
+        },"json")
+      
+
+
+    }
+</script>

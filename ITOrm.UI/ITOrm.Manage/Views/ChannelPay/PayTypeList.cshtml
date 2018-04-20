@@ -1,0 +1,108 @@
+﻿@model ResultModel<KeyValue>
+@{
+    ViewBag.Title = "支付类型管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">支付类型管理</li>
+</ul>
+
+<div class="bs-docs-example" style="text-align:right;">
+    <a class="btn btn-default" href="/channelpay/PayTypeEdit" style="" role="button">新增</a>
+</div>
+
+<table class="table table-hover table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>支付类型名称</th>
+            <th>PayType值</th>
+            <th>限额</th>
+            <th>结算信息</th>
+            <th>时间</th>
+            <th>备注</th>
+            <th>排序</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.list != null && Model.list.Count > 0)
+        {
+            foreach (var item in Model.list)
+            {
+                JObject data = JObject.Parse(item.Value);
+                <tr>
+                    <td>@item.ID</td>
+                    <td>@(data["PayName"])</td>
+                    <td>@(data["PayType"])</td>
+                    <td>@(data["Quota"])</td>
+                    <td>@(data["WithDraw"])</td>
+                    <td>@(data["Time"])</td>
+                    <td>@(data["Remark"])</td>
+                    <td>@(item.Sort)</td>
+                    <td>
+                        <a href="/channelpay/PayTypeEdit/@item.ID">编辑</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+@Html.Pager("pageIndex", 10, Model.totalCount)
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">您确定要删除这条信息吗？</h3>
+    </div>
+    <div class="modal-body" style=" max-height:300px;">
+        @*<table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@@mdo</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@@fat</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>
+
+                            ddddddd
+                        </td>
+                    </tr>
+                </tbody>
+            </table>*@
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</button>
+        <button class="btn ">取消</button>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+﻿@model JObject
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>欢迎使用苏津科技管理系统</title>
+    <link href="/Themes/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <link href="/Themes/css/docs.css" rel="stylesheet" />
+    <script src="/Themes/js/jquery-1.11.2.min.js"></script>
+    <link href="/Themes/css/base.css" rel="stylesheet" />
+    <script src="/Themes/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        .bs-docs-sidebar ul li {
+            position: relative;
+            left: -215px;
+        }
+        .bs-docs-sidenav {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="alert  alert-info fade in" style="margin-bottom:10px;">
+            @*<button data-dismiss="alert" class="close" type="button">×</button>*@
+            <h4 class="alert-heading">欢迎使用苏津科技管理系统 <a style="float:right;" href="/home/loginout">退出系统</a></h4>
+            <p>@(Model["Dream"])</p>
+            
+        </div>
+    </div>
+    <div class="container-fluid" style=" min-height:800px;">
+        <div class="row-fluid">
+            <div class="bs-docs-sidebar level1" style=" float:left">
+                <ul class="nav nav-list bs-docs-sidenav ">
+                    <li class=""><a href="/home/main" target="mainFrame"><i class="icon-chevron-right"></i> 主页</a></li>
+                    <li class=""><a href="/debug/debugapi" target="mainFrame"><i class="icon-chevron-right"></i>调试API</a></li>
+                    <li class=""><a href="/users/index" target="mainFrame" ><i class="icon-chevron-right"></i> 会员管理</a></li>
+                    <li class=""><a href="/sendmsg/index" target="mainFrame"><i class="icon-chevron-right"></i> 短信记录</a></li>
+                    <li class=""><a href="/payrecord/index" target="mainFrame"><i class="icon-chevron-right"></i> 收款记录</a></li>
+                    <li class=""><a href="/payrecord/statistics" target="mainFrame"><i class="icon-chevron-right"></i> 收款统计</a></li>
+                    <li class=""><a href="/yeepaylog/index" target="mainFrame"><i class="icon-chevron-right"></i> 交互日志</a></li>
+                    @*<li class=""><a href="/withdraw/index" target="mainFrame"><i class="icon-chevron-right"></i> 结算记录</a></li>*@
+                    <li class=""><a href="/debug/Memcached" target="mainFrame"><i class="icon-chevron-right"></i> 缓存管理</a></li>
+                    <li class=""><a href="/yeepay/index" target="mainFrame"><i class="icon-chevron-right"></i> 易宝查询</a></li>
+                    <li class=""><a href="/masget/index" target="mainFrame"><i class="icon-chevron-right"></i> 荣邦科技</a></li>
+                    <li class=""><a href="/teng/index" target="mainFrame"><i class="icon-chevron-right"></i> 腾付通</a></li>
+                    <li class=""><a href="/app/version" target="mainFrame"><i class="icon-chevron-right"></i> App版本管理</a></li>
+                    <li class=""><a href="/channelpay/" target="mainFrame"><i class="icon-chevron-right"></i> 支付通道管理</a></li>
+                    <li class=""><a href="/bankquota/" target="mainFrame"><i class="icon-chevron-right"></i> 通道支持银行卡</a></li>
+                    <li class=""><a href="/channelpay/PayTypeList" target="mainFrame"><i class="icon-chevron-right"></i> 支付类型管理</a></li>
+                    <li class=""><a href="/timedtask/" target="mainFrame"><i class="icon-chevron-right"></i> 定时任务</a></li>
+                    <li class=""><a href="/payrecord/RankingList" target="mainFrame"><i class="icon-chevron-right"></i> 刷卡排行</a></li>
+
+                </ul>
+            </div>
+            @*<div class="bs-docs-sidebar level1" style=" float:left" >
+                <ul class="nav nav-list bs-docs-sidenav ">
+                    <li class=""><a href="#overview"><i class="icon-chevron-right"></i> 主页</a></li>
+                    <li class=""><a href="#transitions"><i class="icon-chevron-right"></i> 系统配置</a></li>
+                    <li class=""><a href="#modals"><i class="icon-chevron-right"></i> 会员管理</a></li>
+                    <li class=""><a href="#dropdowns"><i class="icon-chevron-right"></i> 产品管理</a></li>
+                    <li class="active"><a href="#buttons"><i class="icon-chevron-right"></i> 统计管理</a></li>
+                </ul>
+            </div>*@
+            @*<div class="bs-docs-sidebar level2"  style="margin-left: 0px; display: none;float:left">
+                <ul class="nav nav-list bs-docs-sidenav ">
+                    <li class="active"><a href="#overview"><i class="icon-chevron-right"></i> 返回</a></li>
+                    <li class=""><a href="#transitions"><i class="icon-chevron-right"></i> 权限管理</a></li>
+                    <li class=""><a href="#modals"><i class="icon-chevron-right"></i> 角色管理</a></li>
+                    <li class=""><a href="#dropdowns"><i class="icon-chevron-right"></i> 用户管理</a></li>
+                </ul>
+            </div>*@
+            <div class="span10">
+                <iframe src="/Home/Main" name="mainFrame" frameborder="no" width="100%" height="900px;" border="0" marginwidth="0" marginheight="0" scrolling="yes" allowtransparency="yes">
+                </iframe>
+            </div>
+        </div>
+    </div>
+    <footer class="footer" style="position:fixed;bottom:0px;">
+        <div class="container">
+            <p>不停歇的脚步，<a  href="javascript:;">勇往直前</a></p>
+        </div>
+    </footer>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+
+        $('.level1 ul li').each(function (i) {
+            leftanimate($(this), i * 100);
+        })
+        //菜单点击
+        $(".level1 ul li").click(function () {
+            $('.level1 ul li').each(function (i) {
+                $(this).removeClass("active")
+            })
+            $(this).addClass("active");
+        })
+        //$(".level1").click(function () {
+        //    $(this).hide();
+        //    $('.level2').show().find("ul li").css("left","-215px");
+        //    $('.level2 ul li').each(function (i) {
+        //        leftanimate($(this), i * 100);
+        //    })
+        //})
+        ////菜单点击
+        //$(".level2").click(function () {
+        //    $(this).hide();
+        //    $('.level1').show().find("ul li").css("left", "-215px");
+        //    var list = $('.level1 ul li');
+        //    $(list).each(function (i) {
+        //        rightanimate($(this), i * 100);
+        //    })
+        //})
+    })
+    function leftanimate(obj, time)
+    {
+        setTimeout(function () {
+            obj.animate({ left: '0px' });
+        },time)
+    }
+    function rightanimate(obj, time) {
+        setTimeout(function () {
+            obj.animate({ left: '0px' });
+        }, time)
+    }
+</script>

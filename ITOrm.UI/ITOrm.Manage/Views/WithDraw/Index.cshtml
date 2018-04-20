@@ -1,0 +1,118 @@
+﻿@model ResultModel
+@{
+    ViewBag.Title = "结算列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">结算列表</li>
+</ul>
+
+<div class="bs-docs-example">
+
+</div>
+
+<table class="table table-hover table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>用户ID</th>
+            <th>结算金额</th>
+            <th>实际到帐</th>
+            <th>状态</th>
+            <th>发起时间</th>
+            <th>处理时间</th>
+            <th>收款ID</th>
+            <th>收款人</th>
+            <th>收款卡号</th>
+            <th>手续费</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.list)
+        {
+            <tr>
+                <td>@item["ID"].ToInt()</td>
+                <td>@item["UserId"].ToInt()</td>
+                <td>@item["Amount"]</td>
+                <td>@item["ActualAmount"]</td>
+                <td>@(((ITOrm.Payment.Yeepay.Enums.WithDrawState)item["State"].ToInt()).ToString())</td>
+                <td>@(item["CTime"].ToDateTime().ToString("yyyy-MM-dd HH:mm:ss"))</td>
+                <td>@(item["HandleTime"].ToDateTime().ToString("yyyy-MM-dd HH:mm:ss"))</td>
+                <td>@(item["PayId"].ToInt())</td>
+
+                <td>@item["Receiver"]</td>
+                <td>
+                    @item["ReceiverBankCardNo"]
+                </td>
+                <td>
+                    @item["Fee"]+@item["BasicFee"]+@item["ExTargetFee"]
+                </td>
+                <td>
+                    @*<a href="/users/FeeSetApi?UserId=@item["UserId"]">设置费率</a>
+                    |
+                    <a href="/users/AuditMerchant?UserId=@item["UserId"]">审核通过</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Pager("pageIndex", 10, Model.totalCount)
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">您确定要删除这条信息吗？</h3>
+    </div>
+    <div class="modal-body" style=" max-height:300px;">
+        @*<table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@@mdo</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@@fat</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>
+
+                            ddddddd
+                        </td>
+                    </tr>
+                </tbody>
+            </table>*@
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</button>
+        <button class="btn ">取消</button>
+    </div>
+</div>

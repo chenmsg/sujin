@@ -1,0 +1,32 @@
+﻿    ITOrm.Core.PetaPoco.Database db = new ITOrm.Core.PetaPoco.Database();
+    db.BeginTransaction();
+    try
+    {
+        WorkLog log = new WorkLog();
+        log.ID = 62;
+        log.BigContent = "BigContent2";
+        log.Title = "Title2";
+        log.UserID = 1;
+        log.CreateTime = DateTime.Now;
+
+        WorkLog log1 = new WorkLog();
+        log1.BigContent = "BigContent";
+        log1.Title = "Title";
+        log1.UserID = 1;
+        log1.CreateTime = DateTime.Now;
+        long num1 = (long)db.Insert(log1);
+        //long num = (long)db.Insert(log);
+        if (num1 > 0 && db.Update(log) > 0)
+        {
+           db.CompleteTransaction();//完成
+        }
+        else
+        {
+           db.OnEndTransaction();//回滚
+        }
+    }
+    catch(Exception e)
+    {
+        db.OnEndTransaction();//回滚
+        @("异常:"+e.Message)
+    }

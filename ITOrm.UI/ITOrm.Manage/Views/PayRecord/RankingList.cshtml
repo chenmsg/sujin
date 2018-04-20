@@ -1,0 +1,77 @@
+﻿@model List<dynamic>
+@{
+    ViewBag.Title = "收款列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+        .form-group {
+            float:left;
+            margin-right:8px;
+        }
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">刷卡排行</li>
+</ul>
+
+<div class="bs-docs-example">
+    <form>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">前几名</label>
+            <input type="text" style="width:150px" value="@TQuery.GetString("Top")" class="form-control" name="Top" placeholder="前几名">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">支付时间</label>
+            <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("StartTime")" onfocus="WdatePicker({ readOnly: true})" name="StartTime" placeholder="开始检索时间">
+            <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("EndTime")" onfocus="WdatePicker({ readOnly: true})" name="EndTime" placeholder="结束检索时间">
+        </div>
+        <div class="form-group ">
+            <label for="exampleInputEmail1">搜索</label>
+            <button class="btn btn-default" type="submit">提交</button>
+
+        </div>
+        <div style="clear:both;"></div>
+    </form>
+</div>
+
+<table class="table table-hover table-bordered table-striped" style="width:400px;">
+    <thead>
+        <tr>
+         
+            <th>用户ID</th>
+            <th>姓名</th>
+            <th>累计交易金额</th>
+       
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Count > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.UserId
+                    </td>
+                    <td>
+                        @item.RealName
+                    </td>
+                    <td>
+                        @item.Amount
+                    </td>
+                </tr>
+            }
+        }
+        
+    </tbody>
+</table>
+
+

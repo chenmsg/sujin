@@ -1,0 +1,61 @@
+﻿@model  respMasgetModel<respTreatyQueryModel>
+@{
+    ViewBag.Title = "子商户信息查询接口";
+}
+
+<form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">卡号</label>
+        <input type="text" class="form-control" name="BankCard" value="@TQuery.GetString("BankCard")" placeholder="卡号">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">用户类型</label>
+        @{
+            List<SelectListItem> list = new List<SelectListItem>();
+            list.Add(new SelectListItem() { Value = "1", Text = "积分通道" });
+            list.Add(new SelectListItem() { Value = "2", Text = "无积分通道" });
+        }
+        @Html.MyDrop(list, "", "", TQuery.GetSafeString("ChannelType"), new { @name = "ChannelType", @class = "form-control" })
+
+    </div>
+    <button type="submit" class="btn btn-default">提交</button>
+</form>
+<div class="alert alert-block alert-info fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">查询消息:</h4>
+    <p>@(Model.message)</p>
+
+</div>
+
+
+@if (Model.backState == 0)
+{
+    <div class="alert alert-block alert-info fade in">
+        <button data-dismiss="alert" class="close" type="button">×</button>
+        <h4 class="alert-heading">查询信息：</h4>
+        <p>协议编号:@(Model.data.treatycode)</p>
+        <p>账户名:@(Model.data.accountname)</p>
+        <p>账户类型:@(Model.data.accounttype)</p>
+
+        <p>卡号:@(Model.data.bankaccount)</p>
+        <p>银行卡类型:@(Model.data.bankcardtype)</p>
+        <p>证件类型:@(Model.data.certificatetype)</p>
+        <p>证件号:@(Model.data.certificateno)</p>
+        <p>手机号:@(Model.data.mobilephone)</p>
+        <p>协议生效日期:@(Model.data.startdate)</p>
+        <p>协议生效日期:@(Model.data.enddate)</p>
+        <p>银行编码:@(Model.data.hbankcode)</p>
+        <p>银行名称:@(Model.data.hbankname)</p>
+        <p>开户行联行号:@(Model.data.bankcode)</p>
+        <p>开户行名称:@(Model.data.bank)</p>
+    </div>
+}
+
+
+
+<div class="alert alert-block alert-error fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">返回报文</h4>
+    <p>@(JsonConvert.SerializeObject(Model))</p>
+
+</div>

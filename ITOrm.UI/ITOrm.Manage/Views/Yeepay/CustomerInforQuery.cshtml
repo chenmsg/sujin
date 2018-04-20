@@ -1,0 +1,56 @@
+﻿@model  ITOrm.Payment.Yeepay.respCustomerInforQueryModel
+@{
+    ViewBag.Title = "子商户信息查询接口";
+}
+
+<form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">用户ID</label>
+        <input type="text" class="form-control" name="UserId" value="@TQuery.GetSafeString("UserId")" placeholder="用户ID">
+    </div>
+    <div class="form-group">
+        <label for="exampleInputEmail1">手机号</label>
+        <input type="text" class="form-control" name="Mobile" value="@TQuery.GetSafeString("Mobile")" placeholder="用户手机号">
+    </div>
+    <button type="submit" class="btn btn-default">提交</button>
+</form>
+<div class="alert alert-block alert-info fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">查询消息:</h4>
+    <p>@(Model.message)</p>
+
+</div>
+
+
+    @if (Model.backState == 0)
+    {
+        foreach (var item in Model.retList)
+        {
+
+            <div class="alert alert-block alert-info fade in">
+                <button data-dismiss="alert" class="close" type="button">×</button>
+                <h4 class="alert-heading">查询信息：</h4>
+                <p>审核状态:@(((ITOrm.Payment.Yeepay. Enums.AuditStatus)item.auditStatus.ToInt()).ToString())</p>
+                <p>审核原因:@(item.auditMessage)</p>
+                <p>银行卡号:@(item.bankAccountNumber)</p>
+                <p>开户行:@(item.bankName)</p>
+                <p>注册时间:@(item.createTime)</p>
+                <p>身份证号:@(item.idCard)</p>
+                <p>商户编号:@(item.ledgeCustomerNumber)</p>
+                <p>签约名:@(item.signName)</p>
+                <p>应收认证费:@(item.certFee)</p>
+                <p>未收认证费:@(item.noPaidCertFee)</p>
+                <p>银行卡审核状态:@(item.bankCardUpdateStatus)</p>
+                <p>银行卡审核原因:@(item.bankCardUpdateReason)</p>
+            </div>
+        }
+    }
+    
+
+
+<div class="alert alert-block alert-error fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">返回报文</h4>
+    <p>@(JsonConvert.SerializeObject(Model))</p>
+
+</div>

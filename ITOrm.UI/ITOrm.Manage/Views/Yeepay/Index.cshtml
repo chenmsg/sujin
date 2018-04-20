@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+<style type="text/css">
+    .content {
+        height: 900px;
+    }
+
+    div {
+        margin-left: 30px;
+    }
+</style>
+<script type="text/javascript" src="http://static.anxin.com/js/jquery-1.7.1.js"></script>
+<script type="text/javascript">
+
+        $(function () {
+            $(".nav-tabs li").click(function () {
+                var link = $(this).find("a").attr("data-link");
+                $("#myFrame").attr("src", "/yeepay/" + link );
+                //var index = $(".nav-tabs li").index($(this));
+                $(".nav-tabs li").removeClass("active");
+                $(this).addClass("active");
+                //$(".content").hide();
+                //$(".content").eq(index).show();
+
+            })
+        })
+</script>
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">易宝查询</li>
+</ul>
+<form id="form1"  style="width:100%;margin:auto;">
+
+    <div>
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="active"><a href="javascript:;" data-link="QueryFeeSetApi">子商户费率查询</a></li>
+            <li role="presentation"><a href="javascript:;" data-link="CustomerInforQuery">子商户信息查询</a></li>
+            <li role="presentation"><a href="javascript:;" data-link="CustomerBalanceQuery">可用余额查询</a></li>
+            <li role="presentation"><a href="javascript:;" data-link="TradeReviceQuery">交易记录查询</a></li>
+            <li role="presentation"><a href="javascript:;" data-link="TransferQuery">结算记录查询</a></li>
+            <li role="presentation"><a href="javascript:;" data-link="LendTargetFeeQuery">结算手续费查询</a></li>
+            <li role="presentation"><a href="javascript:;" data-link="QueryRJTBalance">垫资额度查询</a></li>
+            
+        </ul>
+    </div>
+
+    <div class="content" style="display:block;">
+        <iframe id="myFrame" marginheight="0" marginwidth="0" scrolling="auto" src="/yeepay/QueryFeeSetApi" frameborder="0" height="100%" width="100%"></iframe>
+    </div>
+</form>

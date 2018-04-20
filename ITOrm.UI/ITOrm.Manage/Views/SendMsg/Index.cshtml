@@ -1,0 +1,133 @@
+﻿@model ResultModel
+@{
+    ViewBag.Title = "短信管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+        .form-group {
+            float:left;
+            margin-right:8px;
+        }
+
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">短信管理</li>
+</ul>
+
+<div class="bs-docs-example">
+    <form >
+        <div class="form-group">
+            <label for="exampleInputEmail1">按用户</label>
+
+            @{
+            List<SelectListItem> listType = new List<SelectListItem>();
+            listType.Add(new SelectListItem() { Value="0",Text="ID"});
+            listType.Add(new SelectListItem() { Value = "1", Text = "手机号" });
+            listType.Add(new SelectListItem() { Value = "2", Text = "姓名" });
+            listType.Add(new SelectListItem() { Value = "3", Text = "身份证" });
+            }
+            @Html.MyDrop(listType, "请选择", "-1", TQuery.GetString("Type"), new { @name = "Type", @style="width:80px"})
+            <input type="text" style="width:150px" value="@TQuery.GetString("KeyValue")" class="form-control" name="KeyValue" placeholder="按类型搜索">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">业务名称</label>
+            @{
+                string TypeId = TQuery.GetString("TypeId");
+                var listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(Logic.EnumSendMsg));
+
+            }
+            @Html.MyDrop(listTypeId, "全部", "0", TypeId, new { @name = "TypeId", @id = "TypeId", @style = "width:120px" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">发送时间</label>
+            <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("StartTime")" onfocus="WdatePicker({ readOnly: true})" name="StartTime" placeholder="开始检索时间">
+            <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("EndTime")" onfocus="WdatePicker({ readOnly: true})" name="EndTime" placeholder="结束检索时间">
+        </div>
+        <div class="form-group ">
+            <label for="exampleInputEmail1">搜索</label>
+            <button class="btn btn-default" type="submit">提交</button>
+
+        </div>
+        <div style="clear:both;"></div>
+    </form>
+</div>
+
+<table class="table table-hover table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <td>姓名</td>
+            <th>业务名称</th>
+            <th>手机号码</th>
+            <th>发送内容</th>
+            <th>发送时间</th>
+            <th>接口</th>
+            <th>来源</th>
+            <th>状态</th>
+            <th>IP</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (var item in Model.list)
+        {
+            <tr>
+                <td>@item["ID"].ToInt()</td>
+                <td>
+                @if (item["UserId"].ToInt() > 0)
+                {
+                    @Html.MyTips(item["RealName"].ToString(), "UserId", item["UserId"].ToString())
+                }
+                else
+                {
+                    @item["RealName"]
+                }
+                </td>
+                <td>
+                    @(((Logic.EnumSendMsg)item["TypeId"].ToInt()).ToString())
+                </td>
+                <td>@(item["Mobile"])</td>
+                <td>
+                    @(item["Context"])
+                </td>
+                <td>@(item["CTime"])</td>
+                <td>@(item["Service"])</td>
+                <td>@(((Logic.Platform)item["Platform"].ToInt()).ToString())</td>
+                <td>
+                    @if (item["State"].ToInt() == 2)
+                    {
+                        @Html.MySpan("成功", "green");
+                    }
+                    else if (item["State"].ToInt() == 1)
+                    {
+                        @Html.MySpan("失败", "red");
+                    }
+                    else
+                    {
+                        @("发送中")
+                    }
+                </td>
+
+                <td>@(item["IP"])</td>
+                <td>
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Pager("pageIndex", 10, Model.totalCount)
+
+
+
+
+

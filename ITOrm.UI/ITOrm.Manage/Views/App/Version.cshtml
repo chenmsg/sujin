@@ -1,0 +1,103 @@
+﻿@model ResultModel<KeyValue>
+@{
+    ViewBag.Title = "App版本管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">App版本管理</li>
+</ul>
+
+<div class="bs-docs-example" style="text-align:right;">
+    <a class="btn btn-default" href="/app/edit" style="" role="button">新增</a>
+</div>
+
+<table class="table table-hover table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>平台</th>
+            <th>版本号</th>
+            <th>上线时间</th>
+            <th>更新内容</th>
+            <th>下载链接</th>
+            <th>是否强制升级</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.list)
+        {
+            JObject data = JObject.Parse(item.Value);
+            <tr>
+                <td>@item.ID</td>
+                <td>@(((Logic.Platform)item.KeyId).ToString())</td>
+                <td>@data["version"]</td>
+                <td>@item.CTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>@data["update"].ToString()</td>
+                <td>@data["download"].ToString()</td>
+                <td>@(data["isupgrade"].ToInt()==0?"不强制":"强制")</td>
+                <td><a href="/app/edit/@item.ID"> 编辑</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+@Html.Pager("pageIndex", 10, Model.totalCount)
+
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">您确定要删除这条信息吗？</h3>
+    </div>
+    <div class="modal-body" style=" max-height:300px;">
+        @*<table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@@mdo</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@@fat</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Larry</td>
+                        <td>the Bird</td>
+                        <td>
+
+                            ddddddd
+                        </td>
+                    </tr>
+                </tbody>
+            </table>*@
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</button>
+        <button class="btn ">取消</button>
+    </div>
+</div>

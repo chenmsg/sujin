@@ -1,0 +1,43 @@
+﻿@model  ITOrm.Payment.Teng.respPayDebitQueryModel
+@{
+    ViewBag.Title = "支付结果查询";
+}
+
+<form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">订单ID</label>
+        <input type="text" class="form-control" name="OrderId" value="@TQuery.GetSafeString("OrderId")" placeholder="订单ID">
+    </div>
+    <button type="submit" class="btn btn-default">提交</button>
+</form>
+<div class="alert alert-block alert-info fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">查询消息:</h4>
+    <p>@(Model.respMsg)</p>
+
+</div>
+
+
+    @if (Model.backState == 0)
+    {
+       
+
+            <div class="alert alert-block alert-info fade in">
+                <button data-dismiss="alert" class="close" type="button">×</button>
+                <h4 class="alert-heading">查询信息：</h4>
+                <p>商户订单号 :@(Model.orderId)</p>
+                <p>代付状态:@(Model.status) (0支付申请成功， 1支付受理成功， 2 支付失败，  3支付成功)</p>
+                <p>应答码 :@(Model.respCode )</p>
+                <p>应答信息   :@(Model.respMsg  )</p>
+            </div>
+
+    }
+    
+
+
+<div class="alert alert-block alert-error fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">返回报文</h4>
+    <p>@(JsonConvert.SerializeObject(Model))</p>
+
+</div>
