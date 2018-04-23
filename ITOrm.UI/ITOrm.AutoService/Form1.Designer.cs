@@ -60,6 +60,11 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
+            this.tbxAccountQueueFail = new System.Windows.Forms.TextBox();
+            this.tbxAccountQueueSuccess = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label3
@@ -353,11 +358,61 @@
             this.label15.TabIndex = 34;
             this.label15.Text = "定时任务：";
             // 
+            // tbxAccountQueueFail
+            // 
+            this.tbxAccountQueueFail.Location = new System.Drawing.Point(342, 219);
+            this.tbxAccountQueueFail.Name = "tbxAccountQueueFail";
+            this.tbxAccountQueueFail.ReadOnly = true;
+            this.tbxAccountQueueFail.Size = new System.Drawing.Size(50, 21);
+            this.tbxAccountQueueFail.TabIndex = 43;
+            this.tbxAccountQueueFail.Text = "0";
+            // 
+            // tbxAccountQueueSuccess
+            // 
+            this.tbxAccountQueueSuccess.Location = new System.Drawing.Point(198, 219);
+            this.tbxAccountQueueSuccess.Name = "tbxAccountQueueSuccess";
+            this.tbxAccountQueueSuccess.ReadOnly = true;
+            this.tbxAccountQueueSuccess.Size = new System.Drawing.Size(50, 21);
+            this.tbxAccountQueueSuccess.TabIndex = 42;
+            this.tbxAccountQueueSuccess.Text = "0";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(295, 222);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(41, 12);
+            this.label16.TabIndex = 41;
+            this.label16.Text = "失败：";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(151, 222);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(41, 12);
+            this.label17.TabIndex = 40;
+            this.label17.Text = "成功：";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(64, 222);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(65, 12);
+            this.label18.TabIndex = 39;
+            this.label18.Text = "资金队列：";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(491, 412);
+            this.ClientSize = new System.Drawing.Size(491, 418);
+            this.Controls.Add(this.tbxAccountQueueFail);
+            this.Controls.Add(this.tbxAccountQueueSuccess);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label18);
             this.Controls.Add(this.tbxTimedTaskFail);
             this.Controls.Add(this.tbxTimedTaskSuccess);
             this.Controls.Add(this.label13);
@@ -432,6 +487,11 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox tbxAccountQueueFail;
+        private System.Windows.Forms.TextBox tbxAccountQueueSuccess;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
     }
 }
 

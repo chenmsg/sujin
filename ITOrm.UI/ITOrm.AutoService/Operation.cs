@@ -62,6 +62,10 @@ namespace ITOrm.AutoService
         private TextBox _tbxTimedTaskSuccess;
         private TextBox _tbxTimedTaskFail;
 
+        //资金队列
+        private TextBox _tbxAccountQueueSuccess;
+        private TextBox _tbxAccountQueueFail;
+
         //开始时间
         TextBox _StartTime;
 
@@ -95,6 +99,10 @@ namespace ITOrm.AutoService
             , TextBox tbxTimedTaskSuccess
             , TextBox tbxTimedTaskFail
 
+            //资金队列
+            , TextBox tbxAccountQueueSuccess
+            , TextBox tbxAccountQueueFail
+
             //开始时间
             , TextBox StartTime
             )
@@ -119,6 +127,10 @@ namespace ITOrm.AutoService
             //定时任务
             _tbxTimedTaskSuccess = tbxTimedTaskSuccess;
             _tbxTimedTaskFail = tbxTimedTaskFail;
+
+            //资金队列
+            _tbxAccountQueueSuccess = tbxAccountQueueSuccess;
+            _tbxAccountQueueFail = tbxAccountQueueFail;
 
             //开始时间
             _StartTime = StartTime;
@@ -170,6 +182,9 @@ namespace ITOrm.AutoService
                     WithDrawApiHandle();
                     //定时任务
                     TimedTaskHandle();
+                    //资金队列
+                    AccountQueueHandle();
+
                     Thread.Sleep(1000);
                     if (runState == RunNing.暂停等待中)
                     {
@@ -236,11 +251,13 @@ namespace ITOrm.AutoService
         public static PayRecordBLL payRecordDao = new PayRecordBLL();
         public static TimedTaskBLL timedTaskDao = new TimedTaskBLL();
         public static KeyValueBLL keyValueDao = new KeyValueBLL();
+        public static AccountQueueBLL accountQueueDao = new AccountQueueBLL();
         private List<UserImage> listUserImage = null;
         private List<YeepayUser> listAudit = null;
         private List<YeepayUser> listSetFee = null;
         private List<PayRecord> listPayRecord = null;
         private List<TimedTask> listTimedTask = null;
+        private List<AccountQueue> listAccountQueue = null;
 
 
         #region 处理图片
@@ -504,5 +521,47 @@ namespace ITOrm.AutoService
             return flag;
         }
         #endregion
+
+        #region 资金队列
+        private bool AccountQueueHandle()
+        {
+            bool flag = false;
+            if (listAccountQueue != null && listAccountQueue.Count > 0)
+            {
+                while (listAccountQueue.Count > 0)
+                {
+                    var item = listAccountQueue[0];
+                    //处理逻辑
+                   var result= accountQueueDao.AccountQueueHandle(item.ID);
+                    Logs.WriteLog($"处理数据：{JsonConvert.SerializeObject(result)}", "d:\\Log\\自动处理", "资金队列");
+                    if (result.backState==0)
+                    {
+                        int num = Convert.ToInt32(_tbxAccountQueueSuccess.Text);
+                        num++;
+                        _tbxAccountQueueSuccess.Text = num.ToString();
+                    }
+                    else
+                    {
+                        int num = Convert.ToInt32(_tbxAccountQueueFail.Text);
+                        num++;
+                        _tbxAccountQueueFail.Text = num.ToString();
+                    }
+                    listAccountQueue.Remove(item);
+                    Thread.Sleep(ConfigInfo.theadTime);
+                }
+            }
+            else
+            {
+                listAccountQueue = accountQueueDao.GetQuery(10, " State=0  ", null, "order by id asc");
+                if (listAccountQueue != null && listAccountQueue.Count > 0)
+                {
+                    return AccountQueueHandle();
+                }
+            }
+            return flag;
+        }
+        #endregion
+
+
     }
 }

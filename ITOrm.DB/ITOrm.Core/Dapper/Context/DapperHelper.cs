@@ -35,6 +35,9 @@ namespace ITOrm.Core.Dapper.Context
             }
             return new List<T>();
         }
+
+
+
         /// <summary>
         /// 执行返回第一行第一列值
         /// </summary>

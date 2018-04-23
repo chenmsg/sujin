@@ -518,6 +518,13 @@ namespace ITOrm.Api.Controllers
                 data["BankName"] = ubk.BankName;
                 data["BankCode"] = ubk.BankCode;
             }
+
+            data["BaseUserName"] = "--";
+            if (user.BaseUserId > 0)
+            {
+                var baseUser = userDao.Single(user.BaseUserId);
+                data["BaseUserName"] = baseUser.RealName;
+            }
             return ApiReturnStr.getApiData(data);
         }
         #endregion

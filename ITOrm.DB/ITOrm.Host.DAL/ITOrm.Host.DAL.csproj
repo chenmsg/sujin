@@ -85,6 +85,9 @@
     <Compile Include="SendMsgDAL.cs">
       <DependentUpon>Host.tt</DependentUpon>
     </Compile>
+    <Compile Include="ShareProfitDAL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
     <Compile Include="TimedTaskDAL.cs">
       <DependentUpon>Host.tt</DependentUpon>
     </Compile>

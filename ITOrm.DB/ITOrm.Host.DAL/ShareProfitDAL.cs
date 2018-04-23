@@ -16,26 +16,26 @@ namespace ITOrm.Host.DAL
     /// <summary>
     /// 备注接口
     /// </summary>
-    public interface IChannelDAL
+    public interface IShareProfitDAL
     {
 		#region ==========增删改数据
         /// <summary>
         /// 插入数据
         /// </summary>
         /// <returns>返回,成功:true,失败:false</returns>
-        int Insert(Channel entity);
+        int Insert(ShareProfit entity);
 
         /// <summary>
         /// Update的对象，必须通过Single()获取重置属性后操作！传入实体修改，根据传入的实体主健修改，如果是new出来的实体，则要把Single()的对象赋给他才可更新
         /// </summary>
         /// <returns>返回,成功:true,失败:false</returns>
-        bool Update(Channel entity);
+        bool Update(ShareProfit entity);
 
         /// <summary>
         /// Delete，根据实体对象删除
         /// </summary>
         /// <returns>返回,成功:true,失败:false</returns>
-        bool Delete(Channel entity);
+        bool Delete(ShareProfit entity);
 
         /// <summary>
         /// 根据主键ID删除数据
@@ -53,16 +53,16 @@ namespace ITOrm.Host.DAL
         /// 根据主键ID取得单一实体,如果没有找到则返回null
         /// </summary>
         /// <param name="id">实体的主键ID</param>
-        /// <returns>Channel实体对象</returns>
-        Channel Single(int id);
+        /// <returns>ShareProfit实体对象</returns>
+        ShareProfit Single(int id);
 
         /// <summary>
         /// 根据where条件取得单一实体,如果没有找到则返回null
         /// </summary>
         /// <param name="where">where语句</param>
         /// <param name="param">参数化对象</param>
-        /// <returns>Channel实体对象</returns>
-        Channel Single(string where, object param = null);
+        /// <returns>ShareProfit实体对象</returns>
+        ShareProfit Single(string where, object param = null);
 
         #endregion
 
@@ -75,7 +75,7 @@ namespace ITOrm.Host.DAL
         /// <param name="param">参数化对象</param>
         /// <param name="orderBy">排序语句[例子：order by id desc ]</param>
         /// <returns>List集合</returns>
-        List<Channel> GetQuery(string where, object param = null, string orderBy = null);
+        List<ShareProfit> GetQuery(string where, object param = null, string orderBy = null);
 
 
 
@@ -87,7 +87,7 @@ namespace ITOrm.Host.DAL
         /// <param name="param">参数化对象</param>
         /// <param name="orderBy">排序语句[例子：order by id desc ]</param>
         /// <returns>List集合</returns>
-        List<Channel> GetQuery(int top, string where, object param = null, string orderBy = null);
+        List<ShareProfit> GetQuery(int top, string where, object param = null, string orderBy = null);
 
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace ITOrm.Host.DAL
         /// <param name="param">条件语句参数化</param>
         /// <param name="orderBy">排序</param>
         /// <returns></returns>
-        List<Channel> GetPaged(int pageSize, int pageIndex, out int totalCount, string where, object param = null, string orderBy = null);
+        List<ShareProfit> GetPaged(int pageSize, int pageIndex, out int totalCount, string where, object param = null, string orderBy = null);
 
         
 
@@ -130,7 +130,7 @@ namespace ITOrm.Host.DAL
     /// <summary>
     /// 备注
     /// </summary>
-    public class ChannelDAL : BaseEntityAction<Channel>, IChannelDAL
+    public class ShareProfitDAL : BaseEntityAction<ShareProfit>, IShareProfitDAL
     {
 	    #region ==========增删改数据
 
@@ -138,13 +138,13 @@ namespace ITOrm.Host.DAL
         /// 插入数据
         /// </summary>
         /// <returns>返回,成功:true,失败:false</returns>
-        public new  int Insert(Channel entity)
+        public new  int Insert(ShareProfit entity)
         {
 			if (entity == null) throw new ArgumentNullException("obj");
             var Id = base.Insert(entity);
             if (Id > 0)
             {
-                Single(entity.CId);
+                Single(entity.ID);
                 return Id;
             }
             else
@@ -157,14 +157,14 @@ namespace ITOrm.Host.DAL
         /// Update的对象，必须通过Single()获取重置属性后操作！传入实体修改，根据传入的实体主健修改，如果是new出来的实体，则要把Single()的对象赋给他才可更新
         /// </summary>
         /// <returns>返回,成功:true,失败:false</returns>
-        public new bool Update(Channel entity)
+        public new bool Update(ShareProfit entity)
         {
 			if (entity == null) throw new ArgumentNullException("obj");
             var result = base.Update(entity);
             if (result)
             {
-                RemoveCache(entity.CId);
-				Single(entity.CId);
+                RemoveCache(entity.ID);
+				Single(entity.ID);
                 return result;
             }
             else
@@ -177,13 +177,13 @@ namespace ITOrm.Host.DAL
         /// Delete，根据实体对象删除
         /// </summary>
         /// <returns>返回,成功:true,失败:false</returns>
-        public new  bool Delete(Channel entity)
+        public new  bool Delete(ShareProfit entity)
         {
             if (entity == null) throw new ArgumentNullException("obj");
             var result = base.Delete(entity);
             if (result)
             {
-                RemoveCache(entity.CId);
+                RemoveCache(entity.ID);
                 return result;
             }
             else
@@ -200,7 +200,7 @@ namespace ITOrm.Host.DAL
         public bool Delete(int id)
         {
             if (id>0) throw new ArgumentNullException("obj");
-            var result = base.Delete(id, "CId");
+            var result = base.Delete(id, "ID");
             if (result)
             {
                 RemoveCache(id);
@@ -220,15 +220,15 @@ namespace ITOrm.Host.DAL
         /// 根据主键ID取得单一实体,如果没有找到则返回null
         /// </summary>
         /// <param name="id">实体的主键ID</param>
-        /// <returns>Channel实体对象</returns>
-        public Channel Single(int id)
+        /// <returns>ShareProfit实体对象</returns>
+        public ShareProfit Single(int id)
         {
 		
-            var key = EncodeKey("CId", id);
-            var result = Memcache.Get(key) as Channel;
+            var key = EncodeKey("ID", id);
+            var result = Memcache.Get(key) as ShareProfit;
             if (result == null)
             {
-                result = base.Single(id, "CId");
+                result = base.Single(id, "ID");
                 Memcache.Store(key, result, DurationCache);
             }
             return result;
@@ -241,11 +241,11 @@ namespace ITOrm.Host.DAL
         /// </summary>
         /// <param name="where">where语句</param>
         /// <param name="param">参数化对象</param>
-        /// <returns>Channel实体对象</returns>
-        public   Channel Single(string where, object param = null)
+        /// <returns>ShareProfit实体对象</returns>
+        public   ShareProfit Single(string where, object param = null)
         {
 			
-			var	result = base.Single(where, param,"CId");
+			var	result = base.Single(where, param,"ID");
             return Single(result);
 
 			        }
@@ -260,9 +260,9 @@ namespace ITOrm.Host.DAL
         /// <param name="param">参数化对象</param>
         /// <param name="orderBy">排序语句[例子：order by id desc ]</param>
         /// <returns>List集合</returns>
-        public List<Channel> GetQuery(string where, object param = null, string orderBy = null)
+        public List<ShareProfit> GetQuery(string where, object param = null, string orderBy = null)
         {
-			            var result = base.GetQuery(string.Format("SELECT CId FROM Channel WITH(NOLOCK) WHERE {0} {1}", where, orderBy), param);
+			            var result = base.GetQuery(string.Format("SELECT ID FROM ShareProfit WITH(NOLOCK) WHERE {0} {1}", where, orderBy), param);
             return MappingCacheEntity(result);
 			        }
 
@@ -275,9 +275,9 @@ namespace ITOrm.Host.DAL
         /// <param name="param">参数化对象</param>
         /// <param name="orderBy">排序语句[例子：order by id desc ]</param>
         /// <returns>List集合</returns>
-        public List<Channel> GetQuery(int top, string where, object param = null, string orderBy = null)
+        public List<ShareProfit> GetQuery(int top, string where, object param = null, string orderBy = null)
         {
-			            var result = base.GetQuery(string.Format("SELECT top {2} CId FROM Channel WITH(NOLOCK) WHERE {0} {1} ", where, orderBy, top), param);
+			            var result = base.GetQuery(string.Format("SELECT top {2} ID FROM ShareProfit WITH(NOLOCK) WHERE {0} {1} ", where, orderBy, top), param);
 			return MappingCacheEntity(result);
 			        }
 
@@ -290,7 +290,7 @@ namespace ITOrm.Host.DAL
         /// <returns></returns>
         public new int Count(string where, object param = null)
         {
-            return base.Count("SELECT COUNT(0) FROM Channel WITH(NOLOCK) WHERE " + where, param);
+            return base.Count("SELECT COUNT(0) FROM ShareProfit WITH(NOLOCK) WHERE " + where, param);
         }
 
 
@@ -320,24 +320,24 @@ namespace ITOrm.Host.DAL
         /// <param name="param">条件语句参数化</param>
         /// <param name="orderBy">排序</param>
         /// <returns></returns>
-        public List<Channel> GetPaged(int pageSize, int pageIndex, out int totalCount, string where, object param = null, string orderBy = null)
+        public List<ShareProfit> GetPaged(int pageSize, int pageIndex, out int totalCount, string where, object param = null, string orderBy = null)
         {
-            string orderByNow = " ORDER BY CId DESC ";
+            string orderByNow = " ORDER BY ID DESC ";
             if (!string.IsNullOrEmpty(orderBy))
             {
                 orderByNow = orderBy;
             }
             totalCount = 0;
             int topNum = pageSize * (pageIndex - 1) + 1;
-			string field="CId";
-            string sql = string.Format("SELECT {0} FROM Channel ", field);
+			string field="ID";
+            string sql = string.Format("SELECT {0} FROM ShareProfit ", field);
             if (topNum <= 1)
             {
-				sql = string.Format("SELECT {0} FROM (SELECT ROW_NUMBER() OVER({1}) as 'RowNumber', {0} from Channel WITH(NOLOCK) {3} ) as temp WHERE (RowNumber between 0 and {2} ) ", field, orderByNow, pageSize, (!string.IsNullOrEmpty(where) ? " WHERE " + where : ""));
+				sql = string.Format("SELECT {0} FROM (SELECT ROW_NUMBER() OVER({1}) as 'RowNumber', {0} from ShareProfit WITH(NOLOCK) {3} ) as temp WHERE (RowNumber between 0 and {2} ) ", field, orderByNow, pageSize, (!string.IsNullOrEmpty(where) ? " WHERE " + where : ""));
             }
             else
             {
-                sql = string.Format("SELECT {0} FROM (SELECT ROW_NUMBER() OVER({1}) as 'RowNumber', {0} from Channel WITH(NOLOCK) {4} ) as temp WHERE (RowNumber between {2} and {3} ) ", field, orderByNow, topNum, (topNum + pageSize-1), (!string.IsNullOrEmpty(where) ? " WHERE " + where : ""));
+                sql = string.Format("SELECT {0} FROM (SELECT ROW_NUMBER() OVER({1}) as 'RowNumber', {0} from ShareProfit WITH(NOLOCK) {4} ) as temp WHERE (RowNumber between {2} and {3} ) ", field, orderByNow, topNum, (topNum + pageSize-1), (!string.IsNullOrEmpty(where) ? " WHERE " + where : ""));
             }
             try
             {
@@ -372,7 +372,7 @@ namespace ITOrm.Host.DAL
         /// <returns></returns>
         private string EncodeKey(string paramName, object paramValue)
         {
-            return Memcache.EncodeKey("SujinDB", "Channel", paramName, paramValue);
+            return Memcache.EncodeKey("SujinDB", "ShareProfit", paramName, paramValue);
         }
 
 		/// <summary>
@@ -381,7 +381,7 @@ namespace ITOrm.Host.DAL
         /// <param name="Id"></param>
         public void RemoveCache(long Id)
         {
-            var key = EncodeKey("CId", Id);
+            var key = EncodeKey("ID", Id);
             Memcache.Remove(key);
         }
 
@@ -390,19 +390,19 @@ namespace ITOrm.Host.DAL
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>        
-        private List<Channel> MappingCacheEntity(List<int> result)
+        private List<ShareProfit> MappingCacheEntity(List<int> result)
         {
             //exists result is null(empty)
             if (result != null && result.Count > 0)
             {
                 String key = string.Empty;
-                Channel cache = null;
-                List<Channel> result_cache = new List<Channel>(result.Count);
+                ShareProfit cache = null;
+                List<ShareProfit> result_cache = new List<ShareProfit>(result.Count);
 
                 foreach (var item in result)
                 {
-                    key = EncodeKey("CId", item);
-                    cache = Memcache.Get(key) as Channel;
+                    key = EncodeKey("ID", item);
+                    cache = Memcache.Get(key) as ShareProfit;
                     if (cache == null)
                     {
                         cache = Single(item);

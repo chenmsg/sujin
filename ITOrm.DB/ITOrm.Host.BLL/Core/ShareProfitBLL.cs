@@ -18,16 +18,16 @@ namespace ITOrm.Host.BLL
     /// <summary>
     /// 备注
     /// </summary>
-    public partial  class KeyValueBLL
+    public partial  class ShareProfitBLL
     {
-		private readonly IKeyValueDAL dal = ContainerHelper.Get<IKeyValueDAL>();
+		private readonly IShareProfitDAL dal = ContainerHelper.Get<IShareProfitDAL>();
 	    #region ==========增删改数据
 
         /// <summary>
         /// 插入数据
         /// </summary>
         /// <returns>返回,成功:true,失败:false</returns>
-        public  int Insert(KeyValue entity)
+        public  int Insert(ShareProfit entity)
         {
 			return dal.Insert(entity);
         }
@@ -36,7 +36,7 @@ namespace ITOrm.Host.BLL
         /// Update的对象，必须通过Single()获取重置属性后操作！传入实体修改，根据传入的实体主健修改，如果是new出来的实体，则要把Single()的对象赋给他才可更新
         /// </summary>
         /// <returns>返回,成功:true,失败:false</returns>
-        public  bool Update(KeyValue entity)
+        public  bool Update(ShareProfit entity)
         {
 			return dal.Update(entity);
         }
@@ -45,7 +45,7 @@ namespace ITOrm.Host.BLL
         /// Delete，根据实体对象删除
         /// </summary>
         /// <returns>返回,成功:true,失败:false</returns>
-        public  bool Delete(KeyValue entity)
+        public  bool Delete(ShareProfit entity)
         {
             return dal.Update(entity);
         }
@@ -68,8 +68,8 @@ namespace ITOrm.Host.BLL
         /// 根据主键ID取得单一实体,如果没有找到则返回null
         /// </summary>
         /// <param name="id">实体的主键ID</param>
-        /// <returns>KeyValue实体对象</returns>
-        public KeyValue Single(int id)
+        /// <returns>ShareProfit实体对象</returns>
+        public ShareProfit Single(int id)
         {
 		return dal.Single(id);
 
@@ -81,8 +81,8 @@ namespace ITOrm.Host.BLL
         /// </summary>
         /// <param name="where">where语句</param>
         /// <param name="param">参数化对象</param>
-        /// <returns>KeyValue实体对象</returns>
-        public  KeyValue Single(string where, object param = null)
+        /// <returns>ShareProfit实体对象</returns>
+        public  ShareProfit Single(string where, object param = null)
         {
 			return dal.Single(where,param);
         }
@@ -97,7 +97,7 @@ namespace ITOrm.Host.BLL
         /// <param name="param">参数化对象</param>
         /// <param name="orderBy">排序语句[例子：order by id desc ]</param>
         /// <returns>List集合</returns>
-        public List<KeyValue> GetQuery(string where, object param = null, string orderBy = null)
+        public List<ShareProfit> GetQuery(string where, object param = null, string orderBy = null)
         {
 			return dal.GetQuery(where,param,orderBy);
         }
@@ -111,7 +111,7 @@ namespace ITOrm.Host.BLL
         /// <param name="param">参数化对象</param>
         /// <param name="orderBy">排序语句[例子：order by id desc ]</param>
         /// <returns>List集合</returns>
-        public List<KeyValue> GetQuery(int top, string where, object param = null, string orderBy = null)
+        public List<ShareProfit> GetQuery(int top, string where, object param = null, string orderBy = null)
         {
 			return dal.GetQuery(top,where,param,orderBy);
         }
@@ -155,7 +155,7 @@ namespace ITOrm.Host.BLL
         /// <param name="param">条件语句参数化</param>
         /// <param name="orderBy">排序</param>
         /// <returns></returns>
-        public List<KeyValue> GetPaged(int pageSize, int pageIndex, out int totalCount, string where, object param = null, string orderBy = null)
+        public List<ShareProfit> GetPaged(int pageSize, int pageIndex, out int totalCount, string where, object param = null, string orderBy = null)
         {
             return dal.GetPaged(pageSize,pageIndex,out totalCount,where,param,orderBy);
         }
