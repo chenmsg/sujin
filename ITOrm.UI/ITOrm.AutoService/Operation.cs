@@ -426,7 +426,11 @@ namespace ITOrm.AutoService
                     var item = listPayRecord[0];
                     //结算
                     var result = YeepayDepository.WithDrawApi(item.ID,(int)Logic.Platform.系统);
-                  
+                    if (result.backState != 0)//再次提交一次
+                    {
+                        Thread.Sleep(500);
+                        result = YeepayDepository.WithDrawApi(item.ID, (int)Logic.Platform.系统);
+                    }
                     Logs.WriteLog($"处理ID:{item.ID},UserId:{item.UserId},结果json:{JsonConvert.SerializeObject(result)}", "d:\\Log\\自动处理", string.Format("自动结算{0}", (result.backState == 0 ) ? "成功" : "失败"));
                     if (result.backState == 0 )
                     {

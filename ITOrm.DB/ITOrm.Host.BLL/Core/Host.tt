@@ -239,6 +239,7 @@ manager.Process(true);//执行编译
     {
         public static readonly string ConnectionString="Data Source=122.14.218.15,55531;Initial Catalog=SujinDB;User ID=sa;Password=sujin@ITORM.COM";
         public static readonly string DbDatabase="SujinDB";
+		public static readonly string IsCached="";
 		//逍遥法外  ,Modules,SystemIcon,view_Modules,
 		public static readonly string atlarge="";
     }

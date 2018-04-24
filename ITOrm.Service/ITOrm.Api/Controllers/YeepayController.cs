@@ -353,6 +353,7 @@ namespace ITOrm.Api.Controllers
             #region 参数验证
             if (UserId <= 0) return ApiReturnStr.getError(-100, "UserId参数错误");
             if (Amount < 500) return ApiReturnStr.getError(-100, "收款金额不能小于500元");
+            if (Amount > 20000) return ApiReturnStr.getError(-100, "收款金额不能超过20000元");
             var ubk = userBankCardDao.Single(BankID);
             if (ubk == null) return ApiReturnStr.getError(-100, "卡记录不存在");
 

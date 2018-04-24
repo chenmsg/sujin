@@ -272,7 +272,7 @@ namespace ITOrm.Host.DAL
         /// <returns><#=dbtable.EntityName#>实体对象</returns>
         public <#=dbtable.EntityName#> Single(int id)
         {
-		<#if(isTable){#>
+		<#if(isTable && !config.IsCached.Contains(","+dbtable.EntityName+",")){#>
 
             var key = EncodeKey("<#=primaryKey#>", id);
             var result = Memcache.Get(key) as <#=dbtable.TableName#>;
@@ -297,7 +297,7 @@ namespace ITOrm.Host.DAL
         /// <returns><#=dbtable.EntityName#>实体对象</returns>
         public <#=isTable ? "":"new"#>  <#=dbtable.EntityName#> Single(string where, object param = null)
         {
-			<#if(isTable){#>
+			<#if(isTable ){#>
 
 			var	result = base.Single(where, param,"<#=isTable?primaryKey:fristColumn#>");
             return Single(result);
@@ -321,7 +321,7 @@ namespace ITOrm.Host.DAL
         /// <returns>List集合</returns>
         public List<<#=dbtable.EntityName#>> GetQuery(string where, object param = null, string orderBy = null)
         {
-			<#if(isTable){#>
+			<#if(isTable ){#>
             var result = base.GetQuery(string.Format("SELECT <#=primaryKey#> FROM <#=dbtable.TableName#> WITH(NOLOCK) WHERE {0} {1}", where, orderBy), param);
             return MappingCacheEntity(result);
 			<#}else{#>
@@ -340,7 +340,7 @@ namespace ITOrm.Host.DAL
         /// <returns>List集合</returns>
         public List<<#=dbtable.EntityName#>> GetQuery(int top, string where, object param = null, string orderBy = null)
         {
-			<#if(isTable){#>
+			<#if(isTable ){#>
             var result = base.GetQuery(string.Format("SELECT top {2} <#=primaryKey#> FROM <#=dbtable.TableName#> WITH(NOLOCK) WHERE {0} {1} ", where, orderBy, top), param);
 			return MappingCacheEntity(result);
 			<#}else{#>
@@ -514,6 +514,8 @@ manager.Process(true);//执行编译
     {
         public static readonly string ConnectionString="Data Source=122.14.218.15,55531;Initial Catalog=SujinDB;User ID=sa;Password=sujin@ITORM.COM";
         public static readonly string DbDatabase="SujinDB";
+		//Single不参与缓存
+		public static readonly string IsCached=",Account,AccountQueue,AccountRecord,";
 		//逍遥法外  ,Modules,SystemIcon,view_Modules,
 		public static readonly string atlarge="";
     }
