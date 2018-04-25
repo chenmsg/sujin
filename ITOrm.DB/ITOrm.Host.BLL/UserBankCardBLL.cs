@@ -22,7 +22,7 @@ namespace ITOrm.Host.BLL
                 result.message = "卡记录对象为空";
                 return result;
             }
-            if (!(entity.BankCard.Length > 15 && entity.BankCard.Length < 21))
+            if (!(entity.BankCard.Length > 13 && entity.BankCard.Length < 21))
             {
                 result.backState = -100;
                 result.message = "银行卡号有误，请核对您的卡号信息";

@@ -32,25 +32,25 @@ namespace ITOrm.Payment.Const
         /// </summary>
         /// <param name="BankId"></param>
         /// <param name="PayType"></param>
-        public static ResultModelData<int> Optimal(int UserId,decimal Amount=0, string BankCard="",int PayType=0)
+        public static ResultModelData<int> Optimal(int UserId,decimal Amount=0, string BankCode = "",int PayType=0)
         {
 
 
             ResultModelData<int> result = new ResultModelData<int>();
-            var bin= ITOrm.Utility.Helper.BankCardBindHelper.BankBinto(BankCard);
-            if (bin == null || string.IsNullOrEmpty(bin.BankCode))
-            {
-                result.backState = -100;
-                result.message = "银行卡卡Bin识别失败";
-                return result;
-            }
+            //var bin= ITOrm.Utility.Helper.BankCardBindHelper.BankBinto(BankCard);
+            //if (bin == null || string.IsNullOrEmpty(bin.BankCode))
+            //{
+            //    result.backState = -100;
+            //    result.message = "银行卡卡Bin识别失败";
+            //    return result;
+            //}
             //获得通道支持的银行
             List<ViewBankQuota> listBankQuota = MemcachHelper.Get<List<ViewBankQuota>>(Constant.list_bank_quota_key , DateTime.Now.AddDays(7), () =>
             {
                 return viewBankQuotaDao.GetQuery(" state=0 ", null , " order by id asc ");
             });
             //筛选支持的BankCode的通道  并且 限额满足 并按限额排序
-            var listBank = listBankQuota.FindAll(m => m.BankCode == bin.BankCode && Amount <= m.SingleQuota).OrderByDescending(m=>m.SingleQuota).ToList();
+            var listBank = listBankQuota.FindAll(m => m.BankCode == BankCode && Amount <= m.SingleQuota).OrderByDescending(m=>m.SingleQuota).ToList();
 
 
             int TypeId = (int)Logic.KeyValueType.支付通道管理;
@@ -143,7 +143,7 @@ namespace ITOrm.Payment.Const
         {
             var model = userBankCardDao.Single(BankId);
 
-            return Optimal(model.UserId, Amount, model.BankCard, PayType);
+            return Optimal(model.UserId, Amount, model.BankCode, PayType);
         }
 
 
