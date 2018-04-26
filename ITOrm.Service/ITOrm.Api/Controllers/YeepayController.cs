@@ -144,7 +144,7 @@ namespace ITOrm.Api.Controllers
             if (IdCardBackPhoto == 0) return ApiReturnStr.getError(-100, "身份证背面照未上传");
             if (PersonPhoto == 0) PersonPhoto= IdCardPhoto;//取消手持三合一
 
-            var user = userDao.Single(" IdCard=@IdCard and RealName=@RealName and IsRealState=1", new { IdCard, RealName, });
+            var user = userDao.Single(" IdCard=@IdCard  and IsRealState=1", new { IdCard });
             if (user != null && user.UserId > 0)
             {
                 return ApiReturnStr.getError(-100, "该身份证号码已注册");
@@ -189,9 +189,9 @@ namespace ITOrm.Api.Controllers
             {
                 return ApiReturnStr.getError(-100, "用户ID不能为0");
             }
-            if (Amount < 100M)
+            if (Amount < 500M)
             {
-                return ApiReturnStr.getError(-100, "支付金额不能小于100");
+                return ApiReturnStr.getError(-100, "支付金额不能小于500");
             }
             ToolPay model = null;
             Users user = userDao.Single(UserId);
@@ -346,7 +346,7 @@ namespace ITOrm.Api.Controllers
         }
 
         //1.0.0
-        public string ReceiveApi2(int cid = 0, int UserId = 0, decimal Amount = 0m, int BankID =0,int PayType=0)
+        public string ReceiveApi2(int cid = 0, int UserId = 0, decimal Amount = 0m, int BankID = 0, int PayType = 0)
         {
             Logs.WriteLog($"ReceiveApi,cid:{cid},UserId:{UserId},Amount:{Amount},BankID:{BankID},PayType:{PayType}", "d:\\Log\\Yeepay", "ReceiveApi2");
             userEventDao.UserReceiveApi2(cid, UserId, Ip.GetClientIp(), 0, TQuery.GetString("version"), Amount, BankID, PayType);
@@ -371,15 +371,15 @@ namespace ITOrm.Api.Controllers
 
 
 
-            //int ChannelType = 0;
-            //data["ChannelType"] = 0;
-            //data["BankID"] = BankID;
-
+            
 
 
             int ChannelType = 0;
             //data["ChannelType"] = ChannelType;
             data["BankID"] = BankID;
+
+
+
 
 
             var option = SelectOptionChannel.Optimal(Amount, BankID, PayType);
@@ -390,6 +390,10 @@ namespace ITOrm.Api.Controllers
             }
             else
             {
+                if (option.Data == 2)
+                {
+                    return ApiReturnStr.getError(-100, "通道升级中，敬请期待");
+                }
                 return ApiReturnStr.getError(-100, option.message);
             }
             data["ChannelType"] = option.Data;
@@ -423,7 +427,7 @@ namespace ITOrm.Api.Controllers
                     break;
                 case Logic.ChannelType.荣邦科技积分:
                 case Logic.ChannelType.荣邦科技无积分:
-                    if (ct == Logic.ChannelType.荣邦科技无积分)
+                    if (ChannelType == 2)
                     {
                         return ApiReturnStr.getError(-100, "通道升级中，敬请期待");
                     }

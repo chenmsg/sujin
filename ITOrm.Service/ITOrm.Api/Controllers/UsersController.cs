@@ -193,7 +193,7 @@ namespace ITOrm.Api.Controllers
 
             if (!ITOrm.Utility.Cache.MemcachHelper.Exists(imgKey))
             {
-                return ApiReturnStr.getError(-100, "图形验证码过期");
+                return ApiReturnStr.getError(-101, "图形验证码过期");
             }
             string cacheImgCode = ITOrm.Utility.Cache.MemcachHelper.Get(imgKey).ToString();
 
@@ -436,6 +436,7 @@ namespace ITOrm.Api.Controllers
         /// <returns></returns>
         public string CheckDevice(int cid=0,int UserId=0,string guid="")
         {
+ 
             if (guid.Length != 36)
             {
                 return ApiReturnStr.getError(-100, "唯一标识错误");
@@ -791,7 +792,7 @@ namespace ITOrm.Api.Controllers
                     }
                     if (bankTreatyApplyDao.QueryTreatycodeIsOpen(BankID, ChannelType))
                     {
-                        return ApiReturnStr.getError(0, "此通道已开通快捷协议");
+                        return ApiReturnStr.getError(-100, "此通道已开通快捷协议");
                     }
                     //发送验证码
                     var resultTreatyApply = MasgetDepository.TreatyApply(BankID, cid, ct);
@@ -814,6 +815,7 @@ namespace ITOrm.Api.Controllers
         #region 确认开通快捷协议
         public string BankCardSubmitActivateCode(int cid = 0, int UserId = 0, int BankID = 0, int ChannelType = 0,string Code="")
         {
+
             var result= MasgetDepository.TreatyConfirm(BankID, Code,cid, (Logic.ChannelType)ChannelType);
             userEventDao.BankCardSubmitActivateCode(cid, UserId, Ip.GetClientIp(), result.backState==0?1:0, TQuery.GetString("version"), BankID, ChannelType, Code);
             return ApiReturnStr.getError(result.backState == 0 ? 0 : -100, result.message);

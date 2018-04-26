@@ -26,15 +26,24 @@ namespace ITOrm.Api.Controllers
             //通过cid查询APP版本升级信息
             var list = MemcachHelper.Get<List<KeyValue>>(Constant.list_keyvalue_key+TypeId, DateTime.Now.AddDays(7), () =>
             {
-                return keyValueDao.GetQuery(1, " state<>-1 and typeid=@TypeId and keyId=@cid", new { cid, TypeId }, "order by Sort desc,CTime desc");
+                return keyValueDao.GetQuery(10, " state<>-1 and typeid=@TypeId ", new { TypeId }, "order by Sort desc,CTime desc");
             });
+            list = list.FindAll(m=>m.KeyId==cid).OrderByDescending(m=>m.Sort).ThenByDescending(m=>m.CTime).ToList();
             JObject data = new JObject();
-            foreach (var item in list)
+            if (list != null&&list.Count>0)
             {
-                data = JObject.Parse(item.Value);
-                data["CTime"] = item.CTime;
-                data["Platform"] = item.KeyId;
-                data["PlatformTxt"] = ((Logic.Platform)item.KeyId).ToString();
+                foreach (var item in list)
+                {
+                    data = JObject.Parse(item.Value);
+                    data["CTime"] = item.CTime;
+                    data["Platform"] = item.KeyId;
+                    data["PlatformTxt"] = ((Logic.Platform)item.KeyId).ToString();
+                    break;
+                }
+            }
+            else
+            {
+                return ApiReturnStr.getError(0, "暂无新版本");
             }
             return ApiReturnStr.getApiData(data);
         }

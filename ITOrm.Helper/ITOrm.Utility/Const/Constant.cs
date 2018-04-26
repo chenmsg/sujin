@@ -159,7 +159,7 @@ namespace ITOrm.Utility.Const
         /// <summary>
         /// 登录Key  Guid
         /// </summary>
-        public static string login_key = Debug + "login-appkey-";
+        public static string login_key = Debug + "-login-appkey-";
         /// <summary>
         /// 当前API站点域名
         /// </summary>

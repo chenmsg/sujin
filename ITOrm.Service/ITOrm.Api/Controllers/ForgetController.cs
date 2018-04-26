@@ -74,7 +74,7 @@ namespace ITOrm.Api.Controllers
 
             if (!ITOrm.Utility.Cache.MemcachHelper.Exists(imgKey))
             {
-                return ApiReturnStr.getError(-100, "图形验证码过期");
+                return ApiReturnStr.getError(-101, "图形验证码过期");
             }
             string cacheImgCode = ITOrm.Utility.Cache.MemcachHelper.Get(imgKey).ToString();
 
@@ -108,7 +108,7 @@ namespace ITOrm.Api.Controllers
             model.Platform = cid;
             model.Service = "forget";
             model.RelationId = resultMsg.relationId;
-            model.State = resultMsg.backState ? 1 : -1;
+            model.State = resultMsg.backState ? 2 : 1;
             model.UTime = DateTime.Now;
             int result = sendMsgDao.Insert(model);
 

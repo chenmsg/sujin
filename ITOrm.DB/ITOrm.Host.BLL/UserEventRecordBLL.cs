@@ -20,10 +20,10 @@ namespace ITOrm.Host.BLL
         /// <param name="UserId"></param>
         /// <param name="State"></param>
         /// <returns></returns>
-        public bool UserLogin(int cid=0, string mobile="",string password="",string ip="",int UserId=0,int State=0, string version = "")
+        public bool UserLogin(int cid=0, string mobile="",string password="",string ip="",int UserId=0,int State=0, string version = "",string guid="")
         {
             var model = CreateObject(cid,"Users", "Login",ip,State,UserId);
-            model.Data = $"{{mobile:{mobile},password:{password},version:{version}}}";
+            model.Data = $"{{mobile:{mobile},password:{password},version:{version},guid:{guid}}}";
             int result= Insert(model);
             return result>0;
         }
