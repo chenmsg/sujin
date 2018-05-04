@@ -246,7 +246,7 @@ namespace ITOrm.Payment.Teng
                 flag = payCashierDao.Update(payCashier);
                 Logs.WriteLog($"更新收银台：UserId:{payCashier.UserId},Platform:{Platform},requestId:{requestId},PayCId:{payCashier.ID},flag:{flag}", TengLogDic, LogDic);
             }
-            else if (resp.respMsg == "超出交易时间段")
+            else if (resp.respCode == "YH99")
             {
                 int keyId = 10009;//腾付通通道记录ID
                 //关闭通道

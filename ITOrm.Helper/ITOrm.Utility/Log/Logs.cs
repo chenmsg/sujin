@@ -53,7 +53,7 @@ namespace ITOrm.Utility.Log
             }
             catch
             {
-                //
+                //throw e;
             }
             finally
             {

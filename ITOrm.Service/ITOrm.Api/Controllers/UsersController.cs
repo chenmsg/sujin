@@ -414,13 +414,13 @@ namespace ITOrm.Api.Controllers
                 data["UserId"] = model.UserId;
                 //记录登录状态
                 ITOrm.Utility.Cache.MemcachHelper.Set(Constant.login_key+model.UserId,guid,DateTime.Now.AddYears(1));
-                userEventDao.UserLogin(cid, mobile, password, Ip.GetClientIp(), model.UserId, 1, TQuery.GetString("version"));//登录成功的日志
+                userEventDao.UserLogin(cid, mobile, password, Ip.GetClientIp(), model.UserId, 1, TQuery.GetString("version"),guid);//登录成功的日志
                 return ApiReturnStr.getApiData(0, "登录成功", data);
             }
 
             if (model != null && model.UserId > 0)
             {
-                userEventDao.UserLogin(cid, mobile, password, Ip.GetClientIp(), model.UserId, 0,TQuery.GetString("version"));//登录失败的日志
+                userEventDao.UserLogin(cid, mobile, password, Ip.GetClientIp(), model.UserId, 0,TQuery.GetString("version"), guid);//登录失败的日志
                 return ApiReturnStr.getError(-100, "用户名或密码错误(登录失败)");
             }
             return ApiReturnStr.getError(-100, "用户名或密码错误");
@@ -462,7 +462,7 @@ namespace ITOrm.Api.Controllers
             }
             else
             {
-                return ApiReturnStr.getError(-100, "您在此设备上的登录信息已经过期，请重新登录。");
+                return ApiReturnStr.getError(0, "允许通行");
             }
         }
         #endregion
@@ -498,7 +498,7 @@ namespace ITOrm.Api.Controllers
             data["IdCard"] = Util.GetHiddenString(user.IdCard, 6, 4);
             data["VipType"] = user.VipType;
             data["VipTypeTxt"] = ((Logic.VipType)user.VipType).ToString();
-            data["AvatarImg"] = userImageDao.GetUrl(user.AvatarImg);
+            data["AvatarImg"] = ITOrm.Utility.Const.Constant.CurrentApiHost+ userImageDao.GetUrl(user.AvatarImg);
             Logic.VipType vip = (Logic.VipType)user.VipType;
             decimal[] r = Constant.GetRate(0, vip);
             decimal[] r2 = Constant.GetRate(1, vip);
@@ -594,7 +594,7 @@ namespace ITOrm.Api.Controllers
 
         public string GetBankList()
         {
-
+            //Logs.WriteLog($"1111", "d:\\Log\\", "GetBankList");
             List<Bank> listBank = MemcachHelper.Get<List<Bank>>(Constant.list_bank_key , DateTime.Now.AddHours(1), () =>
             {
                 return bankDao.GetQuery(" State<>-1 "); 

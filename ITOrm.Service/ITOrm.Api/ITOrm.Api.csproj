@@ -186,6 +186,7 @@
     <Content Include="Themes\img\SZPA.png" />
     <Content Include="Themes\img\BOSC.png" />
     <Content Include="Themes\img\PSBC.png" />
+    <Content Include="Themes\css\bootstrap2.css" />
     <Content Include="Themes\js\dialog.js" />
     <Content Include="Themes\js\jquery.js" />
     <Content Include="Themes\js\zepto.min.js" />
@@ -263,6 +264,7 @@
     <Content Include="Themes\dialog2-master\_config.json" />
     <Content Include="Views\Debug\Optimal.cshtml" />
     <Content Include="Views\Pay\TengCashier.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

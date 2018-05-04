@@ -53,6 +53,11 @@ namespace ITOrm.Api.Filters
             //{
             //    return;
             //}
+            //if (userName == "itormios")
+            //{
+            //    Logs.WriteLog($"action:{action}", "d:\\Log\\", "OnActionExecuting");
+            //}
+            
             string arrStr = System.Web.Configuration.WebConfigurationManager.AppSettings["AccessLogin"] != null ? System.Web.Configuration.WebConfigurationManager.AppSettings["AccessLogin"].ToString() : "";
             var arr = arrStr.Split(',');
             if (arr.Any(s => s.ToLower().Equals(action.ToLower())))

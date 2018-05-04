@@ -107,10 +107,7 @@ namespace ITOrm.Api.Controllers
         /// <returns></returns>
         public string Register(int cid = 0, int UserId = 0, string IdCard = "", string RealName = "", string BankName = "", string BankAccountNumber = "", string AreaCode = "", int BankCardPhoto = 0, int IdCardPhoto = 0, int IdCardBackPhoto = 0, int PersonPhoto = 0)
         {
-            //if (cid == 2)
-            //{
-            //    return ApiReturnStr.getError(0,"开户成功");
-            //}
+
             Logs.WriteLog($"Register,cid:{cid},UserId:{UserId},IdCard:{IdCard},RealName:{RealName},BankName:{BankName},BankAccountNumber:{BankAccountNumber},AreaCode:{AreaCode},BankCardPhoto:{BankCardPhoto},IdCardPhoto:{IdCardPhoto},IdCardBackPhoto:{IdCardBackPhoto},PersonPhoto:{PersonPhoto}", "d:\\Log\\Yeepay", "Register");
             #region 参数验证
             if (UserId <= 0)
@@ -121,7 +118,6 @@ namespace ITOrm.Api.Controllers
             {
                 return ApiReturnStr.getError(-100, "请输入真实的姓名！");
             }
-
             if (!TypeParse.IsIdentity(IdCard))
             {
                 return ApiReturnStr.getError(-100, "身份证号格式错误！");
@@ -147,7 +143,7 @@ namespace ITOrm.Api.Controllers
             var user = userDao.Single(" IdCard=@IdCard  and IsRealState=1", new { IdCard });
             if (user != null && user.UserId > 0)
             {
-                return ApiReturnStr.getError(-100, "该身份证号码已注册");
+                return ApiReturnStr.getError(-100, "该身份证号码已认证");
             }
 
             var model = userDao.Single(UserId);
@@ -348,12 +344,12 @@ namespace ITOrm.Api.Controllers
         //1.0.0
         public string ReceiveApi2(int cid = 0, int UserId = 0, decimal Amount = 0m, int BankID = 0, int PayType = 0)
         {
-            Logs.WriteLog($"ReceiveApi,cid:{cid},UserId:{UserId},Amount:{Amount},BankID:{BankID},PayType:{PayType}", "d:\\Log\\Yeepay", "ReceiveApi2");
+            Logs.WriteLog($"ReceiveApi233333,cid:{cid},UserId:{UserId},Amount:{Amount},BankID:{BankID},PayType:{PayType}", "d:\\Log\\Yeepay", "ReceiveApi2");
             userEventDao.UserReceiveApi2(cid, UserId, Ip.GetClientIp(), 0, TQuery.GetString("version"), Amount, BankID, PayType);
             #region 参数验证
             if (UserId <= 0) return ApiReturnStr.getError(-100, "UserId参数错误");
             if (Amount < 500) return ApiReturnStr.getError(-100, "收款金额不能小于500元");
-            if (Amount > 20000) return ApiReturnStr.getError(-100, "收款金额不能超过20000元");
+
             var ubk = userBankCardDao.Single(BankID);
             if (ubk == null) return ApiReturnStr.getError(-100, "卡记录不存在");
 
@@ -371,7 +367,7 @@ namespace ITOrm.Api.Controllers
 
 
 
-            
+
 
 
             int ChannelType = 0;
@@ -379,7 +375,9 @@ namespace ITOrm.Api.Controllers
             data["BankID"] = BankID;
 
 
-
+            //int ChannelType = 3;
+            //data["ChannelType"] = ChannelType;
+            //data["BankID"] = BankID;
 
 
             var option = SelectOptionChannel.Optimal(Amount, BankID, PayType);
@@ -397,6 +395,8 @@ namespace ITOrm.Api.Controllers
                 return ApiReturnStr.getError(-100, option.message);
             }
             data["ChannelType"] = option.Data;
+
+            if (Amount > 20000) return ApiReturnStr.getError(-100, "收款金额不能超过20000元");
 
             Logic.ChannelType ct = (Logic.ChannelType)ChannelType;
             switch (ct)

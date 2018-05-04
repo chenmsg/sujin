@@ -23,6 +23,7 @@ using ITOrm.Utility.Encryption;
 using ITOrm.Payment.Const;
 using ITOrm.Utility.Cache;
 using ITOrm.Host.Models;
+using ITOrm.Utility.Log;
 
 namespace ITOrm.Api.Controllers
 {
@@ -31,6 +32,7 @@ namespace ITOrm.Api.Controllers
         public static ITOrm.Host.BLL.PayRecordBLL payRecordDao = new Host.BLL.PayRecordBLL();
         public static UserBankCardBLL userBankCardDao = new UserBankCardBLL();
         public static KeyValueBLL keyValueDao = new KeyValueBLL();
+        public static UsersBLL usersDao = new UsersBLL();
         #region 有效
         public ActionResult tool()
         {
@@ -61,7 +63,7 @@ namespace ITOrm.Api.Controllers
         {
             JObject dic = new JObject();
             //Dictionary<string, object> dic = new Dictionary<string, object>();
-            dic.Add("Version", "1.0.0.0");
+            dic.Add("Version", "1.0.0.1");
             dic.Add("VersionDate", "2016-7-7");
             return ApiReturnStr.getApiData(dic);
         }
@@ -255,7 +257,7 @@ namespace ITOrm.Api.Controllers
 
         public string SubcompanyAdd()
         {
-            var result = MasgetDepository.SubcompanyAdd(100058, 1,Logic.ChannelType.荣邦科技积分);
+            var result = MasgetDepository.SubcompanyAdd(100058, 1, Logic.ChannelType.荣邦科技积分);
             return JsonConvert.SerializeObject(result);
         }
 
@@ -296,10 +298,10 @@ namespace ITOrm.Api.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
-        public string TreatyConfirm(int id=0,string code="")
+        public string TreatyConfirm(int id = 0, string code = "")
         {
             int ubkId = 100009;
-            var result= MasgetDepository.TreatyConfirm(id, code, 1, Logic.ChannelType.荣邦科技积分);
+            var result = MasgetDepository.TreatyConfirm(id, code, 1, Logic.ChannelType.荣邦科技积分);
             return JsonConvert.SerializeObject(result);
         }
 
@@ -309,7 +311,7 @@ namespace ITOrm.Api.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
-        public string PayConfirmpay(int payId=0, string code = "")
+        public string PayConfirmpay(int payId = 0, string code = "")
         {
 
             var result = MasgetDepository.PayConfirmpay(payId, code, 1, Logic.ChannelType.荣邦科技积分);
@@ -343,11 +345,11 @@ namespace ITOrm.Api.Controllers
         }
 
 
-      
+
 
         public string debitWithdraw()
         {
-            var result = ITOrm.Payment.Teng.TengDepository.DebitWithdraw(100001261,1);
+            var result = ITOrm.Payment.Teng.TengDepository.DebitWithdraw(100001261, 1);
             return JsonConvert.SerializeObject(result);
         }
 
@@ -366,7 +368,7 @@ namespace ITOrm.Api.Controllers
 
         public string CreatePayCashier()
         {
-            var result = ITOrm.Payment.Teng.TengDepository.CreatePayCashier(100058,1,100, 100016);
+            var result = ITOrm.Payment.Teng.TengDepository.CreatePayCashier(100058, 1, 100, 100016);
             return JsonConvert.SerializeObject(result);
         }
 
@@ -381,6 +383,20 @@ namespace ITOrm.Api.Controllers
             JObject value = new JObject();
             value["keyId"] = keyId;
             timedTaskDao.Init(Logic.TimedTaskType.通道开启, execTime, value.ToString());
+            return "";
+        }
+
+        public string aaadsfadsf()
+        {
+            var list = usersDao.GetQuery(" VipType=0 ");
+            if (list.Count > 0)
+            {
+                foreach (var item in list)
+                {
+                    var result1= YeepayDepository.FeeSetApi(item.UserId, 1, Payment.Yeepay.Enums.YeepayType.设置费率1, "0.0041");
+                   var result2 = MasgetDepository.SamenameUpdate(item.UserId, 1, Logic.ChannelType.荣邦科技积分, Logic.VipType.顶级用户);
+                }
+            }
             return "";
         }
     }
