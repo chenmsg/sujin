@@ -399,5 +399,10 @@ namespace ITOrm.Api.Controllers
             }
             return "";
         }
+
+        public string auuu()
+        {
+            return "2018-05-05";
+        }
     }
 }
