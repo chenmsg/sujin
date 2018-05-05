@@ -344,7 +344,7 @@ namespace ITOrm.Api.Controllers
         //1.0.0
         public string ReceiveApi2(int cid = 0, int UserId = 0, decimal Amount = 0m, int BankID = 0, int PayType = 0)
         {
-            Logs.WriteLog($"ReceiveApi233333,cid:{cid},UserId:{UserId},Amount:{Amount},BankID:{BankID},PayType:{PayType}", "d:\\Log\\Yeepay", "ReceiveApi2");
+            Logs.WriteLog($"ReceiveApi2,cid:{cid},UserId:{UserId},Amount:{Amount},BankID:{BankID},PayType:{PayType}", "d:\\Log\\Yeepay", "ReceiveApi2");
             userEventDao.UserReceiveApi2(cid, UserId, Ip.GetClientIp(), 0, TQuery.GetString("version"), Amount, BankID, PayType);
             #region 参数验证
             if (UserId <= 0) return ApiReturnStr.getError(-100, "UserId参数错误");
