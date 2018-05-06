@@ -265,6 +265,16 @@ namespace ITOrm.Payment.Teng
                 value["keyId"] = keyId;
                 timedTaskDao.Init(Logic.TimedTaskType.通道开启, execTime, value.ToString());
             }
+
+            if (resp.backState != 0)
+            {
+                //更新收款记录
+                flag = payRecordDao.UpdateState(payCashier.PayRecordId, -1, resp.respMsg);
+                //更新收银台
+                payCashier.State = -1;
+                payCashier.UTime = DateTime.Now;
+                flag = payCashierDao.Update(payCashier);
+            }
             return resp;
         }
         #endregion
