@@ -20,9 +20,12 @@ namespace ITOrm.Payment.Masget
 
         public static string MasgetDomain = ConfigHelper.GetAppSettings("MasgetDomain");
         public static string MasgetNoticeUrl = ConfigHelper.GetAppSettings("MasgetNoticeUrl");
-        public static string MasgetSecretKey= ConfigHelper.GetAppSettings("MasgetSecretKey");//积分密钥
-        public static string MasgetNoneSecretKey = ConfigHelper.GetAppSettings("MasgetNoneSecretKey");//无积分密钥
 
+
+        public static string[] MasgetSecretKey= new string[] { "cAWGMUKSGrUyYcNw", "e1m0vkM2bxljrULc", "" };//积分密钥
+        public static string[] MasgetSession = new string[] { "g39mmc9zrzb2tdnhred0cnslizg5bjoe", "if56kewtmmiim5cfhq6mempppjeta98p", "" };//session
+        public static string[] MasgetAppid = new string[] { "402857315", "402857333", "" };//Appid
+       
         public static string MasgetLogDic = "d:\\Log\\Masget";//日志文件夹地址
         public static YeepayLogBLL yeepayLogDao = new YeepayLogBLL();
         public static YeepayLogParasBLL yeepayLogParasDao = new YeepayLogParasBLL();
@@ -550,36 +553,57 @@ namespace ITOrm.Payment.Masget
             return data.ToString();
         }
 
-
+        //顶级 vip  SVip  普通 
+        static string[] feecode1 = new string[] { "178906", "090463", "630793", "897622" };//荣邦积分
+        static string[] feecode2 = new string[] { "627206", "842660", "238716", "886778" };//荣邦(无积分)
+        static string[] feecode3 = new string[] { "", "", "" ,"" };//荣邦3
         public static OptionFee SelectOptionFee(Logic.ChannelType chanel, Logic.VipType vip)
         {
             OptionFee model = new OptionFee();
 
 
-            string[] feecode1 = new string[] { "178906", "630793", "090463" };//积分
 
-            string[] feecode2 = new string[] { "627206", "238716", "842660" };//无积分
-            decimal[] r = Constant.GetRate(chanel == Logic.ChannelType.荣邦科技积分 ? 0 : 1, vip);
+            decimal[] r = Constant.GetRate(chanel == Logic.ChannelType.荣邦科技无积分 ? 1 : 0, vip);
             decimal Rate1 = r[0];
             decimal Rate3 = r[1];
-            switch (vip)
+            switch (chanel)
             {
-                case Logic.VipType.顶级用户:
-                    model.ratecode = chanel == Logic.ChannelType.荣邦科技积分 ? feecode1[0] : feecode2[0];
+                case Logic.ChannelType.荣邦科技积分:
+                    model.ratecode = feecode1[(int)vip];
                     break;
-                case Logic.VipType.Vip用户:
-                    model.ratecode = chanel == Logic.ChannelType.荣邦科技积分 ? feecode1[1] : feecode2[1];
+                case Logic.ChannelType.荣邦科技无积分:
+                    model.ratecode = feecode2[(int)vip];
                     break;
-                case Logic.VipType.普通用户:
-                    model.ratecode = chanel == Logic.ChannelType.荣邦科技积分 ? feecode1[2] : feecode2[2];
+                case Logic.ChannelType.荣邦3:
+                    model.ratecode = feecode3[(int)vip];
                     break;
                 default:
                     break;
             }
+            //switch (vip)
+            //{
+            //    case Logic.VipType.顶级用户:
+
+            //        model.ratecode = chanel == Logic.ChannelType.荣邦科技积分 ? feecode1[0] : feecode2[0];
+            //        break;
+            //    case Logic.VipType.SVip用户:
+            //        model.ratecode = chanel == Logic.ChannelType.荣邦科技积分 ? feecode1[1] : feecode2[1];
+            //        break;
+            //    case Logic.VipType.Vip用户:
+            //        model.ratecode = chanel == Logic.ChannelType.荣邦科技积分 ? feecode1[2] : feecode2[2];
+            //        break;
+            //    case Logic.VipType.普通用户:
+            //        model.ratecode = chanel == Logic.ChannelType.荣邦科技积分 ? feecode1[2] : feecode2[2];
+            //        break;
+            //    default:
+            //        break;
+            //}
             model.Rate1 = Rate1;
             model.Rate3 = Rate3;
             return model;
         }
+
+
         #endregion
 
 

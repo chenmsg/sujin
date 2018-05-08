@@ -87,7 +87,7 @@ namespace ITOrm.Api.Controllers
         #region 得到不同会员类型的费率信息
         public string GetVipTypeIntroduce(int VipType)
         {
-            if (VipType < 0||VipType>2)
+            if (VipType < 0)
             {
                 return ApiReturnStr.getError(-100,"参数错误");
             }

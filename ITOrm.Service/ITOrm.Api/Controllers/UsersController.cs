@@ -622,6 +622,14 @@ namespace ITOrm.Api.Controllers
         {
             Logs.WriteLog($"Action:User,Cmd:BankBind,UserId:{UserId},mobile：{mobile},bankcard:{bankcard},bankcode:{bankcode},typeid:{typeid},cvn2:{cvn2},expiresYear:{expiresYear},expiresMouth:{expiresMouth},OpeningBank:{OpeningBank},OpeningSerialBank:{OpeningSerialBank}", "d:\\Log\\ITOrm", "BankBind");
             userEventDao.UserBankBind(cid, UserId, Ip.GetClientIp(), mobile, bankcard, bankcode, typeid, cvn2, expiresYear, expiresMouth, OpeningBank, OpeningSerialBank, BankID);
+
+            var version = TQuery.GetString("version");
+            if (cid == 3 && version == "1.0.0")
+            {
+                string temp = expiresYear;
+                expiresYear = expiresMouth;
+                expiresMouth = temp;
+            }
             #region 验证
             if (!TypeParse.IsMobile(mobile))
             {

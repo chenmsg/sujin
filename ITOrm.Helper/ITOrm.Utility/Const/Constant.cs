@@ -174,37 +174,34 @@ namespace ITOrm.Utility.Const
 
 
         //积分
-        public static decimal[] fee1Rate1 = new decimal[] { 0.0041M, 0.0043M, 0.0050M };
-        public static decimal[] fee1Rate3 = new decimal[] { 1M, 2M, 2M };
+        public static decimal[] fee1Rate1 = new decimal[] { 0.0041M, 0.0048M, 0.0043M, 0.0053M};
+        public static decimal[] fee1Rate3 = new decimal[] { 1M, 2M, 2M ,2M};
 
         //无积分
-        public static decimal[] fee2Rate1 = new decimal[] { 0.0030M, 0.0039M, 0.0047M };
-        public static decimal[] fee2Rate3 = new decimal[] { 0.5M, 2M, 2M };
+        public static decimal[] fee2Rate1 = new decimal[] { 0.0030M, 0.0044M, 0.0039M, 0.0049M};
+        public static decimal[] fee2Rate3 = new decimal[] { 0.5M, 2M, 2M,2M };
 
 
         public static decimal[] GetRate(int payType, Logic.VipType vipType)
         {
             decimal Rate1 = 0M;
             decimal Rate3 = 0M;
-            switch (vipType)
+
+            Logic.PayType type = (Logic.PayType)payType;
+            switch (type)
             {
-                case Logic.VipType.顶级用户:
-
-                    Rate1 = payType == 0 ? Constant.fee1Rate1[0] : Constant.fee2Rate1[0];
-                    Rate3 = payType == 0 ? Constant.fee1Rate3[0] : Constant.fee2Rate3[0];
+                case Logic.PayType.积分:
+                    Rate1 = fee1Rate1[(int)vipType];
+                    Rate3 = fee1Rate3[(int)vipType];
                     break;
-                case Logic.VipType.Vip用户:
-
-                    Rate1 = payType == 0 ? Constant.fee1Rate1[1] : Constant.fee2Rate1[1];
-                    Rate3 = payType == 0 ? Constant.fee1Rate3[1] : Constant.fee2Rate3[1];
-                    break;
-                case Logic.VipType.普通用户:
-                    Rate1 = payType == 0 ? Constant.fee1Rate1[2] : Constant.fee2Rate1[2];
-                    Rate3 = payType == 0 ? Constant.fee1Rate3[2] : Constant.fee2Rate3[2];
+                case Logic.PayType.无积分:
+                    Rate1 = fee2Rate1[(int)vipType];
+                    Rate3 = fee2Rate3[(int)vipType];
                     break;
                 default:
                     break;
             }
+
             return new decimal[] {Rate1,Rate3 };
         }
     }

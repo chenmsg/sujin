@@ -24,19 +24,28 @@ namespace ITOrm.Utility.Const
             iOS=3
         }
 
+        public enum PayType
+        {
+            积分=0,
+            无积分=1
+        }
+
         public enum ChannelType
         {
             易宝=0,
             荣邦科技积分=1,
             荣邦科技无积分 = 2,
-            腾付通=3
+            腾付通=3,
+            荣邦3=4,
+            米刷=5
         }
 
         public enum VipType
         {
             顶级用户=0,
-            普通用户 = 1,
-            Vip用户 = 2,
+            Vip用户 = 1,
+            SVip用户 = 2,
+            普通用户 = 3
         }
 
         public enum KeyValueType

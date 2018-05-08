@@ -30,14 +30,19 @@ namespace ITOrm.Payment.Masget
                 {
                     return mUser.Appid;
                 }
-                if (chanel == Logic.ChannelType.荣邦科技积分)
+                switch (chanel)
                 {
-                    return ConfigHelper.GetAppSettings("MasgetAppid");
+                  
+                    case Logic.ChannelType.荣邦科技积分:
+                        return MasgetDepository.MasgetAppid[0];
+                    case Logic.ChannelType.荣邦科技无积分:
+                        return MasgetDepository.MasgetAppid[1];
+                    case Logic.ChannelType.荣邦3:
+                        return MasgetDepository.MasgetAppid[2];
+                    default:
+                        break;
                 }
-                else
-                {
-                    return ConfigHelper.GetAppSettings("MasgetNoneAppid");
-                }
+                return "";
             }
         }
         /// <summary>
@@ -86,14 +91,19 @@ namespace ITOrm.Payment.Masget
                     return mUser.Session;
                 }
 
-                if (chanel == Logic.ChannelType.荣邦科技积分)
+                switch (chanel)
                 {
-                    return ConfigHelper.GetAppSettings("MasgetSession");
+
+                    case Logic.ChannelType.荣邦科技积分:
+                        return MasgetDepository.MasgetSession[0];
+                    case Logic.ChannelType.荣邦科技无积分:
+                        return MasgetDepository.MasgetSession[1];
+                    case Logic.ChannelType.荣邦3:
+                        return MasgetDepository.MasgetSession[2];
+                    default:
+                        break;
                 }
-                else
-                {
-                    return ConfigHelper.GetAppSettings("MasgetNoneSession");
-                }
+                return "";
 
 
             }
@@ -121,14 +131,19 @@ namespace ITOrm.Payment.Masget
                     return mUser.Secretkey;
                 }
 
-                if (chanel == Logic.ChannelType.荣邦科技积分)
+
+                switch (chanel)
                 {
-                    return ConfigHelper.GetAppSettings("MasgetSecretKey");
+                    case Logic.ChannelType.荣邦科技积分:
+                        return MasgetDepository.MasgetSecretKey[0];
+                    case Logic.ChannelType.荣邦科技无积分:
+                        return MasgetDepository.MasgetSecretKey[1];
+                    case Logic.ChannelType.荣邦3:
+                        return MasgetDepository.MasgetSecretKey[2];
+                    default:
+                        break;
                 }
-                else
-                {
-                    return ConfigHelper.GetAppSettings("MasgetNoneSecretKey");
-                }
+                return "";
             }
         }
 

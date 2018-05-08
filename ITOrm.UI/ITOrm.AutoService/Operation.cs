@@ -359,23 +359,10 @@ namespace ITOrm.AutoService
                     Logic.VipType vip = (Logic.VipType)user.VipType;
                     decimal rate1 = 0.0050M;
                     decimal rate3 = 2M;
-                    switch (vip)
-                    {
-                        case Logic.VipType.顶级用户:
-                            rate1 =Constant.fee1Rate1[0];
-                            rate3 = Constant.fee1Rate3[0];
-                            break;
-                        case Logic.VipType.普通用户:
-                            rate1 = Constant.fee1Rate1[2];
-                            rate3 = Constant.fee1Rate3[2];
-                            break;
-                        case Logic.VipType.Vip用户:
-                            rate1 = Constant.fee1Rate1[1];
-                            rate3 = Constant.fee1Rate3[1];
-                            break;
-                        default:
-                            break;
-                    }
+
+                    var r= Constant.GetRate((int)Logic.PayType.积分,vip);
+                    rate1 = r[0];
+                    rate3 = r[1];
                     //审核
                     var result1 = YeepayDepository.FeeSetApi(item.UserId, (int)Logic.Platform.系统,  Enums.YeepayType.设置费率1, rate1.ToString("F4"));
                     if (vip == Logic.VipType.顶级用户)
