@@ -142,7 +142,6 @@ namespace ITOrm.Payment.Const
         public static ResultModelData<int> Optimal( decimal Amount = 0, int BankId=0, int PayType = 0)
         {
             var model = userBankCardDao.Single(BankId);
-
             return Optimal(model.UserId, Amount, model.BankCode, PayType);
         }
 

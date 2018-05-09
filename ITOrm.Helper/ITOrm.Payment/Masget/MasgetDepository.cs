@@ -22,9 +22,9 @@ namespace ITOrm.Payment.Masget
         public static string MasgetNoticeUrl = ConfigHelper.GetAppSettings("MasgetNoticeUrl");
 
 
-        public static string[] MasgetSecretKey= new string[] { "cAWGMUKSGrUyYcNw", "e1m0vkM2bxljrULc", "" };//积分密钥
-        public static string[] MasgetSession = new string[] { "g39mmc9zrzb2tdnhred0cnslizg5bjoe", "if56kewtmmiim5cfhq6mempppjeta98p", "" };//session
-        public static string[] MasgetAppid = new string[] { "402857315", "402857333", "" };//Appid
+        public static string[] MasgetSecretKey= new string[] { "1ZON8DNJAtzG6fgF", "e1m0vkM2bxljrULc", "1ZON8DNJAtzG6fgF" };//积分密钥
+        public static string[] MasgetSession = new string[] { "gjkevhr1gfczuk6drhl7cmd4ipvg2dtj", "if56kewtmmiim5cfhq6mempppjeta98p", "gjkevhr1gfczuk6drhl7cmd4ipvg2dtj" };//session
+        public static string[] MasgetAppid = new string[] { "402857315", "402857333", "402857315" };//Appid
        
         public static string MasgetLogDic = "d:\\Log\\Masget";//日志文件夹地址
         public static YeepayLogBLL yeepayLogDao = new YeepayLogBLL();
@@ -554,8 +554,8 @@ namespace ITOrm.Payment.Masget
         }
 
         //顶级 vip  SVip  普通 
-        static string[] feecode1 = new string[] { "178906", "090463", "630793", "897622" };//荣邦积分
-        static string[] feecode2 = new string[] { "627206", "842660", "238716", "886778" };//荣邦(无积分)
+        static string[] feecode1 = new string[] { "178906", "630793", "090463", "897622" };//荣邦积分
+        static string[] feecode2 = new string[] { "627206", "238716", "842660", "886778" };//荣邦(无积分)
         static string[] feecode3 = new string[] { "", "", "" ,"" };//荣邦3
         public static OptionFee SelectOptionFee(Logic.ChannelType chanel, Logic.VipType vip)
         {

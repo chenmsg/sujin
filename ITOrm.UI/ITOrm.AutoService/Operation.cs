@@ -365,7 +365,7 @@ namespace ITOrm.AutoService
                     rate3 = r[1];
                     //审核
                     var result1 = YeepayDepository.FeeSetApi(item.UserId, (int)Logic.Platform.系统,  Enums.YeepayType.设置费率1, rate1.ToString("F4"));
-                    if (vip == Logic.VipType.顶级用户)
+                    if (vip == Logic.VipType.顶级代理)
                     {
                         var result3 = YeepayDepository.FeeSetApi(item.UserId, (int)Logic.Platform.系统, Enums.YeepayType.设置费率3, rate3.ToString("F0"));
                     }

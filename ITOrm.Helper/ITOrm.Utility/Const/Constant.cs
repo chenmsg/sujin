@@ -174,11 +174,11 @@ namespace ITOrm.Utility.Const
 
 
         //积分
-        public static decimal[] fee1Rate1 = new decimal[] { 0.0041M, 0.0048M, 0.0043M, 0.0053M};
+        public static decimal[] fee1Rate1 = new decimal[] { 0.0041M, 0.0043M, 0.0048M, 0.0053M};
         public static decimal[] fee1Rate3 = new decimal[] { 1M, 2M, 2M ,2M};
 
         //无积分
-        public static decimal[] fee2Rate1 = new decimal[] { 0.0030M, 0.0044M, 0.0039M, 0.0049M};
+        public static decimal[] fee2Rate1 = new decimal[] { 0.0030M, 0.0039M, 0.0044M, 0.0049M};
         public static decimal[] fee2Rate3 = new decimal[] { 0.5M, 2M, 2M,2M };
 
 

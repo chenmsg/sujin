@@ -182,7 +182,12 @@ namespace ITOrm.Payment.Masget
         /// 业务请求返回数据,具体格式由API决定
         /// </summary>
         public T data { get; set; }
-        public int backState { get { return ret; } }
+        public int backState { get {
+                if (ret != 0)
+                {
+                    return ret * -1;
+                }
+                return ret; } }
         /// <summary>
         /// 收银台URL
         /// </summary>

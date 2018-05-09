@@ -42,9 +42,9 @@ namespace ITOrm.Utility.Const
 
         public enum VipType
         {
-            顶级用户=0,
-            Vip用户 = 1,
-            SVip用户 = 2,
+            顶级代理=0,
+            SVip用户 = 1,
+            Vip用户 = 2,
             普通用户 = 3
         }
 

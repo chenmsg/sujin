@@ -197,14 +197,17 @@ namespace ITOrm.Api.Controllers
             {
                 switch (vip)
                 {
-                    case Logic.VipType.顶级用户:
+                    case Logic.VipType.顶级代理:
                         model = new ToolPay(Amount, 0.0041M, 0, 1, 0, 0);
                         break;
-                    case Logic.VipType.普通用户:
-                        model = new ToolPay(Amount, 0.0050M, 0, 2, 0, 0);
+                    case Logic.VipType.SVip用户:
+                        model = new ToolPay(Amount, 0.0043M, 0, 2, 0, 0);
                         break;
                     case Logic.VipType.Vip用户:
-                        model = new ToolPay(Amount, 0.0043M, 0, 2, 0, 0);
+                        model = new ToolPay(Amount, 0.0048M, 0, 2, 0, 0);
+                        break;
+                    case Logic.VipType.普通用户:
+                        model = new ToolPay(Amount, 0.0052M, 0, 2, 0, 0);
                         break;
                     default:
                         break;
@@ -214,14 +217,17 @@ namespace ITOrm.Api.Controllers
             {
                 switch (vip)
                 {
-                    case Logic.VipType.顶级用户:
+                    case Logic.VipType.顶级代理:
                         model = new ToolPay(Amount, 0.0030M, 0, 0.5M, 0, 0);
                         break;
+                    case Logic.VipType.SVip用户:
+                        model = new ToolPay(Amount, 0.0039M, 0, 2, 0, 0);
+                        break;
                     case Logic.VipType.普通用户:
-                        model = new ToolPay(Amount, 0.0047M, 0, 2, 0, 0);
+                        model = new ToolPay(Amount, 0.0044M, 0, 2, 0, 0);
                         break;
                     case Logic.VipType.Vip用户:
-                        model = new ToolPay(Amount, 0.0039M, 0, 2, 0, 0);
+                        model = new ToolPay(Amount, 0.0049M, 0, 2, 0, 0);
                         break;
                     default:
                         break;

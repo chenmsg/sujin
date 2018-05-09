@@ -321,7 +321,7 @@ namespace ITOrm.Api.Controllers
 
         public string SamenameUpdate(int UserId)
         {
-            var result = MasgetDepository.SamenameUpdate(UserId, 1, Logic.ChannelType.荣邦科技积分, Logic.VipType.顶级用户);
+            var result = MasgetDepository.SamenameUpdate(UserId, 1, Logic.ChannelType.荣邦科技积分, Logic.VipType.顶级代理);
             return JsonConvert.SerializeObject(result);
         }
 
@@ -339,7 +339,7 @@ namespace ITOrm.Api.Controllers
 ,100080 };
             foreach (var item in aa)
             {
-                MasgetDepository.SamenameUpdate(item, 1, Logic.ChannelType.荣邦科技积分, Logic.VipType.顶级用户);
+                MasgetDepository.SamenameUpdate(item, 1, Logic.ChannelType.荣邦科技积分, Logic.VipType.顶级代理);
             }
             return "";
         }
@@ -388,13 +388,17 @@ namespace ITOrm.Api.Controllers
 
         public string aaadsfadsf()
         {
-            var list = usersDao.GetQuery(" VipType=0 ");
+            var list = usersDao.GetQuery(" UserId=100063 ");
             if (list.Count > 0)
             {
                 foreach (var item in list)
                 {
-                    var result1= YeepayDepository.FeeSetApi(item.UserId, 1, Payment.Yeepay.Enums.YeepayType.设置费率1, "0.0041");
-                   var result2 = MasgetDepository.SamenameUpdate(item.UserId, 1, Logic.ChannelType.荣邦科技积分, Logic.VipType.顶级用户);
+                    //var result1= YeepayDepository.FeeSetApi(item.UserId, 1, Payment.Yeepay.Enums.YeepayType.设置费率1, "0.0043");
+                    //var result3 = YeepayDepository.FeeSetApi(item.UserId, 1, Payment.Yeepay.Enums.YeepayType.设置费率3, "2");
+                    var result2 = MasgetDepository.SamenameUpdate(item.UserId, 1, Logic.ChannelType.荣邦科技积分, Logic.VipType.SVip用户);
+                    item.VipType = (int)Logic.VipType.SVip用户;
+                    item.UTime = DateTime.Now;
+                    usersDao.Update(item);
                 }
             }
             return "";
@@ -402,7 +406,9 @@ namespace ITOrm.Api.Controllers
 
         public string auuu()
         {
-            return "2018-05-05";
+            decimal[] r = Constant.GetRate(0,  Logic.VipType.顶级代理);
+            //var user=
+            return r[0]+"--"+r[1];
         }
     }
 }
