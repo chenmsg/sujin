@@ -780,6 +780,7 @@ namespace ITOrm.Api.Controllers
                     return ApiReturnStr.getError(-100, "易宝通道无需激活");
                 case Logic.ChannelType.荣邦科技积分:
                 case Logic.ChannelType.荣邦科技无积分:
+                case Logic.ChannelType.荣邦3:
                     //进件
                     if (!masgetUserDao.QueryIsExist(UserId, ChannelType))
                     {

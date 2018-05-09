@@ -108,13 +108,16 @@
                         Logic.VipType vip=(Logic.VipType)item["VipType"].ToInt();
                         switch (vip)
                         {
-                            case Logic.VipType.顶级用户:
+                            case Logic.VipType.顶级代理:
                                 @Html.MySpan(vip.ToString(), "red");
                                 break;
                             case Logic.VipType.普通用户:
                                 @Html.MySpan(vip.ToString(), "");
                                 break;
                             case Logic.VipType.Vip用户:
+                                @Html.MySpan(vip.ToString(), "green");
+                                break;
+                            case Logic.VipType.SVip用户:
                                 @Html.MySpan(vip.ToString(), "green");
                                 break;
                             default:
@@ -144,9 +147,11 @@
                         <ul class="dropdown-menu">
                             <li><a href="/users/info/@item["UserId"]">查看</a></li>
                             <li><a href="/users/AuditMerchant?UserId=@item["UserId"]">审核通过</a></li>
-                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=0">设置顶级用户</a></li>
-                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=2">设置Vip用户</a></li>
-                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=1">设置普通用户</a></li>
+                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=0">设置顶级代理</a></li>
+                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=1">设置SVip</a></li>
+                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=2">设置Vip</a></li>
+                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=3">设置普通用户</a></li>
+   
                         </ul>
                     </div>
                     

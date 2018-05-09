@@ -48,9 +48,12 @@
     <Compile Include="Const\SelectOptionChannel.cs" />
     <Compile Include="Masget\AES.cs" />
     <Compile Include="Masget\Base64Method.cs" />
+    <Compile Include="MiShua\Enums.cs" />
     <Compile Include="Masget\Enums.cs" />
     <Compile Include="Masget\MasgetDepository.cs" />
     <Compile Include="Masget\MasgetModel.cs" />
+    <Compile Include="MiShua\MiShuaDepository.cs" />
+    <Compile Include="MiShua\MiShuaModelcs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Teng\Enums.cs" />
     <Compile Include="Teng\TengDepository.cs" />

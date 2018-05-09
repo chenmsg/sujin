@@ -53,7 +53,7 @@
                 var listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.Yeepay.Enums.YeepayType));
                 @Html.MyDrop(listTypeId, "全部", "-1", TQuery.GetString("TypeId"), new { @name = "TypeId", @id = "TypeId", @style = "width:100px" })
             }
-            else if (ChannelType == "1" || ChannelType == "2")
+            else if (ChannelType == "1" || ChannelType == "2" || ChannelType == "4")
             {
                 var listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.Masget.Enums.MasgetType));
                 @Html.MyDrop(listTypeId, "全部", "-1", TQuery.GetString("TypeId"), new { @name = "TypeId", @id = "TypeId", @style = "width:100px" })
@@ -61,6 +61,11 @@
             else if (ChannelType == "3")
             {
                 var listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.Teng.Enums.TengType));
+                @Html.MyDrop(listTypeId, "全部", "-1", TQuery.GetString("TypeId"), new { @name = "TypeId", @id = "TypeId", @style = "width:100px" })
+            }
+            else if (ChannelType == "5")
+            {
+                var listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.MiShua.Enums.MiShuaType));
                 @Html.MyDrop(listTypeId, "全部", "-1", TQuery.GetString("TypeId"), new { @name = "TypeId", @id = "TypeId", @style = "width:100px" })
             }
             else
@@ -135,6 +140,7 @@
                                 break;
                             case Logic.ChannelType.荣邦科技积分:
                             case Logic.ChannelType.荣邦科技无积分:
+                            case Logic.ChannelType.荣邦3:
                                 cttxt = ((ITOrm.Payment.Masget.Enums.MasgetType)item.TypeId).ToString();
                                 break;
                             case Logic.ChannelType.腾付通:

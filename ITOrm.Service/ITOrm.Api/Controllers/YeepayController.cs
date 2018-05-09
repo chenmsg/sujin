@@ -193,74 +193,8 @@ namespace ITOrm.Api.Controllers
             Users user = userDao.Single(UserId);
             Logic.VipType vip = (Logic.VipType)user.VipType;
 
-            if (PayType == 0)
-            {
-                switch (vip)
-                {
-                    case Logic.VipType.顶级代理:
-                        model = new ToolPay(Amount, 0.0041M, 0, 1, 0, 0);
-                        break;
-                    case Logic.VipType.SVip用户:
-                        model = new ToolPay(Amount, 0.0043M, 0, 2, 0, 0);
-                        break;
-                    case Logic.VipType.Vip用户:
-                        model = new ToolPay(Amount, 0.0048M, 0, 2, 0, 0);
-                        break;
-                    case Logic.VipType.普通用户:
-                        model = new ToolPay(Amount, 0.0052M, 0, 2, 0, 0);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                switch (vip)
-                {
-                    case Logic.VipType.顶级代理:
-                        model = new ToolPay(Amount, 0.0030M, 0, 0.5M, 0, 0);
-                        break;
-                    case Logic.VipType.SVip用户:
-                        model = new ToolPay(Amount, 0.0039M, 0, 2, 0, 0);
-                        break;
-                    case Logic.VipType.普通用户:
-                        model = new ToolPay(Amount, 0.0044M, 0, 2, 0, 0);
-                        break;
-                    case Logic.VipType.Vip用户:
-                        model = new ToolPay(Amount, 0.0049M, 0, 2, 0, 0);
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-
-            //Logic.ChannelType ct = (Logic.ChannelType)ChannelType;
-            //switch (ct)
-            //{
-            //    case Logic.ChannelType.易宝:
-            //        YeepayUser yUser = yeepayUserDao.Single(" UserId=@UserId", new { UserId });
-            //        if (yUser == null)
-            //        {
-            //            return ApiReturnStr.getError(-100, "未开通商户");
-            //        }
-            //        if (yUser.RateState1 == 0 || yUser.RateState3 == 0)//|| yUser.RateState4 == 0 || yUser.RateState5 == 0
-            //        {
-            //            return ApiReturnStr.getError(-100, "费率未设置");
-            //        }
-            //        model= new ToolPay(Amount, yUser.Rate1, 0, yUser.Rate3, 0, 0);
-            //        break;
-            //    case Logic.ChannelType.荣邦科技积分:
-            //    case Logic.ChannelType.荣邦科技无积分:
-            //        MasgetUser mUser = masgetUserDao.Single(" TypeId=@ChannelType and UserId=@UserId ",new { ChannelType, UserId });
-            //        if (mUser == null) return ApiReturnStr.getError(-100, "商户未进件");
-            //        if (mUser.State == 0) return ApiReturnStr.getError(-100, "商户未入驻");
-            //        model = new ToolPay(Amount, mUser.Rate1, 0, mUser.Rate3, 0, 0);
-            //        break;
-            //    default:
-            //        break;
-            //}
-
+            decimal[] r = Constant.GetRate(PayType, vip);
+            model = new ToolPay(Amount,r[0], 0, r[1], 0, 0);
 
             JObject data = new JObject();
             data["Amount"] = model.Amount.ToString("F2");
@@ -373,18 +307,17 @@ namespace ITOrm.Api.Controllers
 
 
 
-
-
-
-            int ChannelType = 0;
-            //data["ChannelType"] = ChannelType;
-            data["BankID"] = BankID;
-
-
-            //int ChannelType = 3;
+            #region 测试通道
+            //int ChannelType = 4;
             //data["ChannelType"] = ChannelType;
             //data["BankID"] = BankID;
 
+            #endregion
+
+            #region 选择通道
+            int ChannelType = 0;
+            //data["ChannelType"] = ChannelType;
+            data["BankID"] = BankID;
 
             var option = SelectOptionChannel.Optimal(Amount, BankID, PayType);
             if (option.backState == 0)
@@ -401,6 +334,8 @@ namespace ITOrm.Api.Controllers
                 return ApiReturnStr.getError(-100, option.message);
             }
             data["ChannelType"] = option.Data;
+            #endregion
+
 
             if (Amount > 20000) return ApiReturnStr.getError(-100, "收款金额不能超过20000元");
 
@@ -433,6 +368,7 @@ namespace ITOrm.Api.Controllers
                     break;
                 case Logic.ChannelType.荣邦科技积分:
                 case Logic.ChannelType.荣邦科技无积分:
+                case Logic.ChannelType.荣邦3:
                     if (ChannelType == 2)
                     {
                         return ApiReturnStr.getError(-100, "通道升级中，敬请期待");

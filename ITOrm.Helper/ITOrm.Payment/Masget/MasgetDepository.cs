@@ -22,9 +22,9 @@ namespace ITOrm.Payment.Masget
         public static string MasgetNoticeUrl = ConfigHelper.GetAppSettings("MasgetNoticeUrl");
 
 
-        public static string[] MasgetSecretKey= new string[] { "1ZON8DNJAtzG6fgF", "e1m0vkM2bxljrULc", "1ZON8DNJAtzG6fgF" };//积分密钥
-        public static string[] MasgetSession = new string[] { "gjkevhr1gfczuk6drhl7cmd4ipvg2dtj", "if56kewtmmiim5cfhq6mempppjeta98p", "gjkevhr1gfczuk6drhl7cmd4ipvg2dtj" };//session
-        public static string[] MasgetAppid = new string[] { "402857315", "402857333", "402857315" };//Appid
+        public static string[] MasgetSecretKey= new string[] { "1ZON8DNJAtzG6fgF", "e1m0vkM2bxljrULc", "RSAHIJ29xUto1lHI" };//积分密钥
+        public static string[] MasgetSession = new string[] { "gjkevhr1gfczuk6drhl7cmd4ipvg2dtj", "if56kewtmmiim5cfhq6mempppjeta98p", "dytdkzabxqvyigmqd6u0acrgv13sj738" };//session
+        public static string[] MasgetAppid = new string[] { "402857315", "402857333", "403433027" };//Appid
        
         public static string MasgetLogDic = "d:\\Log\\Masget";//日志文件夹地址
         public static YeepayLogBLL yeepayLogDao = new YeepayLogBLL();
@@ -50,7 +50,20 @@ namespace ITOrm.Payment.Masget
             //获取请求流水号
             int requestId = yeepayLogDao.Init((int)Masget.Enums.MasgetType.快速进件, UserId, Platform,0,(int)chanel);
             Logs.WriteLog($"获取请求流水号：UserId:{UserId},Platform:{Platform},requestId:{requestId},chanel:{chanel}", MasgetLogDic, LogDic);
-            string wu =chanel== Logic.ChannelType.荣邦科技无积分?"(无积分)": "";
+            string wu ="";
+            switch (chanel)
+            {
+                case Logic.ChannelType.荣邦科技积分:
+                    break;
+                case Logic.ChannelType.荣邦科技无积分:
+                    wu = "(无积分)";
+                    break;
+                case Logic.ChannelType.荣邦3:
+                    wu = "(积分3)";
+                    break;
+                default:
+                    break;
+            }
             reqSubcompanyAddModel model = new reqSubcompanyAddModel();
             model.companyname = $"{user.RealName}({user.UserId}){wu}";
             model.companycode = user.UserId.ToString();
@@ -79,6 +92,12 @@ namespace ITOrm.Payment.Masget
                 //创建用户
                 var mid= masgetUserDao.Init(UserId, resp.data.appid, resp.data.session, resp.data.secretkey,resp.data.companyid,Platform,(int)chanel, optionFee.Rate1, optionFee.Rate3);
                 Logs.WriteLog($"创建荣邦渠道用户：UserId:{UserId},Platform:{Platform},requestId:{requestId},MasgetUserId:{mid},Rate1{optionFee.Rate1},Rate3:{optionFee.Rate3}", MasgetLogDic, LogDic);
+                if (chanel == Logic.ChannelType.荣邦3)
+                {
+                    masgetUserDao.UpdateState(UserId, (int)chanel, 1);
+                    Logs.WriteLog($"默认设置已入驻：UserId:{UserId},chanel:{Platform},MasgetUserId:{mid}", MasgetLogDic, LogDic);
+                }
+                
             }
             return resp;
         }
@@ -239,7 +258,6 @@ namespace ITOrm.Payment.Masget
                 flag= userBankCardDao.Update(ubk);
                 Logs.WriteLog($"更新银行卡对应通道可用：UserId:{bta.UserId},Platform:{Platform},requestId:{requestId},UbkId:{UbkId},flag:{flag}", MasgetLogDic, LogDic);
             }
-
             return resp;
         }
         #endregion
@@ -556,7 +574,7 @@ namespace ITOrm.Payment.Masget
         //顶级 vip  SVip  普通 
         static string[] feecode1 = new string[] { "178906", "630793", "090463", "897622" };//荣邦积分
         static string[] feecode2 = new string[] { "627206", "238716", "842660", "886778" };//荣邦(无积分)
-        static string[] feecode3 = new string[] { "", "", "" ,"" };//荣邦3
+        static string[] feecode3 = new string[] { "502114", "521467", "556151", "704252" };//荣邦3
         public static OptionFee SelectOptionFee(Logic.ChannelType chanel, Logic.VipType vip)
         {
             OptionFee model = new OptionFee();
@@ -582,7 +600,7 @@ namespace ITOrm.Payment.Masget
             }
             //switch (vip)
             //{
-            //    case Logic.VipType.顶级用户:
+            //    case Logic.VipType.顶级代理:
 
             //        model.ratecode = chanel == Logic.ChannelType.荣邦科技积分 ? feecode1[0] : feecode2[0];
             //        break;

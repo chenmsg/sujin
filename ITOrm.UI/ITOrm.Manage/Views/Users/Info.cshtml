@@ -96,7 +96,7 @@
                                 Logic.VipType vip = (Logic.VipType)Model.VipType;
                                 switch (vip)
                                 {
-                                    case Logic.VipType.顶级用户:
+                                    case Logic.VipType.顶级代理:
                             @Html.MySpan(vip.ToString(), "red");
                                     break;
                                 case Logic.VipType.普通用户:
@@ -104,10 +104,13 @@
                                     break;
                                 case Logic.VipType.Vip用户:
                             @Html.MySpan(vip.ToString(), "green");
-                                    break;
-                                default:
-                                    break;
-                            }
+                                        break;
+                                    case Logic.VipType.SVip用户:
+                                        @Html.MySpan(vip.ToString(), "green");
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
                         </td>
                         <th scope="row"><code>用户状态</code></th>
