@@ -104,7 +104,7 @@ namespace ITOrm.Manage.Controllers
             {
                 listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.Yeepay.Enums.YeepayType));
             }
-            else if (ChannelType == 1 || ChannelType == 2)
+            else if (ChannelType == 1 || ChannelType == 2 || ChannelType == 4)
             {
                 listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.Masget.Enums.MasgetType));
 
@@ -112,6 +112,10 @@ namespace ITOrm.Manage.Controllers
             else if (ChannelType == 3)
             {
                 listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.Teng.Enums.TengType));
+            }
+            else if (ChannelType == 5)
+            {
+                listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Payment.MiShua.Enums.MiShuaType));
             }
             else
             {

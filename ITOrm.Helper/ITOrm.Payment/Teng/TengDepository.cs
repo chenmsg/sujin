@@ -23,7 +23,7 @@ namespace ITOrm.Payment.Teng
     {
         public static string TengLogDic = "d:\\Log\\Teng";//日志文件夹地址
         public static string TengDomain = "http://47.95.41.53/";  // "http://59.110.53.175:9080/tts/";
-        public static string TengNoticeUrl = "http://testnotice.sujintech.com/notice/";
+        public static string TengNoticeUrl = ConfigHelper.GetAppSettings("TengNoticeUrl");// "http://testnotice.sujintech.com/notice/";
         public static string reqMd5Key = "AA695359FB5649F6838254362AC725A1";
         public static string respMd5Key = "3C11FA0DED674C5F9D288660F486915E";
 

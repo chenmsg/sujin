@@ -410,5 +410,39 @@ namespace ITOrm.Api.Controllers
             //var user=
             return r[0]+"--"+r[1];
         }
+
+        public string asdfasdfas()
+        {
+            JObject data = new JObject();
+            data["context"] = "hello,word!";
+            JArray list=new JArray();
+            JObject data1 = new JObject();
+            data1["key"] = "hello";
+            data1["bold"] = "0";//
+            data1["color"] = "#eee";
+            data1["link"] = "http://www.baidu.com";
+            list.Add(data1);
+
+            JObject data2 = new JObject();
+            data2["key"] = "wo";
+            data2["bold"] = "1";//
+            data2["color"] = "#fff";
+            data2["link"] = "http://www.baidu.com";
+            list.Add(data2);
+            data["list"] = list;
+            return data.ToString();
+        }
+
+        public string mmmmmmmm()
+        {
+            var result= ITOrm.Payment.MiShua.MiShuaDepository.PayDzero(100088, 1, 100);
+            return JsonConvert.SerializeObject(result); 
+        }
+
+        public string cccccccccccc()
+        {
+            var result = ITOrm.Payment.MiShua.MiShuaDepository.CheckDzero(100002770, Logic.Platform.系统);
+            return JsonConvert.SerializeObject(result);
+        }
     }
 }

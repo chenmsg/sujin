@@ -146,6 +146,9 @@
                             case Logic.ChannelType.腾付通:
                                 cttxt = ((ITOrm.Payment.Teng.Enums.TengType)item.TypeId).ToString();
                                 break;
+                            case Logic.ChannelType.米刷:
+                                cttxt = ((ITOrm.Payment.MiShua.Enums.MiShuaType)item.TypeId).ToString();
+                                break;
                             default:
                                 cttxt = "未知";
                                 break;

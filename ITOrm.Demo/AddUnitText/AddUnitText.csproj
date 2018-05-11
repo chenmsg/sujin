@@ -56,6 +56,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\ITOrm.Helper\ITOrm.Payment\ITOrm.Payment.csproj">
+      <Project>{6d2c67f5-29af-41fb-993d-e17bd0bd90d0}</Project>
+      <Name>ITOrm.Payment</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\ITOrm.Helper\ITOrm.Utility\ITOrm.Utility.csproj">
       <Project>{1d0cb421-cbbd-4ae9-8055-2ca2a1bad9fe}</Project>
       <Name>ITOrm.Utility</Name>

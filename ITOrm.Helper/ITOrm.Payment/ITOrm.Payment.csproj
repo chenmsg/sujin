@@ -48,6 +48,8 @@
     <Compile Include="Const\SelectOptionChannel.cs" />
     <Compile Include="Masget\AES.cs" />
     <Compile Include="Masget\Base64Method.cs" />
+    <Compile Include="MiShua\AES.cs" />
+    <Compile Include="MiShua\Base64Method.cs" />
     <Compile Include="MiShua\Enums.cs" />
     <Compile Include="Masget\Enums.cs" />
     <Compile Include="Masget\MasgetDepository.cs" />

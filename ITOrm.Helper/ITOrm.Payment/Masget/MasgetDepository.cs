@@ -20,8 +20,6 @@ namespace ITOrm.Payment.Masget
 
         public static string MasgetDomain = ConfigHelper.GetAppSettings("MasgetDomain");
         public static string MasgetNoticeUrl = ConfigHelper.GetAppSettings("MasgetNoticeUrl");
-
-
         public static string[] MasgetSecretKey= new string[] { "1ZON8DNJAtzG6fgF", "e1m0vkM2bxljrULc", "RSAHIJ29xUto1lHI" };//积分密钥
         public static string[] MasgetSession = new string[] { "gjkevhr1gfczuk6drhl7cmd4ipvg2dtj", "if56kewtmmiim5cfhq6mempppjeta98p", "dytdkzabxqvyigmqd6u0acrgv13sj738" };//session
         public static string[] MasgetAppid = new string[] { "402857315", "402857333", "403433027" };//Appid

@@ -498,6 +498,11 @@ namespace ITOrm.Api.Controllers
             data["IdCard"] = Util.GetHiddenString(user.IdCard, 6, 4);
             data["VipType"] = user.VipType;
             data["VipTypeTxt"] = ((Logic.VipType)user.VipType).ToString();
+            var version = TQuery.GetString("version");
+            if (user.VipType == 1 && version == "1.0.0" && cid == 3)
+            {
+                data["VipType"] = 2;
+            }
             data["AvatarImg"] = ITOrm.Utility.Const.Constant.CurrentApiHost+ userImageDao.GetUrl(user.AvatarImg);
             Logic.VipType vip = (Logic.VipType)user.VipType;
             decimal[] r = Constant.GetRate(0, vip);

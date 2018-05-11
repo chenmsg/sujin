@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Newtonsoft.Json;
 namespace ITOrm.Payment.MiShua
 {
 
@@ -24,7 +24,7 @@ namespace ITOrm.Payment.MiShua
         public string sign { get; set; }
     }
 
-    public class respModel
+    public class respModel<T>
     {
         /// <summary>
         /// 商户号
@@ -50,6 +50,64 @@ namespace ITOrm.Payment.MiShua
         /// 签名
         /// </summary>
         public string sign { get; set; }
+
+        public T Data { get {
+                if (code == "0")
+                {
+                    string json = ITOrm.Payment.MiShua.AES.Decrypt(payload,MiShuaDepository.AESkey, "0102030405060708");
+                    return JsonConvert.DeserializeObject<T>(json);
+                }
+                return default(T);
+            } }
+
+        public int backState { get {
+
+                return Convert.ToInt32(code);
+            } }
+    }
+
+    public class noticeMiShuaModel
+    {
+        /// <summary>
+        /// 接口版本号
+        /// </summary>
+        public string versionNo { get; set; }
+        /// <summary>
+        /// 商户号
+        /// </summary>
+        public string mchNo { get; set; }
+        /// <summary>
+        /// 交易金额
+        /// </summary>
+        public string price { get; set; }
+        /// <summary>
+        /// 订单描述
+        /// </summary>
+        public string description { get; set; }
+        /// <summary>
+        /// 订单日期
+        /// </summary>
+        public string orderDate { get; set; }
+        /// <summary>
+        /// 商户流水号
+        /// </summary>
+        public string tradeNo { get; set; }
+        /// <summary>
+        /// 米刷流水号
+        /// </summary>
+        public string transNo { get; set; }
+        /// <summary>
+        /// 交易结果
+        /// </summary>
+        public string status { get; set; }
+        /// <summary>
+        /// 交易结果描述
+        /// </summary>
+        public string statusDesc { get; set; }
+        /// <summary>
+        /// 代付结果
+        /// </summary>
+        public string qfStatus { get; set; }
     }
     #endregion
 
@@ -181,6 +239,85 @@ namespace ITOrm.Payment.MiShua
         /// 佣金
         /// </summary>
         public string profit { get; set; }
+    }
+    #endregion
+
+    #region 无卡查询接口
+
+    public class reqCheckDzeroModel
+    {
+        /// <summary>
+        /// 接口版本号
+        /// </summary>
+        public string versionNo { get; set; }
+        /// <summary>
+        /// 商户号
+        /// </summary>
+        public string mchNo { get; set; }
+        /// <summary>
+        /// 商户流水号
+        /// </summary>
+        public string tradeNo { get; set; }
+        /// <summary>
+        /// 米刷流水号
+        /// </summary>
+        public string transNo { get; set; }
+    }
+
+    public class respCheckDzeroModel
+    {
+        /// <summary>
+        /// 接口版本号
+        /// </summary>
+        public string versionNo { get; set; }
+        /// <summary>
+        /// 商户号
+        /// </summary>
+        public string mchNo { get; set; }
+        /// <summary>
+        /// 交易金额
+        /// </summary>
+        public string price { get; set; }
+        /// <summary>
+        /// 订单描述
+        /// </summary>
+        public string description { get; set; }
+        /// <summary>
+        /// 订单日期
+        /// </summary>
+        public string orderDate { get; set; }
+        /// <summary>
+        /// 商户流水号
+        /// </summary>
+        public string tradeNo { get; set; }
+        /// <summary>
+        /// 米刷流水号
+        /// </summary>
+        public string transNo { get; set; }
+        /// <summary>
+        /// 返回结果
+        /// </summary>
+        public string tranStr { get; set; }
+        /// <summary>
+        /// 下单结果
+        /// </summary>
+        public string status { get; set; }
+        /// <summary>
+        /// 下单结果描述
+        /// </summary>
+        public string statusDesc { get; set; }
+        /// <summary>
+        /// 结算金额
+        /// </summary>
+        public string downRealPrice { get; set; }
+        /// <summary>
+        /// 佣金
+        /// </summary>
+        public string profit { get; set; }
+        /// <summary>
+        /// 佣金
+        /// </summary>
+        public string qfStatus { get; set; }
     }
     #endregion
 }

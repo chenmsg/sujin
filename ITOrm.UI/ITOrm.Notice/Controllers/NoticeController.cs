@@ -15,6 +15,8 @@ using ITOrm.Utility.Encryption;
 using ITOrm.Payment.Masget;
 using ITOrm.Payment.Teng;
 using ITOrm.Utility.Const;
+using ITOrm.Payment.MiShua;
+using System.IO;
 
 namespace ITOrm.Notice.Controllers
 {
@@ -32,7 +34,7 @@ namespace ITOrm.Notice.Controllers
         public static object lockbackpayNotice = new object();
         public static object lockNoticePayTeng = new object();
         public static object lockNoticeWithTeng = new object();
-
+        public static object lockMiShuaNotice = new object();
         // 易宝结算回调
         public string withDrawApi()
         {
@@ -554,6 +556,81 @@ namespace ITOrm.Notice.Controllers
                 return result;
             }
 
+        }
+
+
+        //米刷回调
+        public string MiShuaNotice()
+        {
+            HttpRequestBase request =HttpContext.Request;
+            Stream stream = request.InputStream;
+            string json = string.Empty;
+            string responseJson = string.Empty;
+            if (stream.Length != 0)
+            {
+                StreamReader streamReader = new StreamReader(stream);
+                json = streamReader.ReadToEnd();
+            
+            }
+
+            //返回后日志记录
+            Logs.WriteLog("页面首次记录：" + json.ToString(), "d:\\Log\\MiShua", "MiShuaNotice");
+
+            lock (lockMiShuaNotice)
+            {
+                string result = "fail";
+
+                //json= "{\"payload\":\"mdvFvn5Aa9C + HONo6E9Sp7JmUGFaC5DTrwfmiB3d + sNpXUptNtMnKwy6tB2creQR2NxhGynCoTaQ85FbgDXlkDXRx8n0cPBaijKpWu2sTKjAm1kRUO / j7Qoh5TH0LR7UGVVJRPvnT5HvCVU9KizqfObhyaccjJnlHC9bq + mTdwaJ0gdJzACZhycS18vYDadrFyWyCaoPoShRzB3w3yGxIK6NhAY18iN9qjjWSsJWcfppzVCcu + yMiMnB8MZ8J2EGVohl6QlE4NrEQknEbWwcgwVV8xa07pBW2Z / QESzA6 / 7jO4e3ZSZcZ3SIartYZsrE7kG3vvWAYr2zFK745OUWeXSdNP0a5MpWP3K39RWWMYLfM7FKr9qAbuEl2vbGHjgC5zve5M3oiCPNuG / 5k5iDAzdgyElrP5PD / bF + E97hihNSK0zmhzZOZcXERZEzq6svBA7iSWKF1H2pCxLwtVNeacHHJIU0QR0VpTgyyEO2KV7JTDVBtVnLyZJhfQNY38r0CKE9Ysy22iruIq + pmBheGFi7tCvvaw + fJfIAykbUiW3lNHWlFImekq3h1KivAHJGhVFQfL2XjT + 7zxw2a9QhsOgwhaA5TvdtgtqLY + bkrvoG9UDo1A / IlRDV23SG5N50q0 / fvoL4QlZkseew5geu0OGvPWysurll87JqCGaQO3sewDEE9RIXyCuPPxCQTJ6qad636PyVANEYoK5PXVm116E03GTWp7 / +zGZXI + L5lgpJdFFuFfqbZ745PvKQ0GIrNxsx5ZaviB7yuos5IvVbG3F944pn / N31Jz5nBISQkx0zmQqJ8lZblue9XWPGC14T / 2 / 8E1y5lvuAc5EICRa9EfEYvOeH1NER3VnxexCeq2g\u003d\",\"state\":\"Successful\",\"sign\":\"3C1FF7EFED5D760F3CE4672DD7A4811B\",\"mchNo\":\"100445\",\"code\":0}";
+                respModel<noticeMiShuaModel> model = new respModel<noticeMiShuaModel>();
+
+
+                model = JsonConvert.DeserializeObject<respModel<noticeMiShuaModel>>(json);
+
+
+                bool flag = false;
+                //返回后日志记录
+                Logs.WriteLog("回调参数：" + JsonConvert.SerializeObject(model), "d:\\Log\\MiShua", "MiShuaNotice");
+                yeepayLogParasDao.Init(Convert.ToInt32(model.Data.tradeNo), JsonConvert.SerializeObject(model), 2);
+
+                result = "SUCCESS";
+                if (model.Data.status == "00" && model.Data.qfStatus == "SUCCESS")//处理成功
+                {
+
+                    var yeepayLog = yeepayLogDao.Single(Convert.ToInt32(model.Data.tradeNo));
+                    var pay = payRecordDao.Single(yeepayLog.KeyId);
+                    if (pay.DrawState == 10)
+                    {
+                        Logs.WriteLog($"重复处理：State=10，orderId:{model.Data.tradeNo},返回结果:{result}", "d:\\Log\\MiShua", "MiShuaNotice");
+                        return result;
+                    }
+                    pay.State = 10;
+                    pay.DrawState = 10;
+                    pay.UTime = DateTime.Now;
+                    pay.HandleTime = DateTime.Now;
+                    flag = payRecordDao.Update(pay);
+                    Logs.WriteLog($"代付成功：flag={flag}", "d:\\Log\\MiShua", "MiShuaNotice");
+                    yeepayLogDao.UpdateState(Convert.ToInt32(model.Data.tradeNo), model.Data.status, model.Data.statusDesc, 10);
+                }
+                else if (model.Data.status == "00"&& model.Data.qfStatus != "SUCCESS")
+                {
+                    var yeepayLog = yeepayLogDao.Single(Convert.ToInt32(model.Data.tradeNo));
+                    var pay = payRecordDao.Single(yeepayLog.KeyId);
+                    if (pay.State == 5)
+                    {
+                        Logs.WriteLog($"重复处理：State=5，orderId:{model.Data.tradeNo},返回结果:{result}", "d:\\Log\\MiShua", "MiShuaNotice");
+                        return result;
+                    }
+                    pay.State = 5;
+                    pay.DrawState = 0;
+                    pay.UTime = DateTime.Now;
+                    pay.HandleTime = DateTime.Now;
+                    flag = payRecordDao.Update(pay);
+                    Logs.WriteLog($"支付成功：flag={flag}", "d:\\Log\\MiShua", "MiShuaNotice");
+                    yeepayLogDao.UpdateState(Convert.ToInt32(model.Data.tradeNo), model.Data.status, model.Data.statusDesc, 5);
+                }
+                Logs.WriteLog($"返回结果：{result}", "d:\\Log\\MiShua", "MiShuaNotice");
+                return result;
+            }
         }
     }
 }

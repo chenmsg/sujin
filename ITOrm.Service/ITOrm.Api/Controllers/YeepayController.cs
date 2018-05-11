@@ -26,6 +26,8 @@ using static ITOrm.Payment.Yeepay.Enums;
 using ITOrm.Payment.Masget;
 using ITOrm.Payment.Const;
 using ITOrm.Payment.Teng;
+using ITOrm.Payment.MiShua;
+
 namespace ITOrm.Api.Controllers
 {
     public class YeepayController : Controller
@@ -308,32 +310,32 @@ namespace ITOrm.Api.Controllers
 
 
             #region 测试通道
-            //int ChannelType = 4;
-            //data["ChannelType"] = ChannelType;
-            //data["BankID"] = BankID;
+            int ChannelType = 5;
+            data["ChannelType"] = ChannelType;
+            data["BankID"] = BankID;
 
             #endregion
 
             #region 选择通道
-            int ChannelType = 0;
-            //data["ChannelType"] = ChannelType;
-            data["BankID"] = BankID;
+            //int ChannelType = 0;
+            ////data["ChannelType"] = ChannelType;
+            //data["BankID"] = BankID;
 
-            var option = SelectOptionChannel.Optimal(Amount, BankID, PayType);
-            if (option.backState == 0)
-            {
-                ChannelType = option.Data;
-                data["ChannelType"] = ChannelType;
-            }
-            else
-            {
-                if (option.Data == 2)
-                {
-                    return ApiReturnStr.getError(-100, "通道升级中，敬请期待");
-                }
-                return ApiReturnStr.getError(-100, option.message);
-            }
-            data["ChannelType"] = option.Data;
+            //var option = SelectOptionChannel.Optimal(Amount, BankID, PayType);
+            //if (option.backState == 0)
+            //{
+            //    ChannelType = option.Data;
+            //    data["ChannelType"] = ChannelType;
+            //}
+            //else
+            //{
+            //    if (option.Data == 2)
+            //    {
+            //        return ApiReturnStr.getError(-100, "通道升级中，敬请期待");
+            //    }
+            //    return ApiReturnStr.getError(-100, option.message);
+            //}
+            //data["ChannelType"] = option.Data;
             #endregion
 
 
@@ -407,6 +409,15 @@ namespace ITOrm.Api.Controllers
                     if (resultTeng.backState == 0)
                     {
                         data["PayUrl"] = resultTeng.Data["url"];
+                        return ApiReturnStr.getApiData(data);
+                    }
+                    break;
+                case Logic.ChannelType.米刷:
+                    var resultMi = MiShuaDepository.PayDzero( BankID,cid,Amount);
+                    msg = resultMi.message;
+                    if (resultMi.backState == 0&&resultMi.Data.status=="00")
+                    {
+                        data["PayUrl"] = resultMi.Data.tranStr;
                         return ApiReturnStr.getApiData(data);
                     }
                     break;

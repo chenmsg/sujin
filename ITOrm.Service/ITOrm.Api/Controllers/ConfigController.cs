@@ -11,6 +11,7 @@ using ITOrm.Utility.Const;
 using ITOrm.Utility.Helper;
 using ITOrm.Utility.ITOrmApi;
 using ITOrm.Utility.Cache;
+using ITOrm.Utility.StringHelper;
 
 namespace ITOrm.Api.Controllers
 {
@@ -85,11 +86,20 @@ namespace ITOrm.Api.Controllers
         #endregion
 
         #region 得到不同会员类型的费率信息
-        public string GetVipTypeIntroduce(int VipType)
+        public string GetVipTypeIntroduce(int cid=0,int VipType=0)
         {
             if (VipType < 0)
             {
                 return ApiReturnStr.getError(-100,"参数错误");
+            }
+            var version = TQuery.GetString("version");
+            if (VipType == 1&& version=="1.0.0"&&cid==3)
+            {
+                VipType = 3;
+            }
+            if (VipType == 2 && version == "1.0.0" && cid == 3)
+            {
+                VipType = 1;
             }
             int TypeId = (int)Logic.KeyValueType.支付类型管理;
             var listKeyValue = MemcachHelper.Get<List<KeyValue>>(Constant.list_keyvalue_key + TypeId, DateTime.Now.AddDays(7), () =>
