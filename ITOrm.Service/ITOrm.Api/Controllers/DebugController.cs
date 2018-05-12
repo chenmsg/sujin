@@ -441,7 +441,9 @@ namespace ITOrm.Api.Controllers
 
         public string cccccccccccc()
         {
-            var result = ITOrm.Payment.MiShua.MiShuaDepository.CheckDzero(100002770, Logic.Platform.系统);
+            var result = ITOrm.Payment.MiShua.MiShuaDepository.CheckDzero(100002939, Logic.Platform.系统);
+           
+
             return JsonConvert.SerializeObject(result);
         }
     }

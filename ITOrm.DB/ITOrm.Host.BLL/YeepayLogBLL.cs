@@ -29,7 +29,7 @@ namespace ITOrm.Host.BLL
         {
             var model = Single(Id);
             model.Code = code;
-            model.Msg = message;
+            model.Msg = string.IsNullOrEmpty( message)?"":message;
             if (state != 1 && state!=0 && state!=10 && state!=5)
             {
                 state = -1;
