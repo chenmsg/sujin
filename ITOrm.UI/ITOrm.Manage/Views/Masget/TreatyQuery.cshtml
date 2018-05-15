@@ -14,6 +14,7 @@
             List<SelectListItem> list = new List<SelectListItem>();
             list.Add(new SelectListItem() { Value = "1", Text = "积分通道" });
             list.Add(new SelectListItem() { Value = "2", Text = "无积分通道" });
+            list.Add(new SelectListItem() { Value = "4", Text = "荣邦3" });
         }
         @Html.MyDrop(list, "", "", TQuery.GetSafeString("ChannelType"), new { @name = "ChannelType", @class = "form-control" })
 

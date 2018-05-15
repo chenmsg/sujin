@@ -263,6 +263,7 @@ namespace ITOrm.Payment.Teng
 
                 JObject value = new JObject();
                 value["keyId"] = keyId;
+                value["remark"] = "腾付通通道定时开启（自动创建）";
                 timedTaskDao.Init(Logic.TimedTaskType.通道开启, execTime, value.ToString());
             }
 

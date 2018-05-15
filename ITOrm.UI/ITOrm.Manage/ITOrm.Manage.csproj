@@ -126,6 +126,7 @@
     <Compile Include="Controllers\BankQuotaController.cs" />
     <Compile Include="Controllers\ChannelPayController.cs" />
     <Compile Include="Controllers\MasgetController.cs" />
+    <Compile Include="Controllers\MishuaController.cs" />
     <Compile Include="Controllers\PromptController.cs" />
     <Compile Include="Controllers\SendMsgController.cs" />
     <Compile Include="Controllers\TengController.cs" />
@@ -188,6 +189,10 @@
     <Content Include="Views\SendMsg\Index.cshtml" />
     <Content Include="Views\TimedTask\Index.cshtml" />
     <Content Include="Views\PayRecord\RankingList.cshtml" />
+    <Content Include="Views\Yeepay\Main.cshtml" />
+    <Content Include="Views\Mishua\Index.cshtml" />
+    <Content Include="Views\Mishua\CheckDzero.cshtml" />
+    <Content Include="Views\Users\UpdateBankCard.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -60,10 +60,21 @@ namespace ITOrm.Payment.MiShua
                 return default(T);
             } }
 
+        private int _backState;
         public int backState { get {
 
-                return Convert.ToInt32(code);
-            } }
+                if (!string.IsNullOrEmpty(code))
+                {
+                    return Convert.ToInt32(code);
+                }
+                else
+                {
+                    return _backState;
+                }
+            }
+
+            set { value = _backState; }
+        }
     }
 
     public class noticeMiShuaModel

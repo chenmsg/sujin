@@ -1,0 +1,36 @@
+﻿@model  ITOrm.Payment.MiShua.respModel<ITOrm.Payment.MiShua.respCheckDzeroModel>
+@{
+    ViewBag.Title = "无卡查询接口";
+}
+
+<form>
+    <div class="form-group">
+        <label for="exampleInputEmail1">请求流水号</label>
+        <input type="text" class="form-control" name="tradeNo" value="@TQuery.GetSafeString("tradeNo")" placeholder="请求流水号">
+    </div>
+    <button type="submit" class="btn btn-default">提交</button>
+</form>
+<div class="alert alert-block alert-info fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading">查询信息:</h4>
+    <p>状态码:@(Model.code)</p>
+    <p>查询消息:@(Model.message)</p>
+    @if (Model.Data != null)
+    {
+        <p>交易金额：@Model.Data.price</p>
+        <p>订单描述：@Model.Data.description</p>
+        <p>订单日期：@Model.Data.orderDate</p>
+        <p>商户流水号：@Model.Data.tradeNo</p>
+        <p>米刷流水号：@Model.Data.transNo</p>
+        <p>返回结果：@Model.Data.tranStr</p>
+        <p>下单结果：@Model.Data.status (00：交易成功 01：交易中 02：交易失败 09：交易中，等待用户付款（尚未在银联创建订单）)</p>
+        <p>下单结果描述：@Model.Data.statusDesc</p>
+        <p>结算金额：@Model.Data.downRealPrice</p>
+        <p>佣金：@Model.Data.profit</p>
+        <p>代付状态：@Model.Data.qfStatus (NOT_QF 未代付 IN_PROCESS 代付中SUCCESS 代付成功FAILED代付失败)</p>
+    }
+
+
+</div>
+
+

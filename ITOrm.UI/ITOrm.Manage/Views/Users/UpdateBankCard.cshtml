@@ -1,0 +1,65 @@
+﻿@model UserBankCard
+@{
+    ViewBag.Title = "银行卡编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">银行卡编辑</li>
+</ul>
+
+
+
+<div class="bs-docs-example">
+    <form method="post">
+        <div class="form-group">
+            <label for="exampleInputEmail1">主键ID</label>
+            <input type="text" class="form-control" readonly="readonly" name="Id" value="@Model.ID" placeholder="Id">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">用户ID</label>
+            <input type="text" class="form-control" readonly="readonly" name="UserId" value="@Model.UserId" placeholder="UserId">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">预留手机号</label>
+            <input type="text" class="form-control" name="Mobile" value="@Model.Mobile" placeholder="预留手机号">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">卡号</label>
+            <input type="text" class="form-control" name="BankCard" value="@Model.BankCard" placeholder="卡号">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">所属银行</label>
+            @{
+                BankBLL bankDao = new BankBLL();
+                List<Bank> listBank =ITOrm.Utility.Cache.MemcachHelper.Get<List<Bank>>(Constant.list_bank_key, DateTime.Now.AddHours(1), () =>
+                {
+                    return bankDao.GetQuery(" State<>-1 ");
+                });
+                List<SelectListItem> list = new List<SelectListItem>();
+                foreach (var item in listBank)
+                {
+                    list.Add(new SelectListItem() { Value = item.BankCode, Text = item.BankName });
+                }
+            }
+            @Html.MyDrop(list, "", "", Model.BankCode, new { @name = "BankCode", @class = "form-control", @placeholder = "所属银行" })
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">cvn2</label>
+            <input type="text" class="form-control" name="CVN2" value="@Model.CVN2" placeholder="CVN2">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">有效期年</label>
+            <input type="text" class="form-control" name="ExpiresYear" value="@Model.ExpiresYear" placeholder="有效期年">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">有效期月</label>
+            <input type="text" class="form-control" name="ExpiresMouth" value="@Model.ExpiresMouth" placeholder="有效期月">
+        </div>
+
+        <button type="submit" class="btn btn-default">提交</button>
+    </form>
+</div>

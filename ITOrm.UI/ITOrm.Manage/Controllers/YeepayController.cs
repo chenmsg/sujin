@@ -13,7 +13,13 @@ namespace ITOrm.Manage.Controllers
 {
     public class YeepayController : Controller
     {
-  
+
+
+        public ActionResult Main()
+        {
+            return View();
+        }
+
         // GET: Yeepa
         [AdminFilter]
         public ActionResult Index()

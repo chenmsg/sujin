@@ -19,7 +19,7 @@
         $(function () {
             $(".nav-tabs li").click(function () {
                 var link = $(this).find("a").attr("data-link");
-                $("#myFrame").attr("src", "/masget/" + link );
+                $("#myFrame").attr("src",  link );
                 //var index = $(".nav-tabs li").index($(this));
                 $(".nav-tabs li").removeClass("active");
                 $(this).addClass("active");
@@ -29,19 +29,28 @@
             })
         })
 </script>
+
+
 <div class="bs-docs-example">
+
+    <ul class="breadcrumb">
+        <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+        <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+        <li class="active">通道接口查询</li>
+    </ul>
     <form id="form1" style="width:100%;margin:auto;">
 
         <div>
             <ul class="nav nav-tabs">
-                <li role="presentation" class="active"><a href="javascript:;" data-link="SubcompanyGet">子商户秘钥下载</a></li>
-                <li role="presentation"><a href="javascript:;" data-link="TreatyQuery">查询快捷协议</a></li>
-                <li role="presentation"><a href="javascript:;" data-link="PaymentjournalGet">查询交易订单</a></li>
+                <li role="presentation" class="active"><a href="javascript:;" data-link="/yeepay/">易宝接口</a></li>
+                <li role="presentation"><a href="javascript:;" data-link="/masget/">荣邦科技</a></li>
+                <li role="presentation"><a href="javascript:;" data-link="/teng/">腾付通</a></li>
+                <li role="presentation"><a href="javascript:;" data-link="/mishua/">米刷</a></li>
             </ul>
         </div>
 
         <div class="content" style="display:block;">
-            <iframe id="myFrame" marginheight="0" marginwidth="0" scrolling="auto" src="/masget/SubcompanyGet" frameborder="0" height="100%" width="100%"></iframe>
+            <iframe id="myFrame" marginheight="0" marginwidth="0" scrolling="auto" src="/yeepay/" frameborder="0" height="100%" width="100%"></iframe>
         </div>
     </form>
-    </div>
+</div>

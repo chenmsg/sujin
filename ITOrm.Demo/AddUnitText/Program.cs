@@ -22,19 +22,19 @@ namespace AddUnitText
         {
 
 
-            string json = "{\"versionNo\":1,\"price\":0.01,\"description\":\"测试\",\"mchNo\":\"100000\",\"tradeNo\":\"1234567890123457\",\"orderDate\":\"20161114205514\",\"notifyUrl\":\"http://localhost:8080/test\",\"orderType\":\"QRCODE_ALI\"}";
-            string result111 = ITOrm.Payment.MiShua.AES.Encrypt(json, "1234567812345678", "0102030405060708");
-            result111 += "1234";
-            string sasdfas= ITOrm.Utility.Encryption.SecurityHelper.GetMD5String(result111).ToUpper();
+            //string json = "{\"versionNo\":1,\"price\":0.01,\"description\":\"测试\",\"mchNo\":\"100000\",\"tradeNo\":\"1234567890123457\",\"orderDate\":\"20161114205514\",\"notifyUrl\":\"http://localhost:8080/test\",\"orderType\":\"QRCODE_ALI\"}";
+            //string result111 = ITOrm.Payment.MiShua.AES.Encrypt(json, "1234567812345678", "0102030405060708");
+            //result111 += "1234";
+            //string sasdfas= ITOrm.Utility.Encryption.SecurityHelper.GetMD5String(result111).ToUpper();
 
 
-            string safas = "Fa6E0O1QIyOqGhVFR/OMkh9Yh0elDfrHJH0Btu/G7LqIoiyNw1BmNhgOEZhS+hCq+0o5LOaKA787ck5Frc4CxOBD5ufCrLkgNOZifxoHZOJkL8GP4iCTubfX/T1aqDI/b+6I+IU+kgBzgqbwBEsCk7w9ZJ7If3xwfUZCCj/Oy/ot77oSoHI8Ezv6f253CjmIhjM33o6KgOEVF8ABFteHBNCcE8LtpBJELaiyiXtY5m746D+42XUngJy+a1w82gzLWxigAtU3xxwj2ehtq6aPA7jnhLY4F0g6PLXrD5P2wpM1vVDW479aeQnB+lkgeiThn8k3snSflmq+0ealLPvVSPl3xJH7gTkhs9ahyt7J/a1djaayjwoGQFpwdbMdwtru";
-            string asdfa= ITOrm.Payment.MiShua.AES.Decrypt(safas, "1234567812345678", "0102030405060708");
+            //string safas = "Fa6E0O1QIyOqGhVFR/OMkh9Yh0elDfrHJH0Btu/G7LqIoiyNw1BmNhgOEZhS+hCq+0o5LOaKA787ck5Frc4CxOBD5ufCrLkgNOZifxoHZOJkL8GP4iCTubfX/T1aqDI/b+6I+IU+kgBzgqbwBEsCk7w9ZJ7If3xwfUZCCj/Oy/ot77oSoHI8Ezv6f253CjmIhjM33o6KgOEVF8ABFteHBNCcE8LtpBJELaiyiXtY5m746D+42XUngJy+a1w82gzLWxigAtU3xxwj2ehtq6aPA7jnhLY4F0g6PLXrD5P2wpM1vVDW479aeQnB+lkgeiThn8k3snSflmq+0ealLPvVSPl3xJH7gTkhs9ahyt7J/a1djaayjwoGQFpwdbMdwtru";
+            //string asdfa= ITOrm.Payment.MiShua.AES.Decrypt(safas, "1234567812345678", "0102030405060708");
 
-            Console.WriteLine(result111);
+            //Console.WriteLine(result111);
 
-            Console.ReadKey();
-            return;
+            //Console.ReadKey();
+            //return;
             //string[] strs = new string[]{
             //    "2016-09-08",
             //    "2016-09-19",

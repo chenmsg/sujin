@@ -44,6 +44,25 @@
             <button class="btn btn-default" type="submit">提交</button>
 
         </div>
+        <div class="form-group " style="float:right;margin-right:100px;">
+            <label for="exampleInputEmail1">自动开启</label>
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    操作 <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    @{
+                        var listChannelType = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Utility.Const.Logic.ChannelType));
+                        foreach (var item in listChannelType)
+                        {
+                           
+                                <li><a href="/TimedTask/openChannel?chan=@(item.Value)">@(item.Text)通道</a></li>
+                        }
+                    }
+
+                </ul>
+            </div>
+        </div>
         <div style="clear:both;"></div>
     </form>
 </div>
@@ -58,6 +77,7 @@
             <th>预期执行时间</th>
             <th>实际执行时间</th>
             <th>状态</th>
+            <th>操作</th>
         </tr>
     </thead>
     <tbody>
@@ -87,12 +107,21 @@
                     {
                         @Html.MySpan("执行成功", "green");
                     }
+                    else if (item.State == -1)
+                    {
+                        @Html.MySpan("已删除", "red");
+                    }
                     else
                     {
                         @Html.MySpan("执行失败", "red");
                     }
                 </td>
-              
+              <td>
+                  @if (item.State == 0)
+                  {
+                      <a href="/TimedTask/DeleteTask?ID=@item.ID">删除</a>
+                  }
+              </td>
             </tr>
         }
     </tbody>

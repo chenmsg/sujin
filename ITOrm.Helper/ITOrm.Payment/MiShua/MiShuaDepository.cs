@@ -99,6 +99,10 @@ namespace ITOrm.Payment.MiShua
             Logic.ChannelType channel = Logic.ChannelType.米刷;
 
             var yeelog = yeepayLogDao.Single(orderno);
+            if (yeelog == null)
+            {
+                return new respModel<respCheckDzeroModel>() { backState = -100, message = "请求流水号不存在" };
+            }
             int requestId = yeepayLogDao.Init((int)MiShua.Enums.MiShuaType.无卡查询接口, yeelog.UserId, (int)Platform, orderno, (int)channel);
             Logs.WriteLog($"获取请求流水号：orderno:{orderno},Platform:{Platform},requestId:{requestId}", MiShuaLogDic, LogDic);
 

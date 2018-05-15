@@ -162,5 +162,47 @@ namespace ITOrm.Manage.Controllers
             }
             return new RedirectResult($"/Prompt?state={-100}&msg={result.message}&url={url}"); ;
         }
+
+        [HttpGet]
+        public ActionResult UpdateBankCard(int Id)
+        {
+            UserBankCard kv = new  UserBankCard();
+            if (Id > 0)
+            {
+                kv = userBankCardDao.Single(Id);
+            }
+            return View(kv);
+        }
+
+        [HttpPost]
+        public ActionResult UpdateBankCard(string Mobile, string BankCard, string BankCode, string CVN2, string ExpiresYear, string ExpiresMouth, int ID)
+        {
+            int backState = -100;
+            string msg = string.Empty;
+            UserBankCard bank = new UserBankCard();
+            string ubcurl = "";
+            if (ID > 0)
+            {
+                bank = userBankCardDao.Single(ID);
+                ubcurl = "/users/info/" + bank.UserId;
+                bank.Mobile = Mobile;
+                bank.BankCard = BankCard;
+                bank.BankCode = BankCode;
+                bank.CVN2 = CVN2;
+                bank.ExpiresYear = ExpiresYear;
+                bank.ExpiresMouth = ExpiresMouth;
+
+                if (bank.TypeId == 0)
+                {
+                    return new RedirectResult($"/Prompt?state=-100&msg=结算卡暂不支持修改&url={url}");
+                }
+                var result= userBankCardDao.Update(bank);
+                backState = result ? 0 : -100;
+                msg= result ? "修改成功" :"修改失败";
+            }
+  
+
+            return new RedirectResult($"/Prompt?state={backState}&msg={msg}&url={ubcurl}");
+        }
     }
 }
