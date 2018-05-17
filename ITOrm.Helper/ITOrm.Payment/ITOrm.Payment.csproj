@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Const\SelectOptionChannel.cs" />
+    <Compile Include="Const\UsersDepository.cs" />
     <Compile Include="Masget\AES.cs" />
     <Compile Include="Masget\Base64Method.cs" />
     <Compile Include="MiShua\AES.cs" />

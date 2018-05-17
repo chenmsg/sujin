@@ -64,7 +64,7 @@ namespace ITOrm.Api.Filters
             {
                 return ;//不需要验证
             }
-            if (action.ToLower().Contains("debug"))
+            if (action.ToLower().Contains("debug")|| action.ToLower().Contains("invite"))
             {
                 return ;
             }

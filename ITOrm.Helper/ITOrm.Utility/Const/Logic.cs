@@ -80,9 +80,10 @@ namespace ITOrm.Utility.Const
         public enum AccountType
         {
             //资金增加
-            刷卡分润=100,
-            开通会员分润=101,
-
+            收款分润=100,
+            开通SVIP分润=101,
+            开通VIP分润 = 102,
+            升级会员 =103,
             //资金冻结
             提现申请=200,
 

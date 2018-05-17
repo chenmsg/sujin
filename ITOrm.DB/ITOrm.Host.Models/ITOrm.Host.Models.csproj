@@ -58,6 +58,9 @@
     <Compile Include="BankTreatyApply.cs">
       <DependentUpon>Host.tt</DependentUpon>
     </Compile>
+    <Compile Include="Banner.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
     <Compile Include="Channel.cs">
       <DependentUpon>Host.tt</DependentUpon>
     </Compile>
@@ -98,6 +101,9 @@
       <DependentUpon>Host.tt</DependentUpon>
     </Compile>
     <Compile Include="Users.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserShare.cs">
       <DependentUpon>Host.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewBankQuota.cs">

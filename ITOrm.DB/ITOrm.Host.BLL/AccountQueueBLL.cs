@@ -15,5 +15,15 @@ namespace ITOrm.Host.BLL
             var list= ITOrm.Utility.Helper.DapperHelper.ExecuteProcedure<ResultModel>("proc_AccountQueueHandle", new { accountQueueId });
             return list.FirstOrDefault();
         }
+
+        //public int SystemAccount(decimal Amount)
+        //{
+        //    AccountQueue model = new AccountQueue();
+        //    model.Amount = Amount;
+        //    model.CTime = DateTime.Now;
+        //    model.InOrOut = 1;
+        //    model.Platform = 1;
+        //    model.TypeId=
+        //}
     }
 }

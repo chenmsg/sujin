@@ -19,7 +19,7 @@ namespace ITOrm.Api.Controllers
     {
         public KeyValueBLL keyValueDao = new KeyValueBLL();
         public UsersBLL usersDao = new UsersBLL();
-
+        public BannerBLL bannerDao = new BannerBLL();
         #region 获得最新App版本信息
         public string GetVersion(int cid)
         {
@@ -123,6 +123,39 @@ namespace ITOrm.Api.Controllers
             return ApiReturnStr.getApiDataList(list);
         }
         #endregion
+
+        #region App轮播图
+        public string BannerList(int UserId)
+        {
+            var listBanner = bannerDao.GetQuery(10, " State=1 AND GETDATE() BETWEEN StartTime AND EndTime",null, "ORDER BY Sort DESC,ID DESC");
+            JArray list = new JArray();
+            if (listBanner != null && listBanner.Count > 0)
+            {
+                foreach (var item in listBanner)
+                {
+                    JObject data = new JObject();
+                    data["ID"] = item.ID;
+                    data["Title"] = item.Title;
+                    data["WapURL"] = item.WapURL;
+                    data["ImgUrl"] = item.ImgUrl;
+                    list.Add(data);
+                }
+            }
+            return ApiReturnStr.getApiDataList(list);
+        }
+        #endregion
+
+        #region 审核隐藏
+        public string AppAuditingHide(int cid, string version,int UserId)
+        {
+            if (cid == 3 && version == "1.0.2")
+            {
+                return ApiReturnStr.getError(0, "hidden");
+            }
+            return ApiReturnStr.getError(-100, "show");
+        }
+        #endregion
+
 
     }
 }

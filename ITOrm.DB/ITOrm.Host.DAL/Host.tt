@@ -92,6 +92,15 @@ namespace ITOrm.Host.DAL
         bool Delete(int id);
 
         #endregion
+
+		#region ==========缓存操作
+				/// <summary>
+        /// 清理缓存
+        /// </summary>
+        /// <param name="Id"></param>
+        void RemoveCache(long Id);
+
+		#endregion
 		<#}#>
 
         #region ==========查询单一实体
@@ -171,6 +180,7 @@ namespace ITOrm.Host.DAL
 
 
         #endregion
+
 
     }
 

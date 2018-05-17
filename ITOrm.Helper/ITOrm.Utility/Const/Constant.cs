@@ -160,6 +160,9 @@ namespace ITOrm.Utility.Const
         /// 登录Key  Guid
         /// </summary>
         public static string login_key = Debug + "-login-appkey-";
+
+        public static string income_total_key = Debug + "-income-total-key-";
+
         /// <summary>
         /// 当前API站点域名
         /// </summary>
@@ -172,6 +175,8 @@ namespace ITOrm.Utility.Const
             }
         }
 
+
+        public static string SystemAESKey = "776c8680cb97f1e1";
 
         //积分
         public static decimal[] fee1Rate1 = new decimal[] { 0.0041M, 0.0043M, 0.0048M, 0.0053M};

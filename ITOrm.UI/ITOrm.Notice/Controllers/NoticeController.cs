@@ -17,6 +17,7 @@ using ITOrm.Payment.Teng;
 using ITOrm.Utility.Const;
 using ITOrm.Payment.MiShua;
 using System.IO;
+using ITOrm.Payment.Const;
 
 namespace ITOrm.Notice.Controllers
 {
@@ -181,7 +182,11 @@ namespace ITOrm.Notice.Controllers
                 Logs.WriteLog($"结算订单修改：flag:{flag},transferStatus:{model.transferStatus},state:{state}", "d:\\Log\\Yeepay", "WithDrawApiNotice");
                 flag = payRecordDao.Update(pay);
                 Logs.WriteLog($"支付订单修改：flag:{flag},transferStatus:{model.transferStatus},state:{state}", "d:\\Log\\Yeepay", "WithDrawApiNotice");
-
+                if (pay.State == 10)
+                {
+                    //交易成功回调
+                    UsersDepository.NoticeSuccess(pay.ID, pay.UserId);
+                }
                 if (flag) result = "SUCCESS";
                 Logs.WriteLog($"返回结果:{result}", "d:\\Log\\Yeepay", "WithDrawApiNotice");
                 return result;
@@ -394,6 +399,9 @@ namespace ITOrm.Notice.Controllers
                         flag = payRecordDao.Update(payRecord);
                         //更新支付记录
                         Logs.WriteLog($"更新支付记录：requestId:{requestId},payRecordId:{payRecordId},flag:{flag}", "d:\\Log\\Masget", "backpayNotice");
+                            //交易成功回调
+                            UsersDepository.NoticeSuccess(payRecord.ID, payRecord.UserId);
+  
                     }
                     else
                     {
@@ -545,6 +553,8 @@ namespace ITOrm.Notice.Controllers
                         pay.HandleTime = DateTime.Now;
                         flag = payRecordDao.Update(pay);
                         Logs.WriteLog($"修改支付订单结果：flag={flag}", "d:\\Log\\Teng", "NoticeWithTeng");
+                            //交易成功回调
+                            UsersDepository.NoticeSuccess(pay.ID, pay.UserId);
                         yeepayLogDao.UpdateState(Convert.ToInt32(model.orderId), model.respCode, model.respMsg, 10);
                     }
                 }
@@ -610,6 +620,10 @@ namespace ITOrm.Notice.Controllers
                     flag = payRecordDao.Update(pay);
                     Logs.WriteLog($"代付成功：flag={flag}", "d:\\Log\\MiShua", "MiShuaNotice");
                     yeepayLogDao.UpdateState(Convert.ToInt32(model.Data.tradeNo), model.Data.status, model.Data.statusDesc, 10);
+
+                        //交易成功回调
+                        UsersDepository.NoticeSuccess(pay.ID, pay.UserId);
+  
                 }
                 else if (model.Data.status == "00"&& model.Data.qfStatus != "SUCCESS")
                 {

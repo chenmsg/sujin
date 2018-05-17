@@ -48,9 +48,16 @@
     <Compile Include="Core\AccountRecordBLL.cs">
       <DependentUpon>Host.tt</DependentUpon>
     </Compile>
+    <Compile Include="Core\BannerBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
     <Compile Include="Core\ShareProfitBLL.cs">
       <DependentUpon>Host.tt</DependentUpon>
     </Compile>
+    <Compile Include="Core\UserShareBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ShareProfitBLL.cs" />
     <Compile Include="TimedTaskBLL.cs" />
     <Compile Include="BankTreatyApplyBLL.cs" />
     <Compile Include="Core\AccountBLL.cs">
@@ -132,6 +139,8 @@
     <Compile Include="PayCashierBLL.cs" />
     <Compile Include="SendMsgBLL.cs" />
     <Compile Include="UserBankCardBLL.cs" />
+    <Compile Include="UserShareBLL.cs" />
+    <Compile Include="UsersBLL.cs" />
     <Compile Include="WithDrawBLL.cs" />
     <Compile Include="PayRecordBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

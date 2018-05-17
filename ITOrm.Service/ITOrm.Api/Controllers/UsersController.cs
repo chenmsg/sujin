@@ -25,6 +25,8 @@ using System.Drawing;
 using ITOrm.Payment.Yeepay;
 using static ITOrm.Payment.Yeepay.Enums;
 using ITOrm.Payment.Masget;
+using ITOrm.Core.Utility.Helper;
+
 namespace ITOrm.Api.Controllers
 {
     public class UsersController : Controller
@@ -42,6 +44,8 @@ namespace ITOrm.Api.Controllers
         public static KeyValueBLL keyValueDao = new KeyValueBLL();
         public static MasgetUserBLL masgetUserDao = new MasgetUserBLL();
         public static BankTreatyApplyBLL bankTreatyApplyDao = new BankTreatyApplyBLL();
+        public static AccountRecordBLL accountRecordDao = new AccountRecordBLL();
+
         #region 注册模块
 
 
@@ -217,7 +221,7 @@ namespace ITOrm.Api.Controllers
 
 
             //发送短信
-            var resultMsg = SystemSendMsg.Send(Logic.EnumSendMsg.注册短信,mobile);
+            var resultMsg = SystemSendMsg.Send(Logic.EnumSendMsg.注册短信, mobile);
 
             SendMsg model = new SendMsg();
             model.TypeId = (int)Logic.EnumSendMsg.注册短信;
@@ -360,7 +364,7 @@ namespace ITOrm.Api.Controllers
             model.Password = newPwd;
             model.UTime = DateTime.Now; ;
             bool flag = userDao.Update(model);
-            userEventDao.UserUpdatePassword(cid, UserId, Ip.GetClientIp(), oldPwd, newPwd, flag ? 1 : 0,TQuery.GetString("version"));//事件日志
+            userEventDao.UserUpdatePassword(cid, UserId, Ip.GetClientIp(), oldPwd, newPwd, flag ? 1 : 0, TQuery.GetString("version"));//事件日志
             Logs.WriteLog($"Action:User,Cmd:UpdatePassword,UserId:{UserId},oldPwd{oldPwd},newPwd:{newPwd},State:{flag}", "d:\\Log\\ITOrm", "UserUpdatePassword");
             return ApiReturnStr.getError(flag ? 0 : -100, flag ? "修改成功" : "修改失败");
 
@@ -377,7 +381,7 @@ namespace ITOrm.Api.Controllers
         /// <param name="mobile">手机号</param>
         /// <param name="password">密码</param>
         /// <returns></returns>
-        public string Login(int cid = 0, string mobile = "", string password = "",string guid="")
+        public string Login(int cid = 0, string mobile = "", string password = "", string guid = "")
         {
 
             if (!TypeParse.IsMobile(mobile))
@@ -413,14 +417,14 @@ namespace ITOrm.Api.Controllers
                 JObject data = new JObject();
                 data["UserId"] = model.UserId;
                 //记录登录状态
-                ITOrm.Utility.Cache.MemcachHelper.Set(Constant.login_key+model.UserId,guid,DateTime.Now.AddYears(1));
-                userEventDao.UserLogin(cid, mobile, password, Ip.GetClientIp(), model.UserId, 1, TQuery.GetString("version"),guid);//登录成功的日志
+                ITOrm.Utility.Cache.MemcachHelper.Set(Constant.login_key + model.UserId, guid, DateTime.Now.AddYears(1));
+                userEventDao.UserLogin(cid, mobile, password, Ip.GetClientIp(), model.UserId, 1, TQuery.GetString("version"), guid);//登录成功的日志
                 return ApiReturnStr.getApiData(0, "登录成功", data);
             }
 
             if (model != null && model.UserId > 0)
             {
-                userEventDao.UserLogin(cid, mobile, password, Ip.GetClientIp(), model.UserId, 0,TQuery.GetString("version"), guid);//登录失败的日志
+                userEventDao.UserLogin(cid, mobile, password, Ip.GetClientIp(), model.UserId, 0, TQuery.GetString("version"), guid);//登录失败的日志
                 return ApiReturnStr.getError(-100, "用户名或密码错误(登录失败)");
             }
             return ApiReturnStr.getError(-100, "用户名或密码错误");
@@ -434,9 +438,9 @@ namespace ITOrm.Api.Controllers
         /// <param name="UserId"></param>
         /// <param name="guid"></param>
         /// <returns></returns>
-        public string CheckDevice(int cid=0,int UserId=0,string guid="")
+        public string CheckDevice(int cid = 0, int UserId = 0, string guid = "")
         {
- 
+
             if (guid.Length != 36)
             {
                 return ApiReturnStr.getError(-100, "唯一标识错误");
@@ -444,12 +448,12 @@ namespace ITOrm.Api.Controllers
 
             if (UserId == 0 || Constant.IsDebug)
             {
-                return ApiReturnStr.getError(0,$"UserId={UserId}或IsDebug={Constant.IsDebug}");
+                return ApiReturnStr.getError(0, $"UserId={UserId}或IsDebug={Constant.IsDebug}");
             }
 
             if (MemcachHelper.Get(Constant.login_key + UserId) != null)
             {
-               
+
                 var uuidCach = MemcachHelper.Get(Constant.login_key + UserId).ToString();
                 if (guid == uuidCach)
                 {
@@ -503,15 +507,15 @@ namespace ITOrm.Api.Controllers
             {
                 data["VipType"] = 2;
             }
-            data["AvatarImg"] = ITOrm.Utility.Const.Constant.CurrentApiHost+ userImageDao.GetUrl(user.AvatarImg);
+            data["AvatarImg"] = ITOrm.Utility.Const.Constant.CurrentApiHost + userImageDao.GetUrl(user.AvatarImg);
             Logic.VipType vip = (Logic.VipType)user.VipType;
             decimal[] r = Constant.GetRate(0, vip);
             decimal[] r2 = Constant.GetRate(1, vip);
 
-            data["Rate1"] =r[0].perCent(); 
+            data["Rate1"] = r[0].perCent();
             data["Rate3"] = r[1].ToString("F1");
             data["NoneRate1"] = r2[0].perCent();
-            data["NoneRate3"] = r2[1].ToString("F1"); 
+            data["NoneRate3"] = r2[1].ToString("F1");
 
 
             var ubk = userBankCardDao.Single(" UserId=@UserId and TypeId=0 and state=1  ", new { UserId });
@@ -537,17 +541,17 @@ namespace ITOrm.Api.Controllers
 
         #region 设置头像
 
-        public string AvatarImg(int cid=0,int UserId=0,int ImgId=0)
+        public string AvatarImg(int cid = 0, int UserId = 0, int ImgId = 0)
         {
             if (cid == 0 || UserId == 0 || ImgId == 0)
             {
-                return ApiReturnStr.getError(-100,"参数有误");
+                return ApiReturnStr.getError(-100, "参数有误");
             }
             var user = userDao.Single(UserId);
             user.AvatarImg = ImgId;
             user.UTime = DateTime.Now;
             bool flag = userDao.Update(user);
-            bool flag2= userImageDao.UpdateState(ImgId, 1);
+            bool flag2 = userImageDao.UpdateState(ImgId, 1);
             userEventDao.UserEventInit(cid, UserId, Ip.GetClientIp(), flag && flag2 ? 1 : 0, "Users", "AvatarImg", $"{{ImgId:{ImgId},flag:{flag},flag2:{flag2}}}");
             return ApiReturnStr.getError(flag && flag2 ? 0 : -100, flag && flag2 ? "设置成功" : "设置失败");
         }
@@ -584,7 +588,7 @@ namespace ITOrm.Api.Controllers
                     obj["OpeningSerialBank"] = item.OpeningSerialBank;
                     obj["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
                     obj["State"] = item.State;
-                   
+
                     list.Add(obj);
                 }
             }
@@ -600,10 +604,10 @@ namespace ITOrm.Api.Controllers
         public string GetBankList()
         {
             //Logs.WriteLog($"1111", "d:\\Log\\", "GetBankList");
-            List<Bank> listBank = MemcachHelper.Get<List<Bank>>(Constant.list_bank_key , DateTime.Now.AddHours(1), () =>
-            {
-                return bankDao.GetQuery(" State<>-1 "); 
-            });
+            List<Bank> listBank = MemcachHelper.Get<List<Bank>>(Constant.list_bank_key, DateTime.Now.AddHours(1), () =>
+           {
+               return bankDao.GetQuery(" State<>-1 ");
+           });
 
             JArray list = new JArray();
             if (listBank != null && listBank.Count > 0)
@@ -614,7 +618,7 @@ namespace ITOrm.Api.Controllers
                     obj["BankName"] = item.BankName;
                     obj["BankCode"] = item.BankCode;
                     obj["State"] = item.State;
-                    obj["StateTxt"] = item.State==0?"可用":"不可用";
+                    obj["StateTxt"] = item.State == 0 ? "可用" : "不可用";
                     list.Add(obj);
                 }
             }
@@ -665,7 +669,7 @@ namespace ITOrm.Api.Controllers
                 }
 
                 if (BankID == 0)
-                { 
+                {
                     UserBankCard ubc = userBankCardDao.Single(" UserId=@UserId and BankCard=@bankcard and TypeId=1  ", new { UserId, bankcard });
                     if (ubc != null && ubc.ID > 0)
                     {
@@ -827,11 +831,11 @@ namespace ITOrm.Api.Controllers
         #endregion
 
         #region 确认开通快捷协议
-        public string BankCardSubmitActivateCode(int cid = 0, int UserId = 0, int BankID = 0, int ChannelType = 0,string Code="")
+        public string BankCardSubmitActivateCode(int cid = 0, int UserId = 0, int BankID = 0, int ChannelType = 0, string Code = "")
         {
 
-            var result= MasgetDepository.TreatyConfirm(BankID, Code,cid, (Logic.ChannelType)ChannelType);
-            userEventDao.BankCardSubmitActivateCode(cid, UserId, Ip.GetClientIp(), result.backState==0?1:0, TQuery.GetString("version"), BankID, ChannelType, Code);
+            var result = MasgetDepository.TreatyConfirm(BankID, Code, cid, (Logic.ChannelType)ChannelType);
+            userEventDao.BankCardSubmitActivateCode(cid, UserId, Ip.GetClientIp(), result.backState == 0 ? 1 : 0, TQuery.GetString("version"), BankID, ChannelType, Code);
             return ApiReturnStr.getError(result.backState == 0 ? 0 : -100, result.message);
         }
         #endregion
@@ -967,8 +971,50 @@ namespace ITOrm.Api.Controllers
 
         #endregion
 
+        #region 资金记录
+
+        public string AccountRecord(int UserId, int pageIndex = 1, int pageSize = 10)
+        {
+            int totalCount = 0;
+            //int TypeId = (int)Logic.AccountType.刷卡分润; 开通会员分润
+            var listAccountRecord = accountRecordDao.GetPaged(pageSize, pageIndex, out totalCount, "UserId=@UserId ", new { UserId }, "order by ID desc");
+            JArray list = new JArray();
+            foreach (var item in listAccountRecord)
+            {
+                JObject data = new JObject();
+                data["InOrOut"] = item.InOrOut == 1 ? "+" : "-";
+                data["Amount"] = item.Amount.ToString("F2");
+                data["Available"] = item.Available.ToString("F2");
+                data["Frozen"] = item.Frozen.ToString("F2");
+                data["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
+                data["TypeId"] = item.TypeId;
+                data["Service"] = ((Logic.AccountType)item.TypeId).ToString();
+                list.Add(data);
+            }
+            return ApiReturnStr.getApiDataListByPage(list, totalCount, pageIndex, pageSize);
+        }
+
+        public string AccountTotal(int UserId)
+        {
+            var model = accountDao.Single("UserId=@UserId", new { UserId });
+            JObject data = new JObject();
+            data["Total"] = "0.00";
+            data["Frozen"] = "0.00";
+            data["Available"] = "0.00";
+            if (model != null && model.ID > 0)
+            {
+                data["Total"] = model.Total.ToString("F2");
+                data["Frozen"] = model.Frozen.ToString("F2");
+                data["Available"] = model.Available.ToString("F2");
+            }
+            return ApiReturnStr.getApiData(model);
+        }
+        #endregion
+
 
         #endregion
+
+
 
         public string demo()
         {

@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using ITOrm.Manage.Filters;
 using ITOrm.Utility.Const;
 using System.Text;
+using ITOrm.Payment.Const;
 namespace ITOrm.Manage.Controllers
 {
     public class UsersController : Controller
@@ -19,6 +20,7 @@ namespace ITOrm.Manage.Controllers
         public static UsersBLL userDao = new UsersBLL();
         public static YeepayUserBLL yeepayUserDao = new YeepayUserBLL();
         public static UserBankCardBLL userBankCardDao = new UserBankCardBLL();
+        public static MasgetUserBLL masgetUserDao = new MasgetUserBLL();
         string url = "/users/";
         string msg = "";
         // GET: Users
@@ -101,45 +103,9 @@ namespace ITOrm.Manage.Controllers
 
         public ActionResult FeeSetApi(int UserId,int VipType)
         {
+            var result= UsersDepository.UpgradeVip(UserId, VipType, (int)Logic.Platform.系统);
+            return new RedirectResult($"/Prompt?state={result.backState}&msg={result.message}&url={url}");
 
-            Users user = userDao.Single(UserId);
-            //if (user.VipType == VipType)
-            //{
-            //    return new RedirectResult($"/Prompt?state={-100}&msg=当前用户类型相同，不可设置&url={url}");
-            //}
-            Logic.VipType vip = (Logic.VipType)VipType;
-            YeepayUser yUser = yeepayUserDao.Single("UserId=@UserId",new { UserId});
-            if (yUser == null)
-            {
-                return new RedirectResult($"/Prompt?state={-100}&msg=未开通商户&url={url}");
-            }
-            if (yUser.IsAudit != 1)
-            {
-                return new RedirectResult($"/Prompt?state={-100}&msg=请先审核&url={url}");
-            }
-            if((DateTime.Now -yUser.UTime).Seconds<5)
-            if (yUser.RateState1 == 1)
-            {
-                    return new RedirectResult($"/Prompt?state={-100}&msg=审核时间和设置费率时间需间隔5秒&url={url}");
-            }
-
-            
-            decimal[] r = Constant.GetRate(0, vip);
-
-            decimal rate1 = r[0];
-            decimal rate3 = r[1];
-
-
-            var result1=  YeepayDepository.FeeSetApi(UserId, 1,  Enums.YeepayType.设置费率1,rate1.ToString("F4"));
-            var result3 = YeepayDepository.FeeSetApi(UserId, 1, Enums.YeepayType.设置费率3, rate3.ToString("F0"));
-            if (result1.backState == 0 && result3.backState == 0)
-            {
-                user.VipType = VipType;
-                user.UTime = DateTime.Now;
-                userDao.Update(user);
-                return new RedirectResult($"/Prompt?state=0&msg=设置成功&url={url}");
-            }
-            return new RedirectResult($"/Prompt?state={-100}&msg=设置失败,{result1.message},{result3.message}&url={url}");
         }
 
         public ActionResult AuditMerchant(int UserId)

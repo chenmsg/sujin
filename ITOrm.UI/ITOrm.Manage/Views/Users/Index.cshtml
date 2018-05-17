@@ -147,10 +147,17 @@
                         <ul class="dropdown-menu">
                             <li><a href="/users/info/@item["UserId"]">查看</a></li>
                             <li><a href="/users/AuditMerchant?UserId=@item["UserId"]">审核通过</a></li>
-                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=0">设置顶级代理</a></li>
-                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=1">设置SVip</a></li>
-                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=2">设置Vip</a></li>
-                            <li><a href="/users/FeeSetApi?UserId=@item["UserId"]&VipType=3">设置普通用户</a></li>
+                            @{
+                                foreach (SelectListItem it in listVip)
+                                {
+                                    if (it.Value != "0" && it.Value != "3" && Convert.ToInt32( it.Value) < item["VipType"].ToInt())
+                                    {
+                                        <li><a href="javascript:UpgradeVip(@item["UserId"],@it.Value,'@it.Text');">升级@(it.Text)</a></li>
+                                    }
+                                }
+                            }
+                          
+
    
                         </ul>
                     </div>
@@ -188,4 +195,13 @@
 </div>
 
 
+<script type="text/javascript">
+    function UpgradeVip(userid,viptype,name)
+    {
 
+        if (confirm("确定给该用户升级" + name + "吗？"))
+        {
+           window.location.href = "/users/FeeSetApi?UserId=" + userid + "&VipType=" + viptype;
+        }
+    }
+</script>

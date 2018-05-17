@@ -107,6 +107,13 @@ namespace ITOrm.Host.BLL
         }
 
         #endregion
+
+		#region ==========缓存操作
+		public void RemoveCache(int Id)
+		{
+			dal.RemoveCache((long)Id);
+		}
+		#endregion
 		<#}#>
 #region ==========查询单一实体
 
@@ -215,6 +222,7 @@ namespace ITOrm.Host.BLL
 
 
         #endregion
+
 
     }
 }

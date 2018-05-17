@@ -9,6 +9,7 @@ namespace ITOrm.Manage.Controllers
     public class PromptController : Controller
     {
         // GET: Prompt
+        [ValidateInput(false)]
         public ActionResult Index(int state,string msg)
         {
             return View();

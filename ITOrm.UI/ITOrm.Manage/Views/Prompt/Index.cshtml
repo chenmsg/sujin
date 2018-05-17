@@ -3,7 +3,7 @@
     ViewBag.Title = "用户管理";
     Layout = "~/Views/Shared/_Layout.cshtml";
     int state = TQuery.GetInt("state");
-    string msg = TQuery.GetString("msg");
+    string msg =TQuery.GetString("msg");
     string url = TQuery.GetString("url");
 }
 <!-- Button trigger modal -->
@@ -22,11 +22,11 @@
             <div class="modal-body">
                 @if (state == 0)
                 {
-                    <div class="alert alert-success" role="alert">@msg</div>
+                    <div class="alert alert-success" role="alert">@Html.Raw( msg)</div>
                 }
                 else
                 {
-                    <div class="alert alert-danger" role="alert">@msg</div>
+                    <div class="alert alert-danger" role="alert">@Html.Raw(msg)</div>
                 }
             </div>
             <div class="modal-footer">

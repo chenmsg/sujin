@@ -106,8 +106,10 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ForgetController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InviteController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\PayController.cs" />
+    <Compile Include="Controllers\ProfitController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -188,6 +190,7 @@
     <Content Include="Themes\img\PSBC.png" />
     <Content Include="Themes\css\bootstrap2.css" />
     <Content Include="Themes\js\dialog.js" />
+    <Content Include="Themes\js\guid.js" />
     <Content Include="Themes\js\jquery.js" />
     <Content Include="Themes\js\zepto.min.js" />
     <Content Include="Web.config">
@@ -205,6 +208,7 @@
     <Folder Include="Views\Config\" />
     <Folder Include="Views\Forget\" />
     <Folder Include="Views\News\" />
+    <Folder Include="Views\Profit\" />
     <Folder Include="Views\Server\" />
     <Folder Include="Views\Upload\" />
     <Folder Include="Views\Users\" />
@@ -265,6 +269,7 @@
     <Content Include="Views\Debug\Optimal.cshtml" />
     <Content Include="Views\Pay\TengCashier.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Invite\Reg.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
