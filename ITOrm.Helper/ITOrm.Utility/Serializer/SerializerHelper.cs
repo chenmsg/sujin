@@ -223,7 +223,7 @@ namespace ITOrm.Utility.Serializer
         [DataMember(Order = 0)]
         public int backStatus { get; set; }
         [DataMember(Order = 1)]
-        public string msg { get; set; }
+        public string message { get; set; }
         [DataMember(Order = 2)]
         public IList<T> Data { get; set; }
         [DataMember(Order = 3)]
@@ -231,7 +231,7 @@ namespace ITOrm.Utility.Serializer
         [DataMember(Order = 4)]
         public Int32 pageCount { get; set; }
         [DataMember(Order = 5)]
-        public DateTime currTime
+        public DateTime serverTime
         {
             set { _value = value; }
             get { return _value; }
@@ -244,7 +244,7 @@ namespace ITOrm.Utility.Serializer
         [DataMember(Order = 0)]
         public int backStatus { get; set; }
         [DataMember(Order = 1)]
-        public string msg { get; set; }
+        public string message { get; set; }
         [DataMember(Order = 2)]
         public T Data { get; set; }
         [DataMember(Order = 3)]
@@ -252,11 +252,15 @@ namespace ITOrm.Utility.Serializer
         [DataMember(Order = 4)]
         public Int32 pageCount { get; set; }
         [DataMember(Order = 5)]
-        public DateTime currTime
+        public DateTime serverTime
         {
             set { _value = value; }
             get { return _value; }
         }
+        [DataMember(Order = 6)]
+        public Int32 pageIndex { get; set; }
+        [DataMember(Order = 7)]
+        public Int32 pageSize { get; set; }
 
     }
 }

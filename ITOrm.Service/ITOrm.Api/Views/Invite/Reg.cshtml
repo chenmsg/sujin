@@ -1,7 +1,6 @@
-﻿@model Users
+﻿@model ResultModelData<Users>
 @{
     Layout = null;
-  
 }
 
 <!DOCTYPE html>
@@ -60,11 +59,11 @@
         <div class="order-details" style="">
             <div class="details-info">
                 <div style="color:#9e9e9e;">　邀请人</div>
-                <div>@(Model.IsRealState==1?Model.RealName: "--")</div>
+                <div>@(Model.Data.IsRealState==1? Model.Data.RealName: "--")</div>
             </div>
             <div class="details-info">
                 <div style="color:#9e9e9e;">　邀请码</div>
-                <div>@(Model.Mobile)</div>
+                <div>@(Model.Data.Mobile)</div>
             </div>
         </div>
         <span class="details-switch-trigger"></span>
@@ -83,22 +82,22 @@
                 <figure class="input-box">
                     <label>
                         <mark>验证码</mark>
-                        <input maxlength="11" placeholder="图形验证码" style="color:#333;" value=""  type="tel">
+                        <input maxlength="4" placeholder="图形验证码" name="vcode" id="vcode"  style="color:#333;" value=""  type="tel">
                         <img src="" id="imgCode"/>
                     </label>
                 </figure>
                 <figure class="input-box">
                     <label>
                         <mark>验证码</mark>
-                        <input maxlength="6"  id="J_verifycode" placeholder="短信验证码" name="code" type="tel">
+                        <input maxlength="6"  id="J_verifycode" placeholder="短信验证码" name="mcode" type="tel">
                         <i class="clear iconfont"></i>
-                        <button onclick="getCode(this)" type="button" style=""   id="J_getCode" class="pme-btn pme-btn-sm ">获取验证码</button>
+                        <button onclick="getCode(this)" type="button" style="" name="mcode"   id="J_getCode" class="pme-btn pme-btn-sm ">获取验证码</button>
                     </label>
                 </figure>
                 <figure class="input-box">
                     <label>
                         <mark>密　码</mark>
-                        <input maxlength="11" placeholder="密　码" style="color:#333;" value="" type="password">
+                        <input maxlength="16"  placeholder="密　码" name="pwd" id="pwd" style="color:#333;" value="" type="password">
                     </label>
                 </figure>
 
@@ -106,7 +105,7 @@
                     @*gray*@
                     <button type="submit"  class="J-payBtn   ">注册</button>
                 </div>
-                <input type="hidden" name="BaseUserId" id="BaseUserId" value="@Model.UserId" />
+                <input type="hidden" name="baseUserId" id="baseUserId" value="@Model.Data.UserId" />
                 <input type="hidden" name="guid" id="guid" value="" />
                 <input type="hidden" name="regGuid" id="regGuid" value="" />
             </form>
@@ -180,7 +179,13 @@
 
     function submitValidate()
     {
+        var mobile = $("#mobile").val()
         var code = $("#J_verifycode").val();
+        var vcode = $("#vcode").val();
+        var pwd = $("#pwd").val();
+
+
+
         if (code == "")
         {
             return false;
@@ -191,18 +196,37 @@
         if ($(".J-payBtn").hasClass("gray")) {
             return false;
         }
-
-
-
-        if(/[^\d]/.test(code))
+    
+        if (mobile.length != 11)
         {
-            MyModal("alert-danger", '验证码必须为数字');
+            MyModal("alert-danger", '手机号长度不足11位字符');
             return false;
         }
-        var tengGuid=$("#tengGuid").val();
-        if (tengGuid == "")
+        if (/[^\d]/.test(mobile)) {
+            MyModal("alert-danger", '手机号码必须为数字');
+            return false;
+        }
+        if (vcode.length != 4)
+        {
+            MyModal("alert-danger", '图形验证码是4位字符');
+            return false;
+        }
+        if(/[^\d]/.test(code))
+        {
+            MyModal("alert-danger", '手机验证码必须为数字');
+            return false;
+        }
+        var regGuid = $("#regGuid").val();
+        if (regGuid == "")
         {
             MyModal("alert-danger", '请先获取短信');
+            return false;
+        }
+
+        if (pwd.length < 6 || pwd.length > 16)
+        {
+          
+            MyModal("alert-danger", '密码为6-16位字符');
             return false;
         }
         timeop();
@@ -231,17 +255,30 @@
     var flag = false;
     function getCode(obj)
     {
-
+        var mobile = $("#mobile").val();
+        var vcode = $("#vcode").val();
+        var guid = $("#guid").val();
         if ($(".J-payBtn").hasClass("gray")) {
+            return false;
+        }
+        if (mobile.length != 11) {
+            MyModal("alert-danger", '手机号长度不足11位字符');
+            return false;
+        }
+        if (/[^\d]/.test(mobile)) {
+            MyModal("alert-danger", '手机号码必须为数字');
+            return false;
+        }
+
+        if (vcode.length != 4) {
+            MyModal("alert-danger", '图形验证码是4位字符');
             return false;
         }
         if (flag)
         {
             return;
         }
-        var mobile = $("#mobile").val();
-        var vcode = $("#vcode").val();
-        var guid = $("#guid").val();
+
         $.post("/itapi/Invite/SendMsgCode", { mobile: mobile, vcode: vcode, guid: guid }, function (data) {
             if (data.backState == 0) {
                 $(obj).css("color", "#999999");
@@ -276,3 +313,9 @@
 
 </script>
 
+@if (Model.backState == -100)
+{
+    <script type="text/javascript">
+        MyModal("alert-danger", '@Model.message');
+    </script>
+}

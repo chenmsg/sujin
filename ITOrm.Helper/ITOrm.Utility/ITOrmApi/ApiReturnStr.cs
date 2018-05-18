@@ -21,17 +21,6 @@ namespace ITOrm.Utility.ITOrmApi
         }
         public static string getApiDataList(JArray t)
         {
-            //var returnstr = "";
-            //var jsoncList = new jsonCommModel<IList<T>>();
-
-            //    jsoncList.backStatus = 0;
-            //    jsoncList.msg = "success";
-            //    jsoncList.Data = t;
-
-            ////returnstr = SerializerHelper.JsonSerializer<jsonCommModel<IList<T>>>(jsoncList);
-            //    returnstr = JsonConvert.SerializeObject(jsoncList, timeFormat);
-            //return returnstr;
-
             var result = CreateOKJObject();
             result[DATA] = t;
             return result.ToString();
@@ -69,21 +58,6 @@ namespace ITOrm.Utility.ITOrmApi
 
         public static string getApiDataListByPage(JArray list, int recordCount,int pageIndex,int pageSize)
         {
-
-            //var returnstr = "";
-            //var jsoncList = new jsonCommModel<IList<T>>();
-
-            //    jsoncList.backStatus = 0;
-            //    jsoncList.msg = "success";
-            //    jsoncList.Data = t;
-            //    jsoncList.pageCount = pageCount;
-            //    jsoncList.recordCount = recordCount;
-
-            ////returnstr = SerializerHelper.JsonSerializer<jsonCommModel<IList<T>>>(jsoncList);
-            //    returnstr = JsonConvert.SerializeObject(jsoncList, timeFormat);
-            //return returnstr;
-
-
             var result = CreateOKJObjectList();
             result[DATA][LIST] = list;
             result[DATA][PAGE_COUNT] = (recordCount % pageSize==0?(recordCount/pageSize):(recordCount/pageSize)+1);
@@ -95,21 +69,11 @@ namespace ITOrm.Utility.ITOrmApi
 
         public static string getError(int backState=-100,string msg="")
         {
-            //var jsoncList = new jsonCommModel<object>();
-            //jsoncList.backStatus = backState;
-            //jsoncList.msg = msg;
-            //return JsonConvert.SerializeObject(jsoncList, timeFormat);
-
             var result = CreateOKJObject();
             result[BACK_STATUS] = backState;
             result[MESSAGE] = msg;
             return result.ToString();
         }
-
-
-
-
-
         public static readonly string BACK_STATUS = "backStatus";
         public static readonly string MESSAGE = "message";
         public static readonly string DATA = "data";
@@ -124,8 +88,6 @@ namespace ITOrm.Utility.ITOrmApi
             result[DATA] = data;
     	    return result;
         }
-
-
         public static readonly string LIST = "list";
         public static readonly string PAGE_COUNT = "pageCount";
         public static readonly string RECORD_COUNT = "recordCount";

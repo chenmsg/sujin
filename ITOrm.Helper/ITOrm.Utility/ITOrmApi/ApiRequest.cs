@@ -10,75 +10,23 @@ using ITOrm.Utility.Encryption;
 using ITOrm.Utility.Log;
 using ITOrm.Utility.Serializer;
 using Newtonsoft.Json;
+using ITOrm.Core.Helper;
 
 namespace ITOrm.Utility.ITOrmApi
 {
     public class ApiRequest
     {
         private static readonly string dict = "ITOrm";
-        public static JsonSerializerSettings jSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }; 
 
         #region 主要方法
-        /// <summary>
-        /// 获取api接口数据
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="apistr"></param>
-        /// <param name="resulturl"></param>
-        /// <returns></returns>
-        public static jsonCommModel<T> getApiData<T>(string target, string param, string method = "POST", string urltype = "")
+
+        public static reqApiModel<T> getApiData<T>(string target, string param, string method = "POST")
         {
-            jsonCommModel<T> json = default(jsonCommModel<T>);
-            try
-            {
-                
-                //var json = JsonConvert.SerializeObject(response, Formatting.Indented, jSetting);
-                string resu = RequestApi(target, param, method, urltype);
-                if (!string.IsNullOrEmpty(resu))
-                {
-                    json = JsonConvert.DeserializeObject<jsonCommModel<T>>(resu,jSetting);
-                    //json = SerializerHelper.JsonDeserialize<jsonCommModel<T>>(resu);
-                    if (null == json)
-                    {
-                        return getError<T>(1,"解析错误");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.WriteLog("读取接口错误，错误信息：" + ex.Message, "d:\\Log\\" + dict, target);
-                return getError<T>(1, "网络异常：" + ex.Message);
-            }
-            return json;
+            var result = RequestApi(target, param, method);
+            reqApiModel<T> model = JsonConvert.DeserializeObject<reqApiModel<T>>(result);
+            return model;
         }
 
-        public static jsonCommModelList<T> getApiDataList<T>(string target, string param, string method = "POST")
-        {
-            jsonCommModelList<T> jsonList = default(jsonCommModelList<T>);
-            try
-            {
-
-
-                string resu = RequestApi(target, param, method);
-                if (!string.IsNullOrEmpty(resu))
-                {
-                    jsonList = JsonConvert.DeserializeObject<jsonCommModelList<T>>(resu,jSetting);
-                    //jsonList = SerializerHelper.JsonDeserialize<jsonCommModelList<T>>(resu);
-                    if (null == jsonList)
-                    {
-                        return getErrorList<T>(1, "解析错误" );
-                    }
-   
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Logs.WriteLog("读取接口错误，错误信息：" + ex.Message, "d:\\Log\\" + dict, target);
-                return getErrorList<T>(1, "网络异常" + ex.Message);
-            }
-            return jsonList;
-        }
         #endregion
 
         /// <summary>
@@ -87,12 +35,12 @@ namespace ITOrm.Utility.ITOrmApi
         /// <param name="target"></param>
         /// <param name="param"></param>
         /// <returns></returns>
-        public static string RequestApi(string target, string param, string method = "POST",string urltype="")
+        public static string RequestApi(string target, string param, string method = "POST")
         {
             string ret = string.Empty;
-            string userName = System.Web.Configuration.WebConfigurationManager.AppSettings["itorm.api.itormName"] != null ? System.Web.Configuration.WebConfigurationManager.AppSettings["itorm.api.itormName"].ToString() : "";
-            var passWord = System.Web.Configuration.WebConfigurationManager.AppSettings["itorm.api.webpass"] != null ? System.Web.Configuration.WebConfigurationManager.AppSettings["itorm.api.webpass"].ToString() : "";
-            var md5key = System.Web.Configuration.WebConfigurationManager.AppSettings["itorm.api.strMd5Key"] != null ? System.Web.Configuration.WebConfigurationManager.AppSettings["itorm.api.strMd5Key"].ToString() : "";
+            string userName = ConfigHelper.GetAppSettings("itorm.api.itormName"); 
+            var passWord = ConfigHelper.GetAppSettings("itorm.api.webpass"); 
+            var md5key = ConfigHelper.GetAppSettings("itorm.api.strMd5Key"); 
           
             var buildParam = param;
             var arrayParam = param.ToArray();
@@ -102,29 +50,9 @@ namespace ITOrm.Utility.ITOrmApi
             string key = string.Format("{0}{1}{2}{3}{4}", userName, passWord, target, md5key, buildParam);
             string sign = SecurityHelper.GetMD5String(key);
             string body = string.Empty;
-            //StringBuilder requestStringUri = new StringBuilder((System.Web.Configuration.WebConfigurationManager.AppSettings["fuka.api.root"]) + target + "/");
             StringBuilder requestStringUri = new StringBuilder();
-            string arrStr = System.Web.Configuration.WebConfigurationManager.AppSettings["urltype"] != null ? System.Web.Configuration.WebConfigurationManager.AppSettings["urltype"].ToString() : "";
-            var arr = arrStr.Split(',');
-            if (arr.Any(s => s.Equals(target.ToLower())))
-            {
+            requestStringUri.Append(ITOrm.Utility.Const.Constant.CurrentApiHost+"itapi/"+ target);
 
-                var lctapiurltongbu = System.Web.Configuration.WebConfigurationManager.AppSettings["itorm.api.urltongbu"] != null ? System.Web.Configuration.WebConfigurationManager.AppSettings["itorm.api.urltongbu"].ToString() : System.Web.Configuration.WebConfigurationManager.AppSettings["itorm.api.url"].ToString();
-                Logs.WriteLog("读取url：" + lctapiurltongbu, "d:\\Log\\" + dict, target);
-                requestStringUri.Append(lctapiurltongbu + target);
-            }
-            else
-            {
-                requestStringUri.Append((System.Web.Configuration.WebConfigurationManager.AppSettings["itorm.api.url"]) + target);
-            }
-            //if (urltype == "orderurl")//订单接口地址
-            //{
-            //    requestStringUri.Append((System.Web.Configuration.WebConfigurationManager.AppSettings["fuka.api.order"]) + target + "/");
-            //}
-            //else
-            //{
-            //    requestStringUri.Append((System.Web.Configuration.WebConfigurationManager.AppSettings["fuka.api.root"]) + target);
-            //}
         
             if (!string.IsNullOrEmpty(param))
             {
@@ -141,7 +69,6 @@ namespace ITOrm.Utility.ITOrmApi
                     requestStringUri.AppendFormat("?{0}", body);
             }
 
-            //Logs.kufaLog("开始发送请求：" + requestStringUri, "d:\\Log\\LCTlogs", target);
 
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(requestStringUri.ToString());
             request.Method = method;
@@ -168,34 +95,12 @@ namespace ITOrm.Utility.ITOrmApi
                 reader.Dispose();
             }
 
-            //Logs.kufaLog("获得请求数据：" + ret, "d:\\Log\\fuka20logs", target);
             return ret;
         }
         
 
     
-        public static T RequestApi<T>(string target, string param, string method = "POST")
-        {
-            T list = default(T);
-            try
-            {
 
-
-                string resu = RequestApi(target, param, method);
-                if (!string.IsNullOrEmpty(resu))
-                {
-                    var seclist = JsonConvert.DeserializeObject<T>(resu);
-                    return seclist;
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Logs.WriteLog("读取接口错误，错误信息：" + ex.Message, "d:\\Log\\fuka20logs", target);
-
-            }
-            return list;
-        }
 
 
         //public static IList<T> getApiDataList<T>(string target, string param, string method = "POST")
@@ -280,18 +185,10 @@ namespace ITOrm.Utility.ITOrmApi
             string key = string.Format("{0}{1}{2}{3}{4}", userName, passWord, target, md5key, buildParam);
             string sign = SecurityHelper.GetMD5String(key);
             string body = string.Empty;
-            //StringBuilder requestStringUri = new StringBuilder((System.Web.Configuration.WebConfigurationManager.AppSettings["fuka.api.root"]) + target + "/");
             StringBuilder requestStringUri = new StringBuilder();
 
             requestStringUri.Append(lcturl + target);
-            //if (urltype == "orderurl")//订单接口地址
-            //{
-            //    requestStringUri.Append((System.Web.Configuration.WebConfigurationManager.AppSettings["fuka.api.order"]) + target + "/");
-            //}
-            //else
-            //{
-            //    requestStringUri.Append((System.Web.Configuration.WebConfigurationManager.AppSettings["fuka.api.root"]) + target);
-            //}
+
 
             if (!string.IsNullOrEmpty(param))
             {
@@ -308,7 +205,7 @@ namespace ITOrm.Utility.ITOrmApi
                     requestStringUri.AppendFormat("?{0}", body);
             }
 
-            //Logs.kufaLog("开始发送请求：" + requestStringUri, "d:\\Log\\LCTlogs", target);
+
 
             RequestApiModel model = new RequestApiModel();
             model.buildParam = buildParam;
@@ -319,21 +216,7 @@ namespace ITOrm.Utility.ITOrmApi
             return model;
         }
 
-        public static jsonCommModel<T> getError<T>(int backStatus = 0, string msg="")
-        {
-            jsonCommModel<T> json = new jsonCommModel<T>();
-            json.backStatus = backStatus;
-            json.msg = msg;
-            return json;
-        }
-        //List
-        public static jsonCommModelList<T> getErrorList<T>(int backStatus = 0, string msg = "")
-        {
-            jsonCommModelList<T> json = new jsonCommModelList<T>();
-            json.backStatus = backStatus;
-            json.msg = msg;
-            return json;
-        }
+
        
     }
     //编写自助签名调试平台对象
@@ -355,6 +238,19 @@ namespace ITOrm.Utility.ITOrmApi
         public string Md5Sign{get;set;}
 
         public string Url{get;set;}
+    }
+
+
+    public class reqApiModel<T>
+    {
+        public int backStatus { get; set; }
+        public int backState { get
+            {
+                return backStatus;
+            } }
+        public string message { get; set; }
+        public T Data { get; set; }
+        public DateTime serverTime { get; set; }
     }
 
 }

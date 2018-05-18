@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using ITOrm.Utility.Helper;
 
 namespace ITOrm.Api.Controllers
 {
@@ -19,15 +21,54 @@ namespace ITOrm.Api.Controllers
         public static UsersBLL usersDao = new UsersBLL();
         public static SendMsgBLL sendMsgDao = new SendMsgBLL();
         // GET: Invite
+        [HttpGet]
         public ActionResult Reg(string u)
         {
+            ResultModelData<Users> result = new ResultModelData<Users>();
+
             string BaseUserId = ITOrm.Utility.Encryption.AESEncrypter.AESDecrypt(u, Constant.SystemAESKey);
+           
             if (string.IsNullOrEmpty(BaseUserId))
             {
-                return Content("参数有误");
+                result.backState = -100;
+                result.message = "参数有误";
             }
             var user = usersDao.Single(Convert.ToInt32(BaseUserId));
-            return View(user);
+            result.Data = user;
+            return View(result);
+        }
+
+
+        // GET: Invite
+        [HttpPost]
+        public ActionResult Reg(string mobile,string mcode,string pwd,string baseUserId, string regGuid)
+        {
+            ResultModelData<Users> result = new ResultModelData<Users>();
+
+
+            //密码加密
+            pwd = ITOrm.Utility.Encryption.SecurityHelper.GetMD5String(pwd);
+            string parms = $"mobile={mobile}&mcode={mcode}&password={pwd}&regGuid={regGuid}&baseUserId={baseUserId}";
+            var regResult = ApiRequest.getApiData<JObject>("Users/Register", parms);
+
+            if (regResult.backState == 0)
+            {
+                return new RedirectResult("/itapi/invite/Prompt");
+            }
+            else
+            {
+                result.backState = -100;
+                result.message = regResult.message;
+            }
+            var user = usersDao.Single(baseUserId);
+            result.Data = user;
+            return View(result);
+        }
+
+        [ValidateInput(false)]
+        public ActionResult Prompt()
+        {
+            return View();
         }
 
 
@@ -67,90 +108,14 @@ namespace ITOrm.Api.Controllers
         /// <returns></returns>
         public string SendMsgCode(int cid = 0, string mobile = "", string vcode = "", string guid = "")
         {
-            #region 验证
-            if (!ITOrm.Utility.StringHelper.TypeParse.IsMobile(mobile))
-            {
-                return ApiReturnStr.getError(-100, "手机号格式验证失败");
-            }
-            if (guid.Length != 36)
-            {
-                return ApiReturnStr.getError(-100, "唯一标识错误");
-            }
-            if (vcode.Trim().Length != 4)
-            {
-                return ApiReturnStr.getError(-100, "验证码错误");
-            }
-
-            string imgKey = ITOrm.Utility.Const.Constant.reg_img_code + guid;
-
-            if (!ITOrm.Utility.Cache.MemcachHelper.Exists(imgKey))
-            {
-                return ApiReturnStr.getError(-101, "图形验证码过期");
-            }
-            string cacheImgCode = ITOrm.Utility.Cache.MemcachHelper.Get(imgKey).ToString();
-
-            if (vcode.Trim().ToLower() != cacheImgCode.ToLower())
-            {
-                return ApiReturnStr.getError(-100, "图形验证码错误");
-            }
-            var modelUsers = usersDao.Single(" mobile=@mobile ", new { mobile });
-            if (modelUsers != null && modelUsers.UserId > 0)
-            {
-                return ApiReturnStr.getError(-100, "该手机号已注册");
-            }
-            if (sendMsgDao.ValidateRegisterCnt(mobile))
-            {
-                return ApiReturnStr.getError(-100, "验证码发送次数超限");
-            }
-            #endregion
-
-            var regGuid = ITOrm.Utility.StringHelper.Util.GetGUID;
-
-
-
-            //发送短信
-            var resultMsg = SystemSendMsg.Send(Logic.EnumSendMsg.注册短信, mobile);
-
-            SendMsg model = new SendMsg();
-            model.TypeId = (int)Logic.EnumSendMsg.注册短信;
-            model.Context = resultMsg.content;
-            model.CTime = DateTime.Now;
-            model.IP = ITOrm.Utility.Client.Ip.GetClientIp();
-            model.Merchant = resultMsg.Merchant;
-            model.Mobile = mobile;
-            model.Platform = cid;
-            model.Service = "reg";
-            model.RelationId = resultMsg.relationId;
-            model.State = resultMsg.backState ? 2 : 1;
-            model.UTime = DateTime.Now;
-            int result = sendMsgDao.Insert(model);
-
-            if (resultMsg.backState && result > 0)
-            {
-                #region 销毁
-                ITOrm.Utility.Cache.MemcachHelper.Delete(imgKey);
-                #endregion
-
-                string key = Constant.reg_mobile_code + regGuid;
-                var cacheData = new JObject();
-                cacheData["mobile"] = mobile;
-                cacheData["code"] = resultMsg.code;
-                MemcachHelper.Set(key, cacheData.ToString(), ITOrm.Utility.Const.Constant.mobile_code_expires);
-
-
-                var data = new JObject();
-                data["regGuid"] = regGuid;
-                if (Constant.IsDebug)
-                {
-                    data["code"] = resultMsg.code;
-                }
-                return ApiReturnStr.getApiData(0, "发送成功", data);
-            }
-
-            return ApiReturnStr.getApiData(-100, "发送失败");
-
+            
+            var result = ApiRequest.getApiData<JObject>("Users/SendMsgCode", $"mobile={mobile}&vcode={vcode}&guid={guid}");
+            return JsonConvert.SerializeObject(result);
 
         }
+
+
+             
 
     }
 }

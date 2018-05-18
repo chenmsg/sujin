@@ -90,42 +90,49 @@ namespace ITOrm.Payment.Const
         /// <param name="UserId"></param>
         public static void NoticeSuccess(int PayId,int UserId)
         {
-
-            Users user = userDao.Single(UserId);
-            Logs.WriteLog($"user:{JsonConvert.SerializeObject(user)}", "d:\\Log\\", "NoticeSuccess");
-            //分润
-            var shareProfit = shareProfitDao.ShareProfit(PayId);
-            Logs.WriteLog($"分润：PayId:{PayId},UserId:{UserId},shareProfit:{JsonConvert.SerializeObject(shareProfit)}", "d:\\Log\\", "NoticeSuccess");
-            if (user.VipType == (int)Logic.VipType.普通用户)
+            try
             {
-                //自己检查是否刷卡达8万
-                //刷卡升级Vip检查
-                var checkGiveVipResult = userDao.CheckGiveVip(UserId, (int)Logic.Platform.系统);
-                Logs.WriteLog($"自我检查:PayId:{PayId},UserId:{UserId},checkGiveVipResult:{JsonConvert.SerializeObject(checkGiveVipResult)}", "d:\\Log\\", "NoticeSuccess");
-                if (checkGiveVipResult.backState == 0)
+                Users user = userDao.Single(UserId);
+                Logs.WriteLog($"user:{JsonConvert.SerializeObject(user)}", "d:\\Log\\", "NoticeSuccess");
+                //分润
+                var shareProfit = shareProfitDao.ShareProfit(PayId);
+                Logs.WriteLog($"分润：PayId:{PayId},UserId:{UserId},shareProfit:{JsonConvert.SerializeObject(shareProfit)}", "d:\\Log\\", "NoticeSuccess");
+                if (user.VipType == (int)Logic.VipType.普通用户)
                 {
-                   var uv= UpdateChannelVip(UserId, (int)Logic.VipType.Vip用户, (int)Logic.Platform.系统);
-                    Logs.WriteLog($"自我第三方升级:PayId:{PayId},UserId:{UserId},UpdateChannelVip:{JsonConvert.SerializeObject(uv)}", "d:\\Log\\", "NoticeSuccess");
-                }
-                
-            }
-            if (user.BaseUserId > 0)
-            {
-                Users BaseUser = userDao.Single(user.BaseUserId);
-                Logs.WriteLog($"BaseUser:{JsonConvert.SerializeObject(BaseUser)}", "d:\\Log\\", "NoticeSuccess");
-                if (BaseUser.VipType == (int)Logic.VipType.普通用户)
-                {
-                    //邀请人需要检测 下线商户是否累计15万
+                    //自己检查是否刷卡达8万
                     //刷卡升级Vip检查
-                    var checkGiveVipResult = userDao.CheckGiveVip(user.BaseUserId, (int)Logic.Platform.系统);
-                    Logs.WriteLog($"邀请人检查:PayId:{PayId},user.BaseUserId:{user.BaseUserId},checkGiveVipResult:{JsonConvert.SerializeObject(checkGiveVipResult)}", "d:\\Log\\", "NoticeSuccess");
+                    var checkGiveVipResult = userDao.CheckGiveVip(UserId, (int)Logic.Platform.系统);
+                    Logs.WriteLog($"自我检查:PayId:{PayId},UserId:{UserId},checkGiveVipResult:{JsonConvert.SerializeObject(checkGiveVipResult)}", "d:\\Log\\", "NoticeSuccess");
                     if (checkGiveVipResult.backState == 0)
                     {
-                       var uv= UpdateChannelVip(user.BaseUserId, (int)Logic.VipType.Vip用户, (int)Logic.Platform.系统);
-                        Logs.WriteLog($"邀请人第三方升级:PayId:{PayId},user.BaseUserId:{user.BaseUserId},UpdateChannelVip:{JsonConvert.SerializeObject(uv)}", "d:\\Log\\", "NoticeSuccess");
+                        var uv = UpdateChannelVip(UserId, (int)Logic.VipType.Vip用户, (int)Logic.Platform.系统);
+                        Logs.WriteLog($"自我第三方升级:PayId:{PayId},UserId:{UserId},UpdateChannelVip:{JsonConvert.SerializeObject(uv)}", "d:\\Log\\", "NoticeSuccess");
+                    }
+
+                }
+                if (user.BaseUserId > 0)
+                {
+                    Users BaseUser = userDao.Single(user.BaseUserId);
+                    Logs.WriteLog($"BaseUser:{JsonConvert.SerializeObject(BaseUser)}", "d:\\Log\\", "NoticeSuccess");
+                    if (BaseUser.VipType == (int)Logic.VipType.普通用户)
+                    {
+                        //邀请人需要检测 下线商户是否累计15万
+                        //刷卡升级Vip检查
+                        var checkGiveVipResult = userDao.CheckGiveVip(user.BaseUserId, (int)Logic.Platform.系统);
+                        Logs.WriteLog($"邀请人检查:PayId:{PayId},user.BaseUserId:{user.BaseUserId},checkGiveVipResult:{JsonConvert.SerializeObject(checkGiveVipResult)}", "d:\\Log\\", "NoticeSuccess");
+                        if (checkGiveVipResult.backState == 0)
+                        {
+                            var uv = UpdateChannelVip(user.BaseUserId, (int)Logic.VipType.Vip用户, (int)Logic.Platform.系统);
+                            Logs.WriteLog($"邀请人第三方升级:PayId:{PayId},user.BaseUserId:{user.BaseUserId},UpdateChannelVip:{JsonConvert.SerializeObject(uv)}", "d:\\Log\\", "NoticeSuccess");
+                        }
                     }
                 }
             }
+            catch (Exception e)
+            {
+                Logs.WriteLog($"PayId:{PayId},UserId:{UserId},msg:{e.Message}", "d:\\Log\\", "NoticeSuccessError");
+            }
+            
             
         }
     }

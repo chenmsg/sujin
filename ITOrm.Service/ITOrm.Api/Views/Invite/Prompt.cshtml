@@ -1,0 +1,51 @@
+﻿
+@{
+    Layout = null;
+
+}
+
+<!DOCTYPE html>
+<html>
+<head lang="zh-CN">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+
+
+    <title>注册成功</title>
+
+    <link href="/Themes/css/bootstrap2.css" rel="stylesheet" />
+    <script src="/Themes/js/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="alert alert-block alert-info fade in">
+        @*<button data-dismiss="alert" class="close" type="button">×</button>*@
+        <h4 class="alert-heading">注册成功</h4>
+        <p>•为方便您的使用，请下载客户端进行使用</p>
+        <p>•新人首刷满6666元返现6.6元</p>
+        <p>•新人首刷满8888元返现8.8元</p>
+        <p>•新人首刷满16666返现16.6</p>
+        <p>•新人首刷满18888元返现18.8元</p>
+    </div>
+    <div style="width:280px;margin:auto;">
+        <img  id="img" src="http://api.sujintech.com/Themes/img/Android.png" width="280" height="280" />
+    </div>
+    <div style="margin-top:20px;" class="alert alert-danger" role="alert">
+        <strong>提示：</strong>扫描二维码或在微信内长按识别二维码前往下载客户端
+    </div>
+</body>
+</html>
+
+
+<script type="text/javascript">
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    //alert('是否是Android：'+isAndroid);
+    //alert('是否是iOS：'+isiOS);
+    if (isiOS == true)
+    {
+        $("#img").attr("src", "http://api.sujintech.com/Themes/img/iOS.png");
+    }
+</script>
