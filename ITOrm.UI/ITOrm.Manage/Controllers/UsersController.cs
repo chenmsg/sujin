@@ -21,6 +21,9 @@ namespace ITOrm.Manage.Controllers
         public static YeepayUserBLL yeepayUserDao = new YeepayUserBLL();
         public static UserBankCardBLL userBankCardDao = new UserBankCardBLL();
         public static MasgetUserBLL masgetUserDao = new MasgetUserBLL();
+        public static AccountBLL accountDao = new AccountBLL();
+        public static AccountRecordBLL accountRecordDao = new AccountRecordBLL();
+        public static AccountQueueBLL accountQueueDao = new AccountQueueBLL();
         string url = "/users/";
         string msg = "";
         // GET: Users
@@ -90,6 +93,17 @@ namespace ITOrm.Manage.Controllers
                         Users user = userDao.Single(BaseUserId);
                         item["BaseRealName"] = user.RealName;
                     }
+
+                    item["Total"] = 0;
+                    item["Available"] = 0;
+                    item["Frozen"] = 0;
+                    var account = accountDao.Single($"UserId={UserId}");
+                    if (account.ID > 0)
+                    {
+                        item["Total"] = account.Total;
+                        item["Available"] = account.Available;
+                        item["Frozen"] = account.Frozen;
+                    }
                 }
             }
             return View(new ResultModel(list, totalCount));
@@ -158,10 +172,10 @@ namespace ITOrm.Manage.Controllers
                 bank.ExpiresYear = ExpiresYear;
                 bank.ExpiresMouth = ExpiresMouth;
 
-                if (bank.TypeId == 0)
-                {
-                    return new RedirectResult($"/Prompt?state=-100&msg=结算卡暂不支持修改&url={url}");
-                }
+                //if (bank.TypeId == 0)
+                //{
+                //    return new RedirectResult($"/Prompt?state=-100&msg=结算卡暂不支持修改&url={url}");
+                //}
                 var result= userBankCardDao.Update(bank);
                 backState = result ? 0 : -100;
                 msg= result ? "修改成功" :"修改失败";
@@ -170,5 +184,68 @@ namespace ITOrm.Manage.Controllers
 
             return new RedirectResult($"/Prompt?state={backState}&msg={msg}&url={ubcurl}");
         }
+
+
+        public string GetDrawRecord(int UserId)
+        {
+            ResultModel result = new ResultModel();
+           
+            var listAccountRecord = accountRecordDao.GetQuery(5, "UserId=@UserId and TypeId=301", new { UserId }, " order by id desc");
+            JArray list = new JArray();
+            if (listAccountRecord != null && listAccountRecord.Count > 0)
+            {
+                foreach (var item in listAccountRecord)
+                {
+                    JObject data = new JObject();
+                    data["ID"] = item.ID;
+                    data["Amount"] = item.Amount.ToString("F2");
+                    data["Available"] = item.Available.ToString("F2");
+                    data["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    list.Add(data);
+                }
+                result.list = list;
+            }
+            return JsonConvert.SerializeObject(result);
+        }
+
+
+        public string Draw(int UserId,decimal Amount=0M)
+        {
+
+            ResultModel result = new ResultModel();
+            if ( Amount==0M || UserId==0)
+            {
+                result.backState = -100;
+                result.message = "提现金额不能为0!";
+                return JsonConvert.SerializeObject(result);
+            }
+
+           
+            Account account = accountDao.Single("UserId=@UserId",new { UserId});
+            if (account.Available < Amount)
+            {
+                result.backState = -100;
+                result.message = "可用余额不足!";
+                return JsonConvert.SerializeObject(result);
+            }
+            AccountQueue acc = new AccountQueue();
+            acc.Amount = Amount;
+            acc.TypeId = (int)Logic.AccountType.提现到账;
+            acc.InOrOut = -1;
+            acc.UserId = UserId;
+            acc.Platform = (int)Logic.Platform.系统;
+            acc.Remark = "人工操作提现";
+            int num=accountQueueDao.Insert(acc);
+            if (num > 0)
+            {
+                result.backState = 0;
+                result.message = "操作成功!";
+                return JsonConvert.SerializeObject(result);
+            }
+            result.backState = -100;
+            result.message = "操作失败!";
+            return JsonConvert.SerializeObject(result);
+        }
     }
+    
 }

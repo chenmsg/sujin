@@ -4,7 +4,9 @@
     UserImageBLL userImageDao = new UserImageBLL();
     ViewPayRecordBLL viewPayRecordDao = new ViewPayRecordBLL();
     AccountRecordBLL accountRecordDao = new AccountRecordBLL();
+    AccountBLL accountDao = new AccountBLL();
     var ukb = userBankCardDao.Single("UserId=@UserId and TypeId=0", new { Model.UserId });
+    var account = accountDao.Single("UserId=@UserId",new { Model.UserId});
     ViewBag.Title = "Index";
 }
 
@@ -141,6 +143,21 @@
                         <td><a href="/users/info/@Model.BaseUserId" target="_blank">@(baseUser == null ? "" : baseUser.RealName)</a> </td>
                         <th scope="row"><code>来源</code></th>
                         <td>@(((Logic.Platform)Model.PlatForm).ToString())</td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row"><code>总金额</code></th>
+                        <td>@(account==null?"0.00": account.Total.ToString("F2"))</td>
+                        <th scope="row"><code>可用余额</code></th>
+                        <td>@(account == null ? "0.00" : account.Available.ToString("F2"))</td>
+
+                    </tr>
+                    <tr>
+                        <th scope="row"><code>冻结金额</code></th>
+                        <td>@(account == null ? "0.00" : account.Frozen.ToString("F2"))</td>
+                        <th scope="row"><code></code></th>
+                        <td></td>
+
                     </tr>
                 </tbody>
             </table>

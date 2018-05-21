@@ -175,6 +175,13 @@ namespace ITOrm.Utility.Const
             }
         }
 
+        public static string StaticHost
+        {
+            get
+            {
+                return ConfigHelper.GetAppSettings("StaticHost");
+            }
+        }
 
         public static string SystemAESKey = "776c8680cb97f1e1";
 

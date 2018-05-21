@@ -72,6 +72,7 @@
         <tr>
             <th>用户ID</th>
             <th>手机号码</th>
+            <th>总金额</th>
             <th>姓名</th>
             <th>注册时间</th>
             <th>实名时间</th>
@@ -90,10 +91,17 @@
                 <td>@item["UserId"].ToInt()</td>
                 <td>@item["Mobile"]</td>
                 <td>
+                    @{ 
+
+                        string[] accounts = new string[] { "可用余额：" + item["Available"].ToString(), "冻结金额：" + item["Frozen"] };
+                    }
+                    @Html.MyTips(item["Total"].ToString(), "详细信息", accounts)
+                </td>
+                <td>
                     @if (item["IsRealState"].ToInt() == 1)
                     {
                         string[] contents = new string[] { "身份证：" + item["IdCard"].ToString(),"结算银行："+item["BankName"], "卡号："+item["BankCard"] };
-                        @Html.MyTips(item["RealName"].ToString(), "详细信息", contents);
+                        @Html.MyTips(item["RealName"].ToString(), "详细信息", contents)
                     }
                 </td>
                 <td>@(item["CTime"].ToDateTime().ToString("yyyy-MM-dd HH:mm:ss"))</td>
@@ -146,6 +154,11 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li><a href="/users/info/@item["UserId"]">查看</a></li>
+                            @if (item["Available"].ToDecimal() > 0M)
+                            {
+                               
+                            }
+                            <li><a href="javascript:selectLog(@item["UserId"],'@item["Available"].ToDecimal().ToString("F2")');">提现</a></li>
                             <li><a href="/users/AuditMerchant?UserId=@item["UserId"]">审核通过</a></li>
                             @{
                                 foreach (SelectListItem it in listVip)
@@ -171,31 +184,90 @@
 @Html.Pager("pageIndex", 10, Model.totalCount)
 
 <!-- Modal -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-        <h3 id="myModalLabel">查看用户上传照片</h3>
-    </div>
-    <div class="modal-body" style="max-height:300px;">
-        <div class="row">
-            <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                    <img src="..." alt="...">
-                    <div class="caption">
-                        <h3>Thumbnail label</h3>
+<div class="modal fade in" id="_modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+     style="display: none;">
+    <div class="modal-dialog" role="document" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="modalLabel">提现</h4>
+            </div>
+            <div id="_modalDialog_body" class="modal-body">
+                @*设置这个div的大小，超出部分显示滚动条
+            <div id="selectTree" class="ztree" style="height:600px;overflow:auto; ">
+
+            </div>*@
+
+                <div class="bs-docs-example">
+
+                        <div class="form-group ">
+                            <label for="exampleInputEmail1">提现金额</label>
+                            <input type="text" style="width:150px" value="" class="form-control" name="dramAmount" id="dramAmount" placeholder="提现金额">
+
+                        </div>
+                        <div class="form-group ">
+                            <label for="exampleInputEmail1">操作</label>
+                            <button class="btn btn-default" type="button" onclick="draw()">提交</button>
+
+                        </div>
+                    <div class="form-group " style="float:right;">
+                        <label for="exampleInputEmail1">可用余额</label>
+                        <h4 id="Available">0.00</h4>
+                        
+
+                    </div>
+                        <div style="clear:both;"></div>
+
+                </div>
+
+
+                    <div class="bs-docs-example">
+                        <table class="table table-hover table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>提现金额</th>
+                                    <th>剩余金额</th>
+                                    <th>操作时间</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody"></tbody>
+                        </table>
                     </div>
                 </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</button>
-        <button class="btn ">取消</button>
+</div>
+
+    <!-- Small modal -->
+<div class="modal fade in " tabindex="-1" role="dialog" id="myModal" aria-labelledby="modalLabel" style="display:none">
+    <div class="modal-dialog " role="document" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span style="float:right;" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true">&times;</span>
+                <h2 class="modal-title" id="myModalTitle" style="text-align:center;">提示</h2>
+            </div>
+            <div class="modal-body">
+                <div class="alert " id="alertDiv" style="text-align:center;" role="alert">
+                    <strong style="font-size:1.3em" id="myModalMessage">支付成功</strong>
+                </div>
+            </div>
+            <div class="modal-footer">
+    
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
     </div>
 </div>
 
-
 <script type="text/javascript">
+
+    var uid = 0;
     function UpgradeVip(userid,viptype,name)
     {
 
@@ -204,4 +276,77 @@
            window.location.href = "/users/FeeSetApi?UserId=" + userid + "&VipType=" + viptype;
         }
     }
+
+    function selectLog(UserId, Available) {
+        uid = UserId;
+        $("#Available").html(Available);
+        $.post("/users/GetDrawRecord", { UserId: UserId}, function (data) {
+
+            var html = "";
+            if (data.backState == 0 && data.list != null)
+            {
+                for (var i = 0; i < data.list.length; i++) {
+                    html += "<tr><td>" + data.list[i].ID + "</td><td>" + data.list[i].Amount + "</td><td>" + data.list[i].Available + "</td><td>" + data.list[i].CTime + "</td></tr>";
+                }
+            }
+            $("#tbody").html(html);
+
+            $('#_modalDialog').modal({ keyboard: false })
+            //获取modal的宽度
+            var modalWidth = $("#_modalDialog").width();
+
+            //计算偏移量
+            var left = "-" + parseInt(modalWidth) / 2 + "px";
+
+            //modal居中
+            $("#_modalDialog").modal("show").css({ "margin-left": left });
+        },"json")
+
+
+   
+
+
+
+    }
+
+    function draw()
+    {
+
+        var Amount = $("#dramAmount").val();
+        if (uid == 0)
+        {
+
+            MyModal("alert-danger", '用户ID为0');
+            return false;
+        }
+        $.post("/users/Draw", { UserId: uid, Amount: Amount }, function (data) {
+
+            if (data.backState == 0) {
+                MyModal("alert-success", data.message);
+                setTimeout(function () {
+                    window.location.reload();
+                },2000)
+            }
+            else {
+                MyModal("alert-danger", data.message);
+            }
+        },"json")
+    }
+
+    function MyModal(error, str) {
+
+        $('#_modalDialog').modal('hide');
+        $("#alertDiv").addClass(error);
+        $("#myModalMessage").html(str);
+        $('#myModal').modal({ keyboard: false })
+        //获取modal的宽度
+        var modalWidth = $("#myModal").width();
+
+        //计算偏移量
+        var left = "-" + parseInt(modalWidth) / 2 + "px";
+
+        //modal居中
+        $("#myModal").modal("show").css({ "margin-left": left });
+    }
+
 </script>
