@@ -2,6 +2,11 @@
 @{
     ViewBag.Title = "短信管理";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    long lo = (DateTime.Now.ToUniversalTime().Ticks - 621355968000000000) / 10000000;
+    string pwdmd5 =ITOrm.Utility.Encryption.SecurityHelper.GetMD5String("bjsujinsj20180126" + lo);
+    string url = "http://sms.ensms.com:8080/getsmsnum/?username=bjsujin&pwd=" + pwdmd5 + "&dt=" + lo;
+    string str= ITOrm.Utility.Client.HttpHelper.HttpGetHTML(url);
+
 }
 @section css
 {
@@ -129,5 +134,9 @@
 
 
 
+<div class="alert alert-block alert-info fade in">
+    <button data-dismiss="alert" class="close" type="button">×</button>
+    <h4 class="alert-heading" style="text-align:center;">短信剩余条数：@str</h4>
+</div>
 
 

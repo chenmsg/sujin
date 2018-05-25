@@ -127,7 +127,11 @@ namespace ITOrm.Api.Controllers
         #region App轮播图
         public string BannerList(int UserId)
         {
-            var listBanner = bannerDao.GetQuery(10, " State=1 AND GETDATE() BETWEEN StartTime AND EndTime",null, "ORDER BY Sort DESC,ID DESC");
+            List<Banner> listBanner = MemcachHelper.Get<List<Banner>>(Constant.list_banner_key, DateTime.Now.AddDays(7), () =>
+            {
+               return  bannerDao.GetQuery(10, " State=1 AND GETDATE() BETWEEN StartTime AND EndTime", null, "ORDER BY Sort DESC,ID DESC");
+            });
+             
             JArray list = new JArray();
             if (listBanner != null && listBanner.Count > 0)
             {

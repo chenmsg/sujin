@@ -46,10 +46,10 @@ namespace ITOrm.Static.Controllers
                     return ApiReturnStr.getError(-100, "图片太小，不能作为照片上传。");
                 }
                 var fileLength = Convert.ToInt32(base64.Length - (base64.Length / 8) * 2);//文件字节
-                //if (fileLength >= 1024 * 1024 / 2)
-                //{
-                //    return ApiReturnStr.getError(-100, "上传图片大小不能大于512K。");
-                //}
+                if (fileLength >= 1024 * 1024 * 2)
+                {
+                    return ApiReturnStr.getError(-100, "上传图片大小不能超过2M。");
+                }
 
                 string path = "upload/"+ dic + "/" + DateTime.Now.ToString("yyyyMMdd") + "/";
                 string dicPath = Server.MapPath("~/" + path);

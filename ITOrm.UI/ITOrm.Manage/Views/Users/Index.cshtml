@@ -324,7 +324,7 @@
             if (data.backState == 0) {
                 MyModal("alert-success", data.message);
                 setTimeout(function () {
-                    window.location.reload();
+                    window.location.href = window.location.href;
                 },2000)
             }
             else {

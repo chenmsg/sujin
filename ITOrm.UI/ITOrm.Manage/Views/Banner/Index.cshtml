@@ -1,0 +1,182 @@
+﻿@model ResultModel<Banner>
+@{
+    ViewBag.Title = "交互日志";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+
+        .form-group {
+            float: left;
+            margin-right: 8px;
+        }
+    </style>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">轮播图</li>
+</ul>
+
+<div class="bs-docs-example">
+    <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">上线状态</label>
+
+            @{
+                List<SelectListItem> listState = new List<SelectListItem>();
+                listState.Add(new SelectListItem() { Value = "-1", Text = "全部" });
+                listState.Add(new SelectListItem() { Value = "0", Text = "未上线" });
+                listState.Add(new SelectListItem() { Value = "1", Text = "上线" });
+            }
+            @Html.MyDrop(listState, "全部", "-1", TQuery.GetString("State"), new { @name = "State", @style = "width:80px" })
+        </div>
+        <div class="form-group ">
+            <label for="exampleInputEmail1">搜索</label>
+            <button class="btn btn-default" type="submit">提交</button>
+        </div>
+        <div class="form-group " style="float:right;">
+            <label for="exampleInputEmail1">　</label>
+            <a class="btn btn-default" href="/banner/edit" style="" role="button">新增</a>
+        </div>
+        <div style="clear:both;"></div>
+    </form>
+</div>
+
+<table class="table table-hover table-bordered table-striped">
+    <thead>
+        <tr>
+            <td>ID</td>
+            <th>标题</th>
+            <th>h5地址</th>
+            <th>图片</th>
+            <th>上线状态</th>
+            <th>开始-结束时间</th>
+            <th>创建时间</th>
+            <th>排序</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.list != null && Model.list.Count > 0)
+        {
+            foreach (var item in Model.list)
+            {
+                <tr>
+                    <td>
+                        @item.ID
+                  </td>
+                
+                    <td>@item.Title</td>
+                    <td>@item.WapURL</td>
+                    <td>
+
+                            <a href="javascript:;" class="thumbnail">
+                                <img data-src="holder.js/100%x180" alt="100%x180" style="height: 120px; width:100%; display: block;" src="@(ITOrm.Utility.Const.Constant.StaticHost + item.ImgUrl)" data-holder-rendered="true">
+                            </a>
+                    
+                    </td>
+                    <td>
+                    @if (item.State == 1)
+                    {
+                        @Html.MySpan("上线", "green")
+                    }
+                    else
+                    {
+                        @Html.MySpan("未上线", "red")
+                    }
+                    </td>
+                    <td>@item.StartTime-@item.EndTime</td>
+                    <td>@item.CTime</td>
+                    <td>@item.Sort</td>
+                    <td><a href="/banner/edit/@item.ID">编辑</a></td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+@Html.Pager("pageIndex", 10, Model.totalCount)
+
+
+ <!-- Modal -->
+<div class="modal fade in" id="_modalDialog" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+     style="display: none;">
+    <div class="modal-dialog" role="document" style="width: 500px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="modalLabel">流水日志记录</h4>
+            </div>
+            <div id="_modalDialog_body" class="modal-body">
+                <!--  设置这个div的大小，超出部分显示滚动条 -->
+                <div id="selectTree" class="ztree" style="height:600px;overflow:auto; ">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" data-dismiss="modal">确定</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+
+    function selectLog(requestId)
+    {
+
+        $.post("/YeepayLog/QueryLogRecord", { requestId: requestId }, function (data) {
+
+            if (data != null)
+            {
+                var htmlTag = "";
+                for (var i = 0, l = data.length; i < l; i++) {
+
+                    htmlTag += '<div class="alert alert-block alert-info fade in">';
+                    htmlTag += '       <button data-dismiss="alert" class="close" type="button">×</button>';
+                    htmlTag += '         <h4 class="alert-heading">' + data[i].title + '</h4>';
+                    htmlTag += '        <p style="word-wrap: break-word;">' + data[i].content + '</p>';
+                    htmlTag += ' </div>';
+                }
+                $("#selectTree").html(htmlTag);
+                $('#_modalDialog').modal({ keyboard: false })
+                //获取modal的宽度
+                var modalWidth = $(".modal").width();
+
+                //计算偏移量
+                var left = "-" + parseInt(modalWidth) / 2 + "px";
+
+                //modal居中
+                $(".modal").modal("show").css({ "margin-left": left });
+            }
+        },"json")
+
+
+
+    }
+    $(function () {
+
+        $("#ChannelType").change(function () {
+            var ChannelType = $(this).val();
+            $.post("/yeepaylog/getselectbox", { ChannelType: ChannelType }, function (data) {
+                $("#TypeId").empty();
+                $("#TypeId").append('<option value="-1">全部</option>');
+                for (var i = 0; i < data.length; i++) {
+                    $("#TypeId").append('<option value=' + data[i].Value + '>' + data[i].Text + '</option>');
+                }
+            }, "json");
+        })
+    })
+</script>

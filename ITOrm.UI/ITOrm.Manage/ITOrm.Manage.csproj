@@ -96,6 +96,7 @@
     <Content Include="Castle.config" />
     <None Include="Properties\PublishProfiles\managetest.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\ajaxupload.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -106,6 +107,7 @@
     <Content Include="Themes\css\base.css" />
     <Content Include="Themes\css\bootstrap.css" />
     <Content Include="Themes\css\docs.css" />
+    <Content Include="Themes\js\ajaxupload.js" />
     <Content Include="Themes\js\jquery-1.11.2.min.js" />
     <Content Include="Themes\plugins\bootstrap\css\bootstrap-responsive.css" />
     <Content Include="Themes\plugins\bootstrap\css\bootstrap-responsive.min.css" />
@@ -124,6 +126,7 @@
   <ItemGroup>
     <Compile Include="Controllers\AppController.cs" />
     <Compile Include="Controllers\BankQuotaController.cs" />
+    <Compile Include="Controllers\BannerController.cs" />
     <Compile Include="Controllers\ChannelPayController.cs" />
     <Compile Include="Controllers\MasgetController.cs" />
     <Compile Include="Controllers\MishuaController.cs" />
@@ -131,6 +134,7 @@
     <Compile Include="Controllers\SendMsgController.cs" />
     <Compile Include="Controllers\TengController.cs" />
     <Compile Include="Controllers\TimedTaskController.cs" />
+    <Compile Include="Controllers\UploadController.cs" />
     <Compile Include="Controllers\YeepayLogController.cs" />
     <Compile Include="Filters\AdminFilter.cs" />
     <Compile Include="App_Start\CacheConfig.cs" />
@@ -193,6 +197,9 @@
     <Content Include="Views\Mishua\Index.cshtml" />
     <Content Include="Views\Mishua\CheckDzero.cshtml" />
     <Content Include="Views\Users\UpdateBankCard.cshtml" />
+    <Content Include="Views\Banner\Index.cshtml" />
+    <Content Include="Views\Banner\Edit.cshtml" />
+    <Content Include="Views\Debug\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -208,6 +215,7 @@
     <Folder Include="Themes\img\" />
     <Folder Include="Themes\js\My97DatePicker\" />
     <Folder Include="Views\News\" />
+    <Folder Include="Views\Upload\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\ITOrm.DB\ITOrm.Core\ITOrm.Core.csproj">

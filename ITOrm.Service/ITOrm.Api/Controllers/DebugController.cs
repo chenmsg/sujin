@@ -441,10 +441,13 @@ namespace ITOrm.Api.Controllers
 
         public string cccccccccccc()
         {
-            var result = ITOrm.Payment.MiShua.MiShuaDepository.CheckDzero(100002939, Logic.Platform.系统);
-           
-
-            return JsonConvert.SerializeObject(result);
+            ITOrm.Payment.Masget.MasgetDepository.SamenameUpdate(100063, (int)Logic.Platform.系统, Logic.ChannelType.荣邦科技积分, Logic.VipType.Vip用户);
+            return "";
+           // var users = usersDao.Single(100063);
+           // users.VipType = 2;
+           // usersDao.Update(users);
+           //var result= UsersDepository.UpdateChannelVip(100063, 2, 1);
+           // return JsonConvert.SerializeObject(result);
         }
 
 

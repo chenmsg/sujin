@@ -165,6 +165,10 @@ namespace ITOrm.Manage.Controllers
             {
                 bank = userBankCardDao.Single(ID);
                 ubcurl = "/users/info/" + bank.UserId;
+                if (bank.TypeId == 0 && bank.BankCard!=BankCard && bank.BankCode!=BankCode)
+                {
+                    return new RedirectResult($"/Prompt?state=-100&msg=结算卡不支持修改卡号和所属银行&url={url}");
+                }
                 bank.Mobile = Mobile;
                 bank.BankCard = BankCard;
                 bank.BankCode = BankCode;
@@ -172,10 +176,7 @@ namespace ITOrm.Manage.Controllers
                 bank.ExpiresYear = ExpiresYear;
                 bank.ExpiresMouth = ExpiresMouth;
 
-                //if (bank.TypeId == 0)
-                //{
-                //    return new RedirectResult($"/Prompt?state=-100&msg=结算卡暂不支持修改&url={url}");
-                //}
+                
                 var result= userBankCardDao.Update(bank);
                 backState = result ? 0 : -100;
                 msg= result ? "修改成功" :"修改失败";

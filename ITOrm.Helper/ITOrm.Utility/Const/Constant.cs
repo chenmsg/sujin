@@ -108,7 +108,10 @@ namespace ITOrm.Utility.Const
         /// </summary>
         public static string list_keyvalue_key = Debug + "-list-keyvalue-";
 
-
+        /// <summary>
+        /// 轮播图缓存
+        /// </summary>
+        public static string list_banner_key = Debug + "-list-banner-key";
 
         /// <summary>
         /// 银行列表缓存

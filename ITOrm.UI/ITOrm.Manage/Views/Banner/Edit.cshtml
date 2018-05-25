@@ -1,0 +1,108 @@
+﻿@model Banner
+@{
+    ViewBag.Title = "轮播图编辑";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section js
+{
+    <script src="/Themes/js/ajaxupload.js"></script>
+}
+<ul class="breadcrumb">
+    <li><a href="#">系统配置</a> <span class="divider">/</span></li>
+    <li><a href="#">权限管理</a> <span class="divider">/</span></li>
+    <li class="active">轮播图编辑</li>
+</ul>
+
+
+
+<div class="bs-docs-example">
+    <form method="post">
+        <div class="form-group">
+            <label for="exampleInputEmail1">主键ID</label>
+            <input type="text" class="form-control" readonly="readonly" name="Id" value="@Model.ID" placeholder="Id">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">标题</label>
+            <input type="text" class="form-control" name="Title" value="@Model.Title" placeholder="标题">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">H5链接</label>
+            <input type="text" class="form-control" name="WapURL" value="@Model.WapURL" placeholder="H5链接">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">图片地址</label>
+            <div style="width:300px;">
+                <a href="javascript:;" class="thumbnail">
+                    <img data-src="holder.js/100%x180" alt="100%x180" id="img" style="height: 120px; width:100%; display: block;" src="@(ITOrm.Utility.Const.Constant.StaticHost + Model.ImgUrl)" data-holder-rendered="true">
+                </a>
+            </div>
+            <button class="btn btn-large " style="margin:5px;" id="selectorMin" type="button">上传图片</button>
+            <input type="hidden" id="ImgUrl" name="ImgUrl" value="@Model.ImgUrl"  />
+            <div class="alert alert-success">
+                <strong>提示!</strong> 建议上传：110*72的图片！
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">开始结束时间</label>
+            <input class="input Wdate form-control" onfocus="WdatePicker({ readOnly: true, dateFmt: 'yyyy-MM-dd HH:mm:ss' })" id="StartTime" style="width:150px;" name="StartTime" type="text" value="@Model.StartTime.ToString("yyyy-MM-dd HH:mm:ss")"  />
+            <input class="input Wdate form-control" onfocus="WdatePicker({ readOnly: true, dateFmt: 'yyyy-MM-dd HH:mm:ss' })" id="EndTime" style="width:150px;" name="EndTime" type="text" value="@Model.EndTime.ToString("yyyy-MM-dd HH:mm:ss")" />
+        </div>
+ 
+        <div class="form-group">
+            <label for="exampleInputEmail1">排序</label>
+            <input type="text" class="form-control" name="Sort"  value="@Model.Sort" placeholder="数字，越大越靠前">
+        </div>
+        <div class="form-group">
+            <label for="exampleInputEmail1">状态</label>
+            @{ 
+                List<SelectListItem> listR = new List<SelectListItem>();
+                listR.Add(new SelectListItem() { Value = "0", Text = "未上线 " });
+                listR.Add(new SelectListItem() { Value = "1", Text = "上线" });
+            }
+            @Html.MyRadio(listR,Model.State.ToString(), "State")
+            
+        </div>
+        
+        <button type="submit" class="btn btn-default">提交</button>
+    </form>
+</div>
+<script>
+
+    $(function () {
+        // 创建一个上传参数
+        var uploadOption =
+        {
+            // 提交目标
+            action: "/Upload/UpImg",
+            // 自动提交
+            autoSubmit: true,
+            // 选择文件之后…
+            onChange: function (file, extension) {
+                if (new RegExp(/(jpg)|(jpeg)|(bmp)|(gif)|(png)/i).test(extension)) {
+                    //$("#filepath").val(file);
+                } else {
+                    alert("只限上传图片文件，请重新选择！");
+                }
+            },
+            // 开始上传文件
+            onSubmit: function (file, extension) {
+                $("#selectorMin").val("正在上传...");
+            },
+            // 上传完成之后
+            onComplete: function (file, response) {
+
+                var obj = JSON.parse(response); //由JSON字符串转换为JSON对象
+                if (obj.backStatus == 0) {
+                    $("#img").attr("src", obj.data.ImgUrl);
+                    $("#ImgUrl").val(obj.data.Url)
+                }
+                else {
+                    alert("上传失败");
+                }
+            }
+        }
+        // 初始化图片上传框
+        var oAjaxUpload = new AjaxUpload('#selectorMin', uploadOption);
+
+    })
+</script>
