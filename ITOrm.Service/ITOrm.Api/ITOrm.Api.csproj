@@ -128,6 +128,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
+    <Content Include="reg.html" />
     <Content Include="Themes\css\bootstrap-theme.css" />
     <Content Include="Themes\css\bootstrap.css" />
     <Content Include="Themes\css\mobile-pay.css" />

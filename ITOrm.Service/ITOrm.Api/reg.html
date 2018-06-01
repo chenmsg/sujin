@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    <link href="http://api.sujintech.com/Themes/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        div.bg {
+            width: 100%;
+            height: 100vh;
+            background: url("http://api.sujintech.com/Themes/img/bg-reg-step1.png") no-repeat;
+            background-size: 100% 100%; /*随着原始比例缩放*/
+        }
+        .input-box {
+            width:80%;
+            margin:auto;
+            padding-top:22rem;
+        }
+            .input-box div img {
+                display:block;
+                float:right;
+                  height:3rem;
+            line-height:3rem;
+            }
+        .tbx {
+            border:none;
+            height:3rem;
+            line-height:3rem;
+            padding:0.5rem;
+            padding-left:1rem;
+            width:100%;
+            border-radius:5px;
+            background:none;
+            background-color: rgba(255,255,255,0.3);
+            /*opacity:0.7;*/
+            font-size:2rem;
+            color:#ffffff;
+            outline:none;
+            display:block;
+        }
+        .input-box div {
+            margin-top:0.8rem;
+        }
+
+        input::-webkit-input-placeholder{ /*WebKit browsers*/
+        color:#EBEBEB;
+        }
+
+        input::-moz-input-placeholder{ /*Mozilla Firefox*/
+        color: #EBEBEB;
+        }
+
+        input::-ms-input-placeholder{ /*Internet Explorer*/ 
+        color:  #EBEBEB;
+        }
+        .btnSubmit {
+            background-color:#a67b50;
+            border:none;
+            width:100%;
+            height:4rem;
+            line-height:4rem;
+            padding:0.5rem;
+                        border-radius:5px;
+                        font-size:2rem;
+                        padding-left:1rem;
+                        
+        }
+        .line {
+            width:80%;margin:auto;color:#F2E84F;font-size:1.5rem;
+        }
+    </style>
+</head>
+<body >
+    <div class="main">
+        <div class="bg">
+            <form action="" method="get">
+                <div class="input-box">
+                    <div>
+                        <input class="tbx" type="text" value="" placeholder="手机号" />
+                    </div>
+                    <div>
+                    
+                        <input class="tbx" type="text" value="" placeholder="图形验证码" style="width:65%; float:left;" />
+                        <img src="http://api.sujintech.com/Themes/img/GetImgCode.jpg"  id="imgCode" style="" />
+                        <div style="clear:both;"></div>
+                    </div>
+                    <div>
+                        <input class="tbx" type="text" value="" placeholder="验证码" />
+                    </div>
+                    <div>
+                        <input class="tbx" type="password" value="" placeholder="密码" />
+                    </div>
+                </div>
+                <div  class="line">
+                    <p>邀请码:15110167786</p>
+                </div>
+                <div class="line">
+                    <input class="btnSubmit" type="submit" value="立 即 加 入" />
+                </div>
+
+</form>
+        </div>
+    </div> 
+</body>
+</html>

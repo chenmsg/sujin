@@ -439,15 +439,18 @@ namespace ITOrm.Api.Controllers
             return JsonConvert.SerializeObject(result); 
         }
 
+        MasgetUserBLL masgetUserDao = new MasgetUserBLL();
         public string cccccccccccc()
         {
-            ITOrm.Payment.Masget.MasgetDepository.SamenameUpdate(100063, (int)Logic.Platform.系统, Logic.ChannelType.荣邦科技积分, Logic.VipType.Vip用户);
+            var list = masgetUserDao.GetQuery(" TypeId=4 AND UserId IN(100101,100152,100076,100125) ");
+            foreach (var item in list)
+            {
+                var user = usersDao.Single(item.UserId);
+               var reuslt=  ITOrm.Payment.Masget.MasgetDepository.SamenameUpdate(item.UserId, (int)Logic.Platform.系统, Logic.ChannelType.荣邦3, (Logic.VipType) user.VipType);
+            }
+
+            
             return "";
-           // var users = usersDao.Single(100063);
-           // users.VipType = 2;
-           // usersDao.Update(users);
-           //var result= UsersDepository.UpdateChannelVip(100063, 2, 1);
-           // return JsonConvert.SerializeObject(result);
         }
 
 

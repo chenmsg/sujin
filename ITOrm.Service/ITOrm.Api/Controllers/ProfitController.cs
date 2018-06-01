@@ -128,16 +128,19 @@ namespace ITOrm.Api.Controllers
             int totalCount = 0;
             var listUser = usersDao.GetPaged(pageSize, pageIndex, out totalCount, "BaseUserId=@UserId", new { UserId }, "order by UserId desc");
             JArray list = new JArray();
-            foreach (var item in listUser)
+            if (listUser != null && listUser.Count > 0)
             {
-                JObject data = new JObject();
-                data["Mobile"] = item.Mobile;
-                data["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
-                data["IsRealState"] = item.IsRealState;
-                data["IsRealStateTxt"] = item.IsRealState == 0 ? "未认证" : "已认证";
-                data["RealName"] = item.IsRealState == 0 ? "无名氏" : item.RealName;
+                foreach (var item in listUser)
+                {
+                    JObject data = new JObject();
+                    data["Mobile"] = item.Mobile;
+                    data["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    data["IsRealState"] = item.IsRealState;
+                    data["IsRealStateTxt"] = item.IsRealState == 0 ? "未认证" : "已认证";
+                    data["RealName"] = item.IsRealState == 0 ? "无名氏" : item.RealName;
 
-                list.Add(data);
+                    list.Add(data);
+                }
             }
             return ApiReturnStr.getApiDataListByPage(list, totalCount, pageIndex, pageSize);
         }
@@ -152,34 +155,37 @@ namespace ITOrm.Api.Controllers
             //int TypeId = (int)Logic.AccountType.刷卡分润; 开通会员分润
             var listAccountRecord = accountRecordDao.GetPaged(pageSize, pageIndex, out totalCount, "UserId=@UserId and TypeId in(100,101,102)", new { UserId }, "order by ID desc");
             JArray list = new JArray();
-            foreach (var item in listAccountRecord)
+            if (listAccountRecord != null && listAccountRecord.Count > 0)
             {
-                JObject data = new JObject();
-                data["InOrOut"] = item.InOrOut == 1 ? "+" : "-";
-                data["Amount"] = item.Amount.ToString("F2");
-                data["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
-                data["TypeId"] = item.TypeId;
-                data["Service"] = ((Logic.AccountType)item.TypeId).ToString();
+                foreach (var item in listAccountRecord)
+                {
+                    JObject data = new JObject();
+                    data["InOrOut"] = item.InOrOut == 1 ? "+" : "-";
+                    data["Amount"] = item.Amount.ToString("F2");
+                    data["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    data["TypeId"] = item.TypeId;
+                    data["Service"] = ((Logic.AccountType)item.TypeId).ToString();
 
-                data["RealName"] = "";
-                data["Mobile"] = "";
-                if (item.TypeId == (int)Logic.AccountType.收款分润)
-                {
-                    var pay = payRecordDao.Single(item.KeyId);
-                    var user = usersDao.Single(pay.UserId);
-                    data["RealName"] = user.RealName;
-                    data["Mobile"] = user.Mobile;
-                }
-                else
-                {
-                    var user = usersDao.Single(item.KeyId);
-                    if (user != null)
+                    data["RealName"] = "";
+                    data["Mobile"] = "";
+                    if (item.TypeId == (int)Logic.AccountType.收款分润)
                     {
+                        var pay = payRecordDao.Single(item.KeyId);
+                        var user = usersDao.Single(pay.UserId);
                         data["RealName"] = user.RealName;
                         data["Mobile"] = user.Mobile;
                     }
+                    else
+                    {
+                        var user = usersDao.Single(item.KeyId);
+                        if (user != null)
+                        {
+                            data["RealName"] = user.RealName;
+                            data["Mobile"] = user.Mobile;
+                        }
+                    }
+                    list.Add(data);
                 }
-                list.Add(data);
             }
             return ApiReturnStr.getApiDataListByPage(list, totalCount, pageIndex, pageSize);
         }
@@ -248,7 +254,7 @@ namespace ITOrm.Api.Controllers
             }
             data["list2Title"] = "VIP尊享权益";
             data["list2"] = list2;
-            data["DingjiDaili"] = "客户经理：18610122058\r\n客户经理：18506120807\r\n微信客服：SJpay-op";
+            data["DingjiDaili"] = "客户经理：18610122058\n客户经理：18506120807\n微信客服：SJpay-op";
 
 
             data["Tips"] = "选择您需要开通会员对应的二维码并使用微信支付，备在注速金派已注册的账号，工作人员确认收款后立刻给您开通会员。您还可以将二维码保存在手机里面，方便支付。如有疑问请关注我们的微信公众号SJ派，联系在线客服";

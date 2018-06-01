@@ -507,7 +507,7 @@ namespace ITOrm.Api.Controllers
             {
                 data["VipType"] = 2;
             }
-            data["AvatarImg"] = ITOrm.Utility.Const.Constant.CurrentApiHost + userImageDao.GetUrl(user.AvatarImg);
+            data["AvatarImg"] = ITOrm.Utility.Const.Constant.StaticHost + userImageDao.GetUrl(user.AvatarImg);
             Logic.VipType vip = (Logic.VipType)user.VipType;
             decimal[] r = Constant.GetRate(0, vip);
             decimal[] r2 = Constant.GetRate(1, vip);

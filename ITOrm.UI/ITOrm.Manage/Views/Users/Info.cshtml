@@ -99,6 +99,9 @@
                                 Logic.VipType vip = (Logic.VipType)Model.VipType;
                                 switch (vip)
                                 {
+                                    case Logic.VipType.Boss:
+                                        @Html.MySpan(vip.ToString(), "red");
+                                        break;
                                     case Logic.VipType.顶级代理:
                                         @Html.MySpan(vip.ToString(), "red");
                                         break;
@@ -171,7 +174,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail">
-                            <img src="http://api.sujintech.com/@(userImageDao.GetUrl(Model.IdCardPhoto))" alt="身份证正面">
+                            <img src="http://static.sujintech.com/@(userImageDao.GetUrl(Model.IdCardPhoto))" alt="身份证正面">
                             <div class="caption">
                                 <h3>身份证正面</h3>
 
@@ -186,7 +189,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail">
-                            <img src="http://api.sujintech.com/@(userImageDao.GetUrl(Model.IdCardBackPhoto))" alt="身份证反面">
+                            <img src="http://static.sujintech.com/@(userImageDao.GetUrl(Model.IdCardBackPhoto))" alt="身份证反面">
                             <div class="caption">
                                 <h3>身份证反面</h3>
 
@@ -200,7 +203,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail">
-                            <img src="http://api.sujintech.com/@(userImageDao.GetUrl(Model.BankCardPhoto))" alt="银行卡照片">
+                            <img src="http://static.sujintech.com/@(userImageDao.GetUrl(Model.BankCardPhoto))" alt="银行卡照片">
                             <div class="caption">
                                 <h3>银行卡照片</h3>
 
@@ -214,7 +217,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail">
-                            <img src="http://api.sujintech.com/@(userImageDao.GetUrl(Model.PersonPhoto))" alt="三证合一">
+                            <img src="http://static.sujintech.com/@(userImageDao.GetUrl(Model.PersonPhoto))" alt="三证合一">
                             <div class="caption">
                                 <h3>三证合一</h3>
 

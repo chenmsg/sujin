@@ -110,7 +110,7 @@ namespace ITOrm.Payment.Yeepay
             //请求前日志记录
             Logs.WriteLog("提交参数：" + JsonConvert.SerializeObject(model), YeepayLogDic, LogDic);
             yeepayLogParasDao.Init(requestId, JsonConvert.SerializeObject(model), 0);
-            string[] filePath = new string[] { Constant.CurrentApiDic + model.bankCardPhoto, Constant.CurrentApiDic + model.idCardPhoto, Constant.CurrentApiDic + model.idCardBackPhoto, Constant.CurrentApiDic + model.personPhoto };
+            string[] filePath = new string[] { Constant.StaticDic + model.bankCardPhoto, Constant.StaticDic + model.idCardPhoto, Constant.StaticDic + model.idCardBackPhoto, Constant.StaticDic + model.personPhoto };
             string[] fileKeyName = new string[] { "bankCardPhoto", "idCardPhoto", "idCardBackPhoto", "personPhoto" };
             //执行请求
             int responseState = ITOrm.Utility.Client.HttpHelper.HttpPostData(action, Encoding.UTF8, filePath, fileKeyName, objNVC, out result);

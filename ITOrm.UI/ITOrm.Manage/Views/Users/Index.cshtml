@@ -112,10 +112,13 @@
                 </td>
                 <td>@(((Logic.Platform)item["PlatForm"].ToInt()).ToString())</td>
                 <td>
-                    @{ 
-                        Logic.VipType vip=(Logic.VipType)item["VipType"].ToInt();
+                    @{
+                        Logic.VipType vip = (Logic.VipType)item["VipType"].ToInt();
                         switch (vip)
                         {
+                            case Logic.VipType.Boss:
+                                @Html.MySpan(vip.ToString(), "red");
+                                break;
                             case Logic.VipType.顶级代理:
                                 @Html.MySpan(vip.ToString(), "red");
                                 break;
@@ -163,7 +166,7 @@
                             @{
                                 foreach (SelectListItem it in listVip)
                                 {
-                                    if (it.Value != "0" && it.Value != "3" && Convert.ToInt32( it.Value) < item["VipType"].ToInt())
+                                    if (it.Value != "0" && it.Value != "4" && Convert.ToInt32( it.Value) < item["VipType"].ToInt())
                                     {
                                         <li><a href="javascript:UpgradeVip(@item["UserId"],@it.Value,'@it.Text');">升级@(it.Text)</a></li>
                                     }

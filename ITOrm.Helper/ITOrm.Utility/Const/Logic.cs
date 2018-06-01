@@ -42,10 +42,11 @@ namespace ITOrm.Utility.Const
 
         public enum VipType
         {
-            顶级代理=0,
-            SVip用户 = 1,
-            Vip用户 = 2,
-            普通用户 = 3
+            Boss = 0,
+            顶级代理=1,
+            SVip用户 = 2,
+            Vip用户 = 3,
+            普通用户 = 4
         }
 
         public enum KeyValueType
@@ -83,7 +84,11 @@ namespace ITOrm.Utility.Const
             收款分润=100,
             开通SVIP分润=101,
             开通VIP分润 = 102,
-            升级会员 =103,
+            升级SVIP分润=103,
+            开通顶级代理  = 104,
+
+
+            升级会员 =150,
             //资金冻结
             提现申请=200,
 
