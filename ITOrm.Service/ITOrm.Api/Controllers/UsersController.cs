@@ -982,7 +982,8 @@ namespace ITOrm.Api.Controllers
             foreach (var item in listAccountRecord)
             {
                 JObject data = new JObject();
-                data["InOrOut"] = item.InOrOut == 1 ? "+" : "-";
+                data["InOrOut"] = item.InOrOut == 1 ? "+" : "-" ;
+                data["InOrOutNum"] =item.InOrOut;
                 data["Amount"] = item.Amount.ToString("F2");
                 data["Available"] = item.Available.ToString("F2");
                 data["Frozen"] = item.Frozen.ToString("F2");
@@ -1007,7 +1008,7 @@ namespace ITOrm.Api.Controllers
                 data["Frozen"] = model.Frozen.ToString("F2");
                 data["Available"] = model.Available.ToString("F2");
             }
-            return ApiReturnStr.getApiData(model);
+            return ApiReturnStr.getApiData(data);
         }
         #endregion
 
