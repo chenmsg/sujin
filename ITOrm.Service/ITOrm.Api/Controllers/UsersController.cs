@@ -979,18 +979,21 @@ namespace ITOrm.Api.Controllers
             //int TypeId = (int)Logic.AccountType.刷卡分润; 开通会员分润
             var listAccountRecord = accountRecordDao.GetPaged(pageSize, pageIndex, out totalCount, "UserId=@UserId ", new { UserId }, "order by ID desc");
             JArray list = new JArray();
-            foreach (var item in listAccountRecord)
+            if (listAccountRecord != null && listAccountRecord.Count > 0)
             {
-                JObject data = new JObject();
-                data["InOrOut"] = item.InOrOut == 1 ? "+" : "-" ;
-                data["InOrOutNum"] =item.InOrOut;
-                data["Amount"] = item.Amount.ToString("F2");
-                data["Available"] = item.Available.ToString("F2");
-                data["Frozen"] = item.Frozen.ToString("F2");
-                data["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
-                data["TypeId"] = item.TypeId;
-                data["Service"] = ((Logic.AccountType)item.TypeId).ToString();
-                list.Add(data);
+                foreach (var item in listAccountRecord)
+                {
+                    JObject data = new JObject();
+                    data["InOrOut"] = item.InOrOut == 1 ? "+" : "-";
+                    data["InOrOutNum"] = item.InOrOut;
+                    data["Amount"] = item.Amount.ToString("F2");
+                    data["Available"] = item.Available.ToString("F2");
+                    data["Frozen"] = item.Frozen.ToString("F2");
+                    data["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    data["TypeId"] = item.TypeId;
+                    data["Service"] = ((Logic.AccountType)item.TypeId).ToString();
+                    list.Add(data);
+                }
             }
             return ApiReturnStr.getApiDataListByPage(list, totalCount, pageIndex, pageSize);
         }
