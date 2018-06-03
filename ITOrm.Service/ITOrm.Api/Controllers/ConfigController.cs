@@ -12,6 +12,7 @@ using ITOrm.Utility.Helper;
 using ITOrm.Utility.ITOrmApi;
 using ITOrm.Utility.Cache;
 using ITOrm.Utility.StringHelper;
+using ITOrm.Utility.Log;
 
 namespace ITOrm.Api.Controllers
 {
@@ -150,6 +151,8 @@ namespace ITOrm.Api.Controllers
         #region 审核隐藏
         public string AppAuditingHide(int cid, string version,int UserId)
         {
+            Logs.WriteLog($"cid:{cid},version:{version},UserId:{UserId}", "d:\\Log\\", "AppAuditingHide");
+
             if (cid == 3 && version == "1.0.2")
             {
                 return ApiReturnStr.getError(0, "hidden");
