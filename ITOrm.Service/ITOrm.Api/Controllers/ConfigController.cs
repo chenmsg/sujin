@@ -139,7 +139,7 @@ namespace ITOrm.Api.Controllers
                     data["ID"] = item.ID;
                     data["Title"] = item.Title;
                     data["WapURL"] = item.WapURL;
-                    data["ImgUrl"] = item.ImgUrl;
+                    data["ImgUrl"] = ITOrm.Utility.Const.Constant.StaticHost+ item.ImgUrl;
                     list.Add(data);
                 }
             }
