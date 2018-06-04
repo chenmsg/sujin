@@ -35,7 +35,7 @@ namespace ITOrm.Api.Controllers
             }
             var user = usersDao.Single(Convert.ToInt32(BaseUserId));
             result.Data = user;
-            return View(result);
+            return View("Reg2",result);
         }
 
 
@@ -68,7 +68,7 @@ namespace ITOrm.Api.Controllers
         [ValidateInput(false)]
         public ActionResult Prompt()
         {
-            return View();
+            return View("Prompt2");
         }
 
 

@@ -129,9 +129,11 @@
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="reg.html" />
+    <Content Include="Themes\css\base.css" />
     <Content Include="Themes\css\bootstrap-theme.css" />
     <Content Include="Themes\css\bootstrap.css" />
     <Content Include="Themes\css\mobile-pay.css" />
+    <Content Include="Themes\css\suMoney.css" />
     <Content Include="Themes\dialog2-master\.gitattributes" />
     <Content Include="Themes\dialog2-master\.gitignore" />
     <Content Include="Themes\dialog2-master\dist\css\dialog.css" />
@@ -182,14 +184,19 @@
     <Content Include="Themes\img\CMB.png" />
     <Content Include="Themes\img\CMBC.png" />
     <Content Include="Themes\img\ECITIC.png" />
+    <Content Include="Themes\img\eqcode.jpg" />
     <Content Include="Themes\img\GDB.png" />
     <Content Include="Themes\img\HX.png" />
     <Content Include="Themes\img\ICBC.png" />
     <Content Include="Themes\img\SPDB.png" />
+    <Content Include="Themes\img\success-bg.png" />
+    <Content Include="Themes\img\suMoney-banner.jpg" />
+    <Content Include="Themes\img\suMoney-logo.png" />
     <Content Include="Themes\img\SZPA.png" />
     <Content Include="Themes\img\BOSC.png" />
     <Content Include="Themes\img\PSBC.png" />
     <Content Include="Themes\css\bootstrap2.css" />
+    <Content Include="Themes\img\yzm.jpg" />
     <Content Include="Themes\js\dialog.js" />
     <Content Include="Themes\js\guid.js" />
     <Content Include="Themes\js\jquery.js" />
@@ -272,6 +279,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Invite\Reg.cshtml" />
     <Content Include="Views\Invite\Prompt.cshtml" />
+    <Content Include="Views\Invite\Reg2.cshtml" />
+    <Content Include="Views\Invite\Prompt2.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

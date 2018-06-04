@@ -1,0 +1,43 @@
+﻿html{-webkit-tap-highlight-color: transparent;overflow-x: hidden; height: 100%; min-width:6.4rem; font-size: 312.5%;background-color:#fff;}
+body{color:#fff;font-size:.28em;line-height:1.5;font-family:arial,Microsoft Yahei}
+/*body {overflow-x: hidden;}*/
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0;padding:0;}
+body{-webkit-text-size-adjust:none}
+table{border-collapse:collapse;border-spacing:0}
+img {vertical-align:middle;border:0}
+h1,h2,h3,h4,h5,h6{font-weight:normal;}
+ul,ol,li{list-style:none;}
+em,i{font-style:normal}
+img{border:none}
+input,img{vertical-align:middle}
+textarea:focus{outline:0}
+a{color:#6E7D8B;text-decoration:none;outline:0}
+a:active,a:hover,a.current{outline:0}
+input, button, select, textarea {font-family:inherit;font-size:inherit;line-height:1;letter-spacing: normal;word-spacing: normal;text-transform: none;text-indent:0;text-shadow: none; vertical-align:middle}
+button, input, optgroup, select, textarea {/*color:inherit;*/margin:0;-webkit-writing-mode: horizontal-tb;}
+button, html input[type=button], input[type=reset], input[type=submit] {-webkit-appearance:button;cursor:pointer}
+article, aside, footer, header, hgroup, main, nav, section {
+  display: block;
+}
+input[type=”button”], input[type=”submit”], input[type=”reset”], input[type=text] {
+	-webkit-appearance: none;
+}
+/*iphone*/
+@media screen and (min-width:320px){
+	html{font-size:312.5%;}
+}
+@media screen and (min-width:375px){
+	html{font-size:366.2%;}
+}
+@media screen and (min-width:414px){
+	html{font-size:404.2%;}
+}
+/*安卓*/
+
+@media screen and (min-width:360px){
+	html{font-size: 351.5%;}
+}
+@media screen and (min-width:400px){
+	html{font-size: 390.6%;}
+}
+
