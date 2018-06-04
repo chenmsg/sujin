@@ -219,20 +219,20 @@ namespace ITOrm.Api.Controllers
             vip1["Title"] = "SVIP会员";
             vip1["CurrentPrice"] = "99";
             vip1["OriginalPrice"] = "原价￥199";
-            vip1["QRcode"] = Constant.StaticHost+ "upload/QRcode/129.png";
+            vip1["QRcode"] = Constant.StaticHost+ "upload/QRcode/99svip.png"; //199svip.png
             list.Add(vip1);
             JObject vip2 = new JObject();
             vip2["Title"] = "VIP会员";
             vip2["CurrentPrice"] = "49";
             vip2["OriginalPrice"] = "原价￥99";
-            vip2["QRcode"] = Constant.StaticHost + "upload/QRcode/129.png";
+            vip2["QRcode"] = Constant.StaticHost + "upload/QRcode/49vip.png";//99vip.png
             list.Add(vip2);
 
             JObject vip3 = new JObject();
             vip3["Title"] = "升级SVIP";
             vip3["CurrentPrice"] = "69";
             vip3["OriginalPrice"] = "原价￥119";
-            vip3["QRcode"] = Constant.StaticHost + "upload/QRcode/129.png";
+            vip3["QRcode"] = Constant.StaticHost + "upload/QRcode/u69svip.png";//u119svip
             list.Add(vip3);
 
             data["listTitle"] = "微信扫码支付";
