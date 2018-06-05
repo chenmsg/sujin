@@ -496,7 +496,7 @@ namespace ITOrm.Api.Controllers
             {
                 return ApiReturnStr.getError(-100, "用户不存在");
             }
-            data["Mobile"] = ITOrm.Utility.StringHelper.Util.GetHiddenString(user.Mobile, 3, 4);
+            data["Mobile"] = user.Mobile;// ITOrm.Utility.StringHelper.Util.GetHiddenString(user.Mobile, 3, 4);
             data["IsRealState"] = user.IsRealState;
             data["IsRealStateText"] = user.IsRealState == 0 ? "未认证" : "已认证";
             data["RealName"] = user.RealName;
