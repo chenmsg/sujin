@@ -310,32 +310,32 @@ namespace ITOrm.Api.Controllers
 
 
             #region 测试通道
-            //int ChannelType = 5;
-            //data["ChannelType"] = ChannelType;
-            //data["BankID"] = BankID;
-
+            int ChannelType = 4;
+            data["ChannelType"] = ChannelType;
+            data["BankID"] = BankID;
+            return ApiReturnStr.getApiData(-200, $"快捷协议未开通(03-{ChannelType})", data);
             #endregion
 
             #region 选择通道
-            int ChannelType = 0;
-            //data["ChannelType"] = ChannelType;
-            data["BankID"] = BankID;
+            //int ChannelType = 0;
+            ////data["ChannelType"] = ChannelType;
+            //data["BankID"] = BankID;
 
-            var option = SelectOptionChannel.Optimal(Amount, BankID, PayType);
-            if (option.backState == 0)
-            {
-                ChannelType = option.Data;
-                data["ChannelType"] = ChannelType;
-            }
-            else
-            {
-                if (option.Data == 2)
-                {
-                    return ApiReturnStr.getError(-100, "通道升级中，敬请期待");
-                }
-                return ApiReturnStr.getError(-100, option.message);
-            }
-            data["ChannelType"] = option.Data;
+            //var option = SelectOptionChannel.Optimal(Amount, BankID, PayType);
+            //if (option.backState == 0)
+            //{
+            //    ChannelType = option.Data;
+            //    data["ChannelType"] = ChannelType;
+            //}
+            //else
+            //{
+            //    if (option.Data == 2)
+            //    {
+            //        return ApiReturnStr.getError(-100, "通道升级中，敬请期待");
+            //    }
+            //    return ApiReturnStr.getError(-100, option.message);
+            //}
+            //data["ChannelType"] = option.Data;
             #endregion
 
 

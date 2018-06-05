@@ -128,7 +128,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
-    <Content Include="reg.html" />
+    <Content Include="bankcard.html" />
+    <Content Include="Swipe.html" />
     <Content Include="Themes\css\base.css" />
     <Content Include="Themes\css\bootstrap-theme.css" />
     <Content Include="Themes\css\bootstrap.css" />

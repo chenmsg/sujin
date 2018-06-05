@@ -26,6 +26,7 @@ using ITOrm.Payment.Yeepay;
 using static ITOrm.Payment.Yeepay.Enums;
 using ITOrm.Payment.Masget;
 using ITOrm.Core.Utility.Helper;
+using System.Threading;
 
 namespace ITOrm.Api.Controllers
 {
@@ -774,7 +775,8 @@ namespace ITOrm.Api.Controllers
             userEventDao.BankCardActivate(cid, UserId, Ip.GetClientIp(), 0, TQuery.GetString("version"), BankID, ChannelType);
             Logic.ChannelType ct = (Logic.ChannelType)ChannelType;
             var ubk = userBankCardDao.Single(BankID);
-
+            Thread.Sleep(2000);
+            return ApiReturnStr.getError(0, "验证码发送成功");
             if (ubk == null)
             {
                 return ApiReturnStr.getError(-100, "银行卡不存在");
@@ -833,7 +835,8 @@ namespace ITOrm.Api.Controllers
         #region 确认开通快捷协议
         public string BankCardSubmitActivateCode(int cid = 0, int UserId = 0, int BankID = 0, int ChannelType = 0, string Code = "")
         {
-
+            Thread.Sleep(2000);
+            return ApiReturnStr.getError(-100, "开通失败，测试终点");
             var result = MasgetDepository.TreatyConfirm(BankID, Code, cid, (Logic.ChannelType)ChannelType);
             userEventDao.BankCardSubmitActivateCode(cid, UserId, Ip.GetClientIp(), result.backState == 0 ? 1 : 0, TQuery.GetString("version"), BankID, ChannelType, Code);
             return ApiReturnStr.getError(result.backState == 0 ? 0 : -100, result.message);
