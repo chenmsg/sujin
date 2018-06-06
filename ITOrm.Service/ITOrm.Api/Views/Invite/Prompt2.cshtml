@@ -33,7 +33,7 @@
                 恭喜您注册成功
                 <p>请扫二维码下载速金派APP</p>
             </div>
-            <img src="/Themes/img/eqcode.jpg" class="eqCode">
+            <img id="img" src="http://api.sujintech.com/Themes/img/Android.png" class="eqCode">
             <p class="small-prompt">提示：扫描二维码或在微信内长按识别二维码下载客户端</p>
         </div>
         <div class="suMoney-copyRight">
@@ -45,3 +45,14 @@
 
 </body>
 </html>
+<script type="text/javascript">
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    //alert('是否是Android：'+isAndroid);
+    //alert('是否是iOS：'+isiOS);
+    if (isiOS == true)
+    {
+        $("#img").attr("src", "http://api.sujintech.com/Themes/img/iOS.png");
+    }
+</script>

@@ -89,7 +89,7 @@
                 <figure class="input-box">
                     <label>
                         <mark>验证码</mark>
-                        <input maxlength="6"  id="J_verifycode" placeholder="短信验证码" name="mcode" type="tel">
+                        <input maxlength="6"  id="J_verifycode" name="mcode" placeholder="短信验证码"  type="tel">
                         <i class="clear iconfont"></i>
                         <button onclick="getCode(this)" type="button" style="" name="mcode"   id="J_getCode" class="pme-btn pme-btn-sm ">获取验证码</button>
                     </label>
@@ -258,7 +258,7 @@
         var mobile = $("#mobile").val();
         var vcode = $("#vcode").val();
         var guid = $("#guid").val();
-        if ($(".J-payBtn").hasClass("gray")) {
+        if ($("#J_getCode").hasClass("gray")) {
             return false;
         }
         if (mobile.length != 11) {

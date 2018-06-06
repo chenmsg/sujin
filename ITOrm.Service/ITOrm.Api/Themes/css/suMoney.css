@@ -50,6 +50,9 @@
     right:.15rem;
     top:.1rem;
 }
+.suMoney-inputBody .suMoney-inputBox input.gray {  
+      background:rgba(39,60,125,0); 
+}   
 .suMoney-join-info{
     margin-top:.5rem;
 }
@@ -59,8 +62,6 @@
     margin-bottom:.1rem;
 }
 .suMoney-join-info a{
-    background:#a67b50;
-    color: #F2E84F;
     height:.7rem;
     line-height:.7rem;
     width:100%;
@@ -68,6 +69,11 @@
     border-radius:4px;
     display: block;
     margin-bottom:.3rem;
+}
+
+.suMoney-join-info .suMoney-join-btn {
+    background:#a67b50;
+    color: #F2E84F; 
 }
 .suMoney-copyRight{
     color:#fff;
@@ -126,4 +132,9 @@ input::-ms-input-placeholder{ /*Internet Explorer*/
     color:#b2aeac;
     font-size:.22rem;
     text-align: center;
+}
+
+.suMoney-join-info .suMoney-join-gray {
+    background-color: gray;
+    color:#ffffff; 
 }

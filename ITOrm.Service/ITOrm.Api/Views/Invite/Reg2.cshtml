@@ -14,7 +14,11 @@
 
     <link href="/Themes/css/base.css" rel="stylesheet" />
     <link href="/Themes/css/suMoney.css" rel="stylesheet" />
+    <link href="/Themes/css/bootstrap.css" rel="stylesheet" />
+    <link href="/Themes/css/mobile-pay.css" rel="stylesheet" />
     <script src="/Themes/js/jquery.js"></script>
+    <script src="/Themes/js/guid.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
         html {
             background: url(/Themes/img/suMoney-banner.jpg) no-repeat;
@@ -26,24 +30,29 @@
     <div class="suMoney-reg-wrap">
         <img src="/Themes/img/suMoney-logo.png" class="suMoney-logo">
         <div class="suMoney-inputBody">
-            <div class="suMoney-inputBox">
-                <input type="text" placeholder="手机号" class="phone" />
-            </div>
-            <div class="suMoney-inputBox">
-                <input type="text" placeholder="图形验证码" class="yzm" />
-                <img src="/Themes/img//yzm.jpg" class="img-yzm">
-            </div>
-            <div class="suMoney-inputBox">
-                <input type="text" placeholder="验证码" class="yzm" />
-                <input type="button" id="btn" value="重新获取" class="btn" onclick="time(this)">
-            </div>
-            <div class="suMoney-inputBox">
-                <input type="text" placeholder="密码" class="phone" />
-            </div>
-            <div class="suMoney-join-info">
-                <p>邀请码：<i>@(Model.Data.Mobile)</i></p>
-                <a class="suMoney-join-btn">立即加入</a>
-            </div>
+            <form id="form1" action="/itapi/invite/reg" method="post">
+                <div class="suMoney-inputBox">
+                    <input type="text" name="mobile" id="mobile" placeholder="手机号" maxlength="11" class="phone" />
+                </div>
+                <div class="suMoney-inputBox">
+                    <input type="text" placeholder="图形验证码" maxlength="4" name="vcode" id="vcode" class="yzm" />
+                    <img src="/Themes/img//yzm.jpg" id="imgCode" class="img-yzm">
+                </div>
+                <div class="suMoney-inputBox">
+                    <input type="text" placeholder="短信验证码" maxlength="6" id="J_verifycode" name="mcode" class="yzm" />
+                    <input type="button" style="" id="J_getCode" name="mcode" value="获取验证码" class="btn" onclick="getCode(this)">
+                </div>
+                <div class="suMoney-inputBox">
+                    <input type="password" placeholder="密码" maxlength="16" name="pwd" id="pwd" class="phone" />
+                </div>
+                <div class="suMoney-join-info">
+                    <p>邀请码：<i>@(Model.Data.Mobile)</i></p>
+                    <a class="suMoney-join-btn suMoney-join-gray">立 即 加 入</a>
+                    <input type="hidden" name="baseUserId" id="baseUserId" value="@Model.Data.UserId" />
+                    <input type="hidden" name="guid" id="guid" value="" />
+                    <input type="hidden" name="regGuid" id="regGuid" value="" />
+                </div>
+            </form>
             <div class="suMoney-copyRight">
                 版权所有©2018<br>北京苏津科技有限公司
             </div>
@@ -52,5 +61,216 @@
     </div>
     <!----占行--->
     <div style="width:100%;height:.2rem;"></div>
+
+
+    <!-- Small modal -->
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="myModal" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span style="float:right; color:black;" class="close" data-dismiss="modal" aria-label="Close" aria-hidden="true">&times;</span>
+                    <h2 class="modal-title" id="myModalTitle" style="text-align:center; color:black;font-weight:bold;">提示</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="alert " id="alertDiv" style="text-align:center;" role="alert">
+                        <strong style="font-size:1.3em" id="myModalMessage">支付成功</strong>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>*@
+                    <button type="button" data-dismiss="modal" style="background-color:#f3f4f4;color:#333; " class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
+<script type="text/javascript">
+
+    $(function () {
+        $(".suMoney-join-btn").click(function () {
+            timeop();
+            //$("#form1").submit();
+        });
+        $("#form1").submit(function () {
+            return submitValidate();
+        });
+        $("#imgCode").click(function () {
+           
+            var uuid = new GUID();
+            var guid = uuid.newGUID()
+
+            $("#guid").val(guid);
+            var newSrc = "/itapi/Invite/GetImgCode?guid=" + guid;
+            $(this).attr("src", newSrc);
+        });
+        $("#imgCode").click();
+        $('#myModal').on('show.bs.modal', centerModals);
+        //禁用空白处点击关闭
+        $('#myModal').modal({
+            backdrop: 'static',
+            keyboard: false,//禁止键盘
+            show: false
+        });
+    })
+    function centerModals() {
+        $('#myModal').each(function (i) {
+            var $clone = $(this).clone().css('display', 'block').appendTo('body');
+            var top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
+            top = top > 0 ? top : 0;
+            $clone.remove();
+            $(this).find('.modal-content').css("margin-top", top);
+        });
+    };
+    function MyModal(error, str) {
+
+        $("#alertDiv").addClass(error);
+        $("#myModalMessage").html(str);
+        $('#myModal').on('show.bs.modal', centerModals);
+        $('#myModal').modal({
+            backdrop: 'static',
+            keyboard: false,//禁止键盘
+            show: true
+        });
+    }
+
+
+    function submitValidate()
+    {
+        var mobile = $("#mobile").val()
+        var code = $("#J_verifycode").val();
+        var vcode = $("#vcode").val();
+        var pwd = $("#pwd").val();
+
+
+
+        if (code == "")
+        {
+            return false;
+        }
+
+        if ($(".suMoney-join-btn").hasClass("gray")) {
+            return false;
+        }
+
+        if (mobile.length != 11)
+        {
+            MyModal("alert-danger", '手机号长度不足11位字符');
+            return false;
+        }
+        if (/[^\d]/.test(mobile)) {
+            MyModal("alert-danger", '手机号码必须为数字');
+            return false;
+        }
+        if (vcode.length != 4)
+        {
+            MyModal("alert-danger", '图形验证码是4位字符');
+            return false;
+        }
+        if(/[^\d]/.test(code))
+        {
+            MyModal("alert-danger", '手机验证码必须为数字');
+            return false;
+        }
+        var regGuid = $("#regGuid").val();
+        if (regGuid == "")
+        {
+            MyModal("alert-danger", '请先获取短信');
+            return false;
+        }
+
+        if (pwd.length < 6 || pwd.length > 16)
+        {
+
+            MyModal("alert-danger", '密码为6-16位字符');
+            return false;
+        }
+        timeop();
+        return true;
+    }
+
+    function timeop()
+    {
+        $(".suMoney-join-btn").html("提交中...").addClass("suMoney-join-gray");
+        var k = 3;
+        setInterval(function () {
+            var dian = "";
+            for (var i = 0; i < k; i++) {
+                dian += ".";
+            }
+            $(".suMoney-join-btn").html("提交中" + dian);
+            k--;
+            if (k < 1) {
+                k = 3;
+            }
+        }, 500)
+    }
+
+    var setIntervalId;
+    var num = 60;
+    var flag = false;
+    function getCode(obj)
+    {
+        var mobile = $("#mobile").val();
+        var vcode = $("#vcode").val();
+        var guid = $("#guid").val();
+        if ($("#J_getCode").hasClass("gray")) {
+            return false;
+        }
+        if (mobile.length != 11) {
+            MyModal("alert-danger", '手机号长度不足11位字符');
+            return false;
+        }
+        if (/[^\d]/.test(mobile)) {
+            MyModal("alert-danger", '手机号码必须为数字');
+            return false;
+        }
+
+        if (vcode.length != 4) {
+            MyModal("alert-danger", '图形验证码是4位字符');
+            return false;
+        }
+        if (flag)
+        {
+            return;
+        }
+
+        $.post("/itapi/Invite/SendMsgCode", { mobile: mobile, vcode: vcode, guid: guid }, function (data) {
+            if (data.backState == 0) {
+                $(obj).addClass("gray");
+
+                setIntervalId = setInterval(otime, 1000);
+                flag = true;
+                $("#regGuid").val(data.Data.regGuid)
+            }
+            else {//发送失败
+                MyModal("alert-danger", data.message);
+            }
+        }, "json");
+    }
+
+
+    function otime()
+    {
+
+        $("#J_getCode").val(num + "秒后重发");
+        if (num == 0)
+        {
+            $("#J_getCode").val("重新获取");
+            $("#J_getCode").removeClass("gray");
+            clearInterval(setIntervalId);
+            num = 60;
+            flag = false;
+        }
+        num--;
+    }
+
+
+</script>
+
+@if (Model.backState == -100)
+{
+    <script type="text/javascript">
+        MyModal("alert-danger", '@Model.message');
+    </script>
+}

@@ -28,20 +28,20 @@ audio:not([controls]) {
     height: 0
 }
 
-html {
+/*html {
     font-size: 14px;
     -ms-text-size-adjust: 14px;
     -webkit-text-size-adjust: 14px
-}
+}*/
 
-button, html, input, select, textarea {
+/*button, html, input, select, textarea {
     font-family: "微软雅黑";
-}
+}*/
 
-body {
+/*body {
     background-color: #f4f4f5;
     -webkit-tap-highlight-color: transparent
-}
+}*/
 
 a:active, a:focus, a:hover, input {
     outline: 0
@@ -724,15 +724,15 @@ table {
     display: inline
 }
 
-html {
+/*html {
     height: 100%
-}
+}*/
 
-body {
+/*body {
     padding-bottom: 70px;
     min-height: calc(100% - 70px);
     color: #454648;
-}
+}*/
 
 .f10 {
     font-size: 10px;
