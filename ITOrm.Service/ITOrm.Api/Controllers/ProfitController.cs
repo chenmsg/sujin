@@ -237,7 +237,7 @@ namespace ITOrm.Api.Controllers
 
             data["listTitle"] = "微信扫码支付";
             data["list"] = list;
-       
+        
 
 
             JArray list2 = new JArray();
