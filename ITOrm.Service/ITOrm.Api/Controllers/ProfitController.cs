@@ -53,10 +53,10 @@ namespace ITOrm.Api.Controllers
             string url = Constant.CurrentApiHost + "itapi/invite/reg?u=" + ITOrm.Utility.Encryption.AESEncrypter.AESEncrypt(UserId.ToString(), Constant.SystemAESKey);
 
             UserShare us = new UserShare();
-            us.Title = "邀请好友";
+            us.Title = "速金派邀请您一起刷卡赚收益";
             us.ShareUrl = url;
             us.ImageUrl = "";
-            us.Context = "邀请好友";
+            us.Context = "速金派，移动刷卡神器。价格低，秒到账，邀请好友享收益。";
             us.Platform = cid;
             us.Ip = Ip.GetClientIp();
             us.Soure = Soure;
@@ -152,7 +152,7 @@ namespace ITOrm.Api.Controllers
         {
             int totalCount = 0;
             //int TypeId = (int)Logic.AccountType.刷卡分润; 开通会员分润
-            var listAccountRecord = accountRecordDao.GetPaged(pageSize, pageIndex, out totalCount, "UserId=@UserId and TypeId in(100,101,102)", new { UserId }, "order by ID desc");
+            var listAccountRecord = accountRecordDao.GetPaged(pageSize, pageIndex, out totalCount, "UserId=@UserId and TypeId in(100,101,102,103,104)", new { UserId }, "order by ID desc");
             JArray list = new JArray();
             if (listAccountRecord != null && listAccountRecord.Count > 0)
             {
@@ -241,7 +241,7 @@ namespace ITOrm.Api.Controllers
 
             JArray list2 = new JArray();
             string  str = "1.超低费率；2.邀请好友超高返佣；3.单单分润";
-            string str2 = "SVIP有积分0.43%，无积分0.39% VIP有积分0.48%，无积分0.44%；好友开通SVIP一次性最高返现50元；好友每次刷卡，即可享受高达0.1%的利润返现";
+            string str2 = "SVIP有积分0.43%，无积分0.39% VIP有积分0.48%，无积分0.44%；好友开通SVIP一次性最高返现79元；好友每次刷卡，即可享受高达0.1%的利润返现";
             string[] strs2 = str.Split('；');
             string[] strs3 = str2.Split('；');
             for (int i = 0; i < strs2.Length; i++)
@@ -256,7 +256,7 @@ namespace ITOrm.Api.Controllers
             data["DingjiDaili"] = "客户经理：18610122058\n客户经理：18506120807\n微信客服：SJpay-op";
 
 
-            data["Tips"] = "选择您需要开通会员对应的二维码并使用微信支付，备在注速金派已注册的账号，工作人员确认收款后立刻给您开通会员。您还可以将二维码保存在手机里面，方便支付。如有疑问请关注我们的微信公众号SJ派，联系在线客服";
+            data["Tips"] = "选择您需要开通会员对应的二维码并使用微信支付，备注速金派已注册的账号，工作人员确认收款后立刻给您开通会员。您还可以将二维码保存在手机里面，方便支付。如有疑问请关注我们的微信公众号SJ派，联系在线客服";
             return ApiReturnStr.getApiData(data);
         }
         #endregion

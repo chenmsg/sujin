@@ -138,6 +138,7 @@
     <Compile Include="MasgetUserBLL.cs" />
     <Compile Include="PayCashierBLL.cs" />
     <Compile Include="SendMsgBLL.cs" />
+    <Compile Include="KeyValueBLL.cs" />
     <Compile Include="UserBankCardBLL.cs" />
     <Compile Include="UserShareBLL.cs" />
     <Compile Include="UsersBLL.cs" />

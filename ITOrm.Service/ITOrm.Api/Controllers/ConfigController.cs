@@ -34,13 +34,23 @@ namespace ITOrm.Api.Controllers
             JObject data = new JObject();
             if (list != null&&list.Count>0)
             {
+                bool flag = false;
                 foreach (var item in list)
                 {
-                    data = JObject.Parse(item.Value);
-                    data["CTime"] = item.CTime;
-                    data["Platform"] = item.KeyId;
-                    data["PlatformTxt"] = ((Logic.Platform)item.KeyId).ToString();
-                    break;
+                    var temp= JObject.Parse(item.Value);
+                    if (temp["IsAuditing"].ToInt() == 1)
+                    {
+                        flag = true;
+                        data = JObject.Parse(item.Value);
+                        data["CTime"] = item.CTime;
+                        data["Platform"] = item.KeyId;
+                        data["PlatformTxt"] = ((Logic.Platform)item.KeyId).ToString();
+                        break;
+                    }
+                }
+                if (!flag)//未找到最新版本
+                {
+                    return ApiReturnStr.getError(0, "暂无新版本");
                 }
             }
             else
@@ -150,8 +160,11 @@ namespace ITOrm.Api.Controllers
 
         #region 首页按钮数据
 
-        public string GetIndexData(int cid=0,int UserId=0)
+        public string GetIndexData(int cid=0,int UserId=0,string version="")
         {
+            var serverVersion = keyValueDao.GetAuditingVersion(cid);
+
+
             JObject data = new JObject();
             JArray list = new JArray();
             JObject obj1 = new JObject();
@@ -177,7 +190,7 @@ namespace ITOrm.Api.Controllers
             JObject obj4 = new JObject();
             obj4["Title"] = "火爆上线";
             obj4["icon"] = Constant.StaticHost + "upload/btn/04.png";
-            obj4["WapUrl"] = "HuoBao";
+            obj4["WapUrl"] = (cid == (int)Logic.Platform.iOS && version == serverVersion) ?Constant.CurrentApiHost: "HuoBao";
             list.Add(obj4);
 
             JObject obj5 = new JObject();
@@ -202,9 +215,8 @@ namespace ITOrm.Api.Controllers
         #region 审核隐藏
         public string AppAuditingHide(int cid, string version,int UserId)
         {
-            Logs.WriteLog($"cid:{cid},version:{version},UserId:{UserId}", "d:\\Log\\", "AppAuditingHide");
-
-            if (cid == 3 && version == "1.0.2")
+            var serverVersion = keyValueDao.GetAuditingVersion(cid);
+            if (cid == 3 && version == serverVersion)
             {
                 return ApiReturnStr.getError(0, "hidden");
             }
