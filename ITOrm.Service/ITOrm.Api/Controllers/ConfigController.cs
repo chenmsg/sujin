@@ -156,41 +156,41 @@ namespace ITOrm.Api.Controllers
             JArray list = new JArray();
             JObject obj1 = new JObject();
             obj1["Title"] = "邀请好友";
-            obj1["icon"] = Constant.StaticHost;
+            obj1["icon"] = Constant.StaticHost+ "upload/btn/01.png";
             obj1["WapUrl"] = "QRcode";
             list.Add(obj1);
 
             JObject obj2 = new JObject();
             obj2["Title"] = "邀请收益";
-            obj2["icon"] = Constant.StaticHost;
-            obj2["WapUrl"] = "Invite";
+            obj2["icon"] = Constant.StaticHost + "upload/btn/02.png"; 
+            obj2["WapUrl"] = "InviteIncome";
             list.Add(obj2);
 
 
             JObject obj3 = new JObject();
             obj3["Title"] = "新手指引";
-            obj3["icon"] = Constant.StaticHost;
+            obj3["icon"] = Constant.StaticHost + "upload/btn/03.png";
             obj3["WapUrl"] = "https://mp.weixin.qq.com/s/wPYnEFtQZOuWYnERcsQfGQ";
             list.Add(obj3);
 
 
             JObject obj4 = new JObject();
             obj4["Title"] = "火爆上线";
-            obj4["icon"] = Constant.StaticHost;
+            obj4["icon"] = Constant.StaticHost + "upload/btn/04.png";
             obj4["WapUrl"] = "HuoBao";
             list.Add(obj4);
 
             JObject obj5 = new JObject();
             obj5["Title"] = "办卡攻略";
-            obj5["icon"] = Constant.StaticHost;
-            obj5["WapUrl"] = "http://api.sujintech.com/bankcard.html";
+            obj5["icon"] = Constant.StaticHost + "upload/btn/05.png";
+            obj5["WapUrl"] =Constant.CurrentApiHost+ "bankcard.html";
             list.Add(obj5);
 
 
             JObject obj6 = new JObject();
-            obj6["Title"] = "收款攻略";
-            obj6["icon"] = Constant.StaticHost;
-            obj6["WapUrl"] = "http://api.sujintech.com/Swipe.html";
+            obj6["Title"] = "收款攻略" ;
+            obj6["icon"] = Constant.StaticHost + "upload/btn/06.png";
+            obj6["WapUrl"] = Constant.CurrentApiHost + "Swipe.html";
             list.Add(obj6);
 
             data["btnList"] = list;
