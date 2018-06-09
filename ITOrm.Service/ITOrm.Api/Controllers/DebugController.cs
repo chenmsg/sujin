@@ -453,6 +453,11 @@ namespace ITOrm.Api.Controllers
             return "";
         }
 
+        public string safasfda()
+        {
+          var result=   YeepayDepository.CustomerInforUpdate(100229, 1, "6222031512000303405", "工商银行");
+            return JsonConvert.SerializeObject(result);
+        }
 
     }
 }
