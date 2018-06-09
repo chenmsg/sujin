@@ -10,6 +10,11 @@
         html {
             overflow-x: hidden;
         }
+
+        .form-group {
+            float: left;
+            margin-right: 8px;
+        }
     </style>
 }
 <ul class="breadcrumb">
@@ -18,8 +23,29 @@
     <li class="active">App版本管理</li>
 </ul>
 
-<div class="bs-docs-example" style="text-align:right;">
-    <a class="btn btn-default" href="/app/edit" style="" role="button">新增</a>
+<div class="bs-docs-example" style="">
+    <form>
+
+        <div class="form-group">
+            <label for="exampleInputEmail1">平台类型</label>
+            @{
+                var listVip = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(Logic.Platform));
+            }
+            @Html.MyDrop(listVip, "全部", "-1", TQuery.GetString("Platform"), new { @name = "Platform", @style = "width:100px" })
+        </div>
+
+        <div class="form-group ">
+            <label for="exampleInputEmail1">搜索</label>
+            <button class="btn btn-default" type="submit">提交</button>
+
+        </div>
+        <div class="form-group " style="float:right;">
+            <label for="exampleInputEmail1">　</label>
+            <a class="btn btn-default" href="/app/edit" style="" role="button">新增</a>
+        </div>
+        <div style="clear:both;"></div>
+    </form>
+
 </div>
 
 <table class="table table-hover table-bordered">
@@ -32,25 +58,30 @@
             <th>更新内容</th>
             <th>下载链接</th>
             <th>是否强制升级</th>
+            <th>审核通过</th>
             <th>操作</th>
         </tr>
     </thead>
     <tbody>
-
-        @foreach (var item in Model.list)
+        @if (Model.list != null && Model.list.Count > 0)
         {
-            JObject data = JObject.Parse(item.Value);
-            <tr>
-                <td>@item.ID</td>
-                <td>@(((Logic.Platform)item.KeyId).ToString())</td>
-                <td>@data["version"]</td>
-                <td>@item.CTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                <td>@data["update"].ToString()</td>
-                <td>@data["download"].ToString()</td>
-                <td>@(data["isupgrade"].ToInt()==0?"不强制":"强制")</td>
-                <td><a href="/app/edit/@item.ID"> 编辑</a></td>
-            </tr>
+            foreach (var item in Model.list)
+            {
+                JObject data = JObject.Parse(item.Value);
+                <tr>
+                    <td>@item.ID</td>
+                    <td>@(((Logic.Platform)item.KeyId).ToString())</td>
+                    <td>@data["version"]</td>
+                    <td>@item.CTime.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@data["update"].ToString()</td>
+                    <td>@data["download"].ToString()</td>
+                    <td>@(data["isupgrade"].ToInt() == 0 ? "不强制" : "强制")</td>
+                    <td>@(data["IsAuditing"].ToInt() == 0 ? "审核中" : "审核通过")</td>
+                    <td><a href="/app/edit/@item.ID"> 编辑</a></td>
+                </tr>
+            }
         }
+
     </tbody>
 </table>
 @Html.Pager("pageIndex", 10, Model.totalCount)

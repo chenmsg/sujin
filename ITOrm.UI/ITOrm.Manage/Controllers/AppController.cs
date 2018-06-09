@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using ITOrm.Manage.Filters;
 using ITOrm.Utility.Const;
 using ITOrm.Utility.Cache;
+using System.Text;
 
 namespace ITOrm.Manage.Controllers
 {
@@ -20,11 +21,17 @@ namespace ITOrm.Manage.Controllers
         public KeyValueBLL keyValueDao = new KeyValueBLL();
         // GET: App
         [AdminFilter]
-        public ActionResult Version(int pageIndex =1)
+        public ActionResult Version(int pageIndex =1,int Platform = -1)
         {
            
             int totalCount = 0;
-            var listkeyValue = keyValueDao.GetPaged(10, pageIndex, out totalCount, "1=1 and typeid=1",null," order by CTime desc");
+            StringBuilder where = new StringBuilder();
+            where.Append(" 1=1 and typeid=1 ");
+            if (Platform != -1)
+            {
+                where.AppendFormat(" and KeyId={0}", Platform);
+            }
+            var listkeyValue = keyValueDao.GetPaged(10, pageIndex, out totalCount, where.ToString(), null," order by CTime desc");
  
             return View(new ResultModel<KeyValue>(listkeyValue, totalCount));
         }
@@ -41,7 +48,7 @@ namespace ITOrm.Manage.Controllers
             return View(kv);
         }
         [HttpPost]
-        public ActionResult Edit(int Id = 0,int Platform=0,string update="",string version="",string download="",int isupgrade = 0)
+        public ActionResult Edit(int Id = 0,int Platform=0,string update="",string version="",string download="",int isupgrade = 0,int IsAuditing=0)
         {
             KeyValue kv = new KeyValue();
 
@@ -57,6 +64,7 @@ namespace ITOrm.Manage.Controllers
             data["version"] = version;
             data["download"] = download;
             data["isupgrade"] = isupgrade;
+            data["IsAuditing"] = IsAuditing;
             kv.Value = data.ToString();
             bool flag = false;
 
