@@ -152,7 +152,7 @@ namespace ITOrm.Api.Controllers
         {
             int totalCount = 0;
             //int TypeId = (int)Logic.AccountType.刷卡分润; 开通会员分润
-            var listAccountRecord = accountRecordDao.GetPaged(pageSize, pageIndex, out totalCount, "UserId=@UserId and TypeId in(100,101,102,103,104)", new { UserId }, "order by ID desc");
+            var listAccountRecord = accountRecordDao.GetPaged(pageSize, pageIndex, out totalCount, "UserId=@UserId and TypeId in(100,101,102)", new { UserId }, "order by ID desc");
             JArray list = new JArray();
             if (listAccountRecord != null && listAccountRecord.Count > 0)
             {
@@ -194,9 +194,9 @@ namespace ITOrm.Api.Controllers
             JObject total = MemcachHelper.Get<JObject>(Constant.income_total_key + UserId, DateTime.Now.AddMinutes(5), () =>
             {
                 JObject data = new JObject();
-                decimal TotalIncome = ITOrm.Utility.Helper.DapperHelper.ExecScalarSql<decimal>($" SELECT ISNULL(SUM(Amount),0) FROM dbo.AccountRecord WHERE UserId={UserId} AND TypeId IN(100,101,102,103,104) ");
-                decimal LastMounthIncome = ITOrm.Utility.Helper.DapperHelper.ExecScalarSql<decimal>($" SELECT ISNULL(SUM(Amount),0) FROM dbo.AccountRecord WHERE UserId={UserId} AND TypeId IN(100,101,102,103,104) and DATEDIFF(MONTH,CTime,GETDATE())=1 ");
-                decimal CurrentMounthIncome = ITOrm.Utility.Helper.DapperHelper.ExecScalarSql<decimal>($" SELECT ISNULL(SUM(Amount),0) FROM dbo.AccountRecord WHERE UserId={UserId} AND TypeId IN(100,101,102,103,104) and DATEDIFF(MONTH,CTime,GETDATE())=0 ");
+                decimal TotalIncome = ITOrm.Utility.Helper.DapperHelper.ExecScalarSql<decimal>($" SELECT ISNULL(SUM(Amount),0) FROM dbo.AccountRecord WHERE UserId={UserId} AND TypeId IN(100,101,102) ");
+                decimal LastMounthIncome = ITOrm.Utility.Helper.DapperHelper.ExecScalarSql<decimal>($" SELECT ISNULL(SUM(Amount),0) FROM dbo.AccountRecord WHERE UserId={UserId} AND TypeId IN(100,101,102) and DATEDIFF(MONTH,CTime,GETDATE())=1 ");
+                decimal CurrentMounthIncome = ITOrm.Utility.Helper.DapperHelper.ExecScalarSql<decimal>($" SELECT ISNULL(SUM(Amount),0) FROM dbo.AccountRecord WHERE UserId={UserId} AND TypeId IN(100,101,102) and DATEDIFF(MONTH,CTime,GETDATE())=0 ");
                 data["TotalIncome"] = TotalIncome.ToString("F2");
                 data["LastMounthIncome"] = LastMounthIncome.ToString("F2");
                 data["CurrentMounthIncome"] = CurrentMounthIncome.ToString("F2");
