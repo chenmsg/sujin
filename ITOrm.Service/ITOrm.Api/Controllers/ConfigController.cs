@@ -176,7 +176,7 @@ namespace ITOrm.Api.Controllers
             JObject obj2 = new JObject();
             obj2["Title"] = "邀请收益";
             obj2["icon"] = Constant.StaticHost + "upload/btn/02.png"; 
-            obj2["WapUrl"] = "InviteIncome";
+            obj2["WapUrl"] = (cid == (int)Logic.Platform.iOS && version == serverVersion) ? Constant.CurrentApiHost : "InviteIncome";
             list.Add(obj2);
 
 

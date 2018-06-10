@@ -455,7 +455,7 @@ namespace ITOrm.Api.Controllers
 
         public string safasfda()
         {
-          var result=   YeepayDepository.CustomerInforUpdate(100229, 1, "6222031512000303405", "工商银行");
+          var result=   YeepayDepository.CustomerInforUpdate(100159, 1, "6214680008531400", "北京银行");
             return JsonConvert.SerializeObject(result);
         }
 
