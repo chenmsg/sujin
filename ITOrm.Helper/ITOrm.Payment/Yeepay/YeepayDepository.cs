@@ -155,7 +155,7 @@ namespace ITOrm.Payment.Yeepay
                 //初始化提现卡
                 UserBankCard ubc = new UserBankCard();
                 ubc.BankCard = model.bankAccountNumber;
-                ubc.BankCode = bankDao.QueryBankCode(model.bankName);//查询BankCode
+                ubc.BankCode = bankDao.QueryBankCode(model.bankName.BankToFour());//查询BankCode
                 ubc.BankName = model.bankName;
                 ubc.CTime = DateTime.Now;
                 ubc.UTime = DateTime.Now;

@@ -173,6 +173,23 @@ public static class StringExtensions
         }
         return str;
     }
+
+    public static string BankToFour(this string str)
+    {
+        if (str == "深圳发展银行")
+        {
+            return "平安银行";
+        }
+        if (str == "广发银行股份有限公司")
+        {
+            return "广发银行";
+        }
+        if (str == "浦东发展银行")
+        {
+            return "浦发银行";
+        }
+        return str;
+    }
     #endregion
 
 }

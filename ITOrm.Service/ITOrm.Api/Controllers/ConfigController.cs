@@ -21,6 +21,7 @@ namespace ITOrm.Api.Controllers
         public KeyValueBLL keyValueDao = new KeyValueBLL();
         public UsersBLL usersDao = new UsersBLL();
         public BannerBLL bannerDao = new BannerBLL();
+        
         #region 获得最新App版本信息
         public string GetVersion(int cid)
         {
