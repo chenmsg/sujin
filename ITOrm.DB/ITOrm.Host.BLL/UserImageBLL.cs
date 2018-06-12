@@ -12,7 +12,7 @@ namespace ITOrm.Host.BLL
         public string GetUrl(int Id)
         {
             UserImage model = Single(Id);
-            return model != null && model.ID > 0 ? model.Url : "";
+            return model != null && model.ID > 0 ? model.Url : "upload/avatar/avatar.png";
         }
 
         public string GetUrlAndUpdateState(int Id,int State)

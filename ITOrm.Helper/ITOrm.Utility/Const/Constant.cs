@@ -121,7 +121,7 @@ namespace ITOrm.Utility.Const
         /// <summary>
         /// api登录参数缓存
         /// </summary>
-        public static string list_api_channel_key = Debug + "-list-api-channel-";
+        public static string list_api_channel_key = Debug + "-list-api-channel";
 
         /// <summary>
         /// 银行卡限额
@@ -164,6 +164,9 @@ namespace ITOrm.Utility.Const
         /// </summary>
         public static string login_key = Debug + "-login-appkey-";
 
+        /// <summary>
+        /// 收益统计缓存
+        /// </summary>
         public static string income_total_key = Debug + "-income-total-key-";
 
         /// <summary>

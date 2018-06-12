@@ -27,13 +27,13 @@ namespace ITOrm.Api.Controllers
         /// 邀请二维码
         /// </summary>
         [HttpGet]
-        public ActionResult QRcode(int cid, int UserId)
+        public ActionResult QRcode(int cid, int UserId,string version)
         {
 
             string url = Constant.CurrentApiHost + "itapi/invite/reg?u=" + ITOrm.Utility.Encryption.AESEncrypter.AESEncrypt(UserId.ToString(), Constant.SystemAESKey);
             //url = "http://api.sujintech.com/itapi/invite/reg?u=" + ITOrm.Utility.Encryption.AESEncrypter.AESEncrypt(UserId.ToString(), Constant.SystemAESKey);;
             //用户事件
-            userEventDao.UserEventInit(cid, UserId, Ip.GetClientIp(), 1, "Profit", "QRcode", $"{{UserId:{UserId}}}");
+            userEventDao.UserEventInit(cid, UserId, Ip.GetClientIp(), 1, "Profit", "QRcode", $"{{UserId:{UserId},version:{version}}}");
 
             var bytes = QrCodeHelper.Instance.QrCodeCreate(url);
             return File(bytes, @"image/jpeg");
@@ -48,14 +48,14 @@ namespace ITOrm.Api.Controllers
         /// <param name="UserId"></param>
         /// <param name="Soure"></param>
         /// <returns></returns>
-        public string Share(int cid, int UserId, int Soure)
+        public string Share(int cid, int UserId, int Soure, string version)
         {
             string url = Constant.CurrentApiHost + "itapi/invite/reg?u=" + ITOrm.Utility.Encryption.AESEncrypter.AESEncrypt(UserId.ToString(), Constant.SystemAESKey);
 
             UserShare us = new UserShare();
             us.Title = "速金派邀请您一起刷卡赚收益";
             us.ShareUrl = url;
-            us.ImageUrl = "";
+            us.ImageUrl = Constant.StaticHost+ "upload/icon/logotest.png";
             us.Context = "速金派，移动刷卡神器。价格低，秒到账，邀请好友享收益。";
             us.Platform = cid;
             us.Ip = Ip.GetClientIp();
@@ -68,7 +68,7 @@ namespace ITOrm.Api.Controllers
             data["ImageUrl"] = us.ImageUrl;
             data["Context"] = us.Context;
             //用户事件
-            userEventDao.UserEventInit(cid, UserId, Ip.GetClientIp(), num > 0 ? 1 : 0, "Profit", "Share", $"{{UserId:{UserId},Soure:{Soure},num:{num}}}");
+            userEventDao.UserEventInit(cid, UserId, Ip.GetClientIp(), num > 0 ? 1 : 0, "Profit", "Share", $"{{UserId:{UserId},Soure:{Soure},num:{num},version:{version}}}");
 
 
             return ApiReturnStr.getApiData(data);
@@ -160,6 +160,7 @@ namespace ITOrm.Api.Controllers
                 {
                     JObject data = new JObject();
                     data["InOrOut"] = item.InOrOut == 1 ? "+" : "-";
+                    data["InOrOutNum"] = item.InOrOut;
                     data["Amount"] = item.Amount.ToString("F2");
                     data["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
                     data["TypeId"] = item.TypeId;

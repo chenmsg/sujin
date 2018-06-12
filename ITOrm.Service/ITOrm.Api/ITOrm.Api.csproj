@@ -178,10 +178,12 @@
     <Content Include="Themes\img\ABC.png" />
     <Content Include="Themes\img\BCCB.png" />
     <Content Include="Themes\img\BCM.png" />
+    <Content Include="Themes\img\bjrcb.png" />
     <Content Include="Themes\img\BOC.png" />
     <Content Include="Themes\img\CCB.png" />
     <Content Include="Themes\img\CEB.png" />
     <Content Include="Themes\img\CIB .png" />
+    <Content Include="Themes\img\citibank.png" />
     <Content Include="Themes\img\CMB.png" />
     <Content Include="Themes\img\CMBC.png" />
     <Content Include="Themes\img\ECITIC.png" />

@@ -128,21 +128,37 @@ namespace ITOrm.Api.Controllers
                 data["Quota"] = m["Quota"].ToString();
                 decimal[] r = Constant.GetRate(PayType, vip);
                 data["Fee"] = $"{r[0].perCent()}+{r[1].ToString("F1")}元/笔";
-                list.Add(data);
+                if (!(PayType == 1 && vip== Logic.VipType.顶级代理))//顶级代理隐藏无积分费率
+                {
+                    list.Add(data);
+                }
             }
             return ApiReturnStr.getApiDataList(list);
         }
         #endregion
 
         #region App轮播图
-        public string BannerList(int UserId)
+        public string BannerList(int UserId,int cid,string version)
         {
+            JArray list = new JArray();
+            var serverVersion = keyValueDao.GetAuditingVersion(cid);
+            if (serverVersion == version&& cid==(int)Logic.Platform.iOS)
+            {
+                JObject data = new JObject();
+                data["ID"] = 100;
+                data["Title"] = "火爆上线";
+                data["WapURL"] = "";
+                data["ImgUrl"] = ITOrm.Utility.Const.Constant.StaticHost + "upload/banner/default.jpg";
+                list.Add(data);
+                return ApiReturnStr.getApiDataList(list);
+            }
+
             List<Banner> listBanner = MemcachHelper.Get<List<Banner>>(Constant.list_banner_key, DateTime.Now.AddDays(7), () =>
             {
                return  bannerDao.GetQuery(10, " State=1 AND GETDATE() BETWEEN StartTime AND EndTime", null, "ORDER BY Sort DESC,ID DESC");
             });
              
-            JArray list = new JArray();
+
             if (listBanner != null && listBanner.Count > 0)
             {
                 foreach (var item in listBanner)
