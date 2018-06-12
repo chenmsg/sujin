@@ -1,0 +1,80 @@
+﻿@model ITOrm.Utility.ITOrmApi.RequestApiModel
+@{
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string lcturl ="http://testapi.sujintech.com/itapi/";
+    //string username = "itormandroid";
+    //string webpass = "e61671437de57573b4ec9c66ef39a615";
+    //string strMd5Key = "c9866fa3d7511f55ad935919d89fab43";
+    //string Target = "Users/CheckMobile";
+    //string version = "1.0.0";
+    //string Param = "mobile=15110167786";
+
+    string username = "itormios";
+    string webpass = "645524c5324c953d1eb3a5790a2016a5";
+    string strMd5Key = "0aa42c93aca00527f3ad7d9cea8d0947";
+    string Target = "Users/Single";
+    string version = "2.0.0";
+    string Param = "UserId=100094";
+}
+
+<!DOCTYPE html>
+
+
+    <div class="span6"> 
+        <h2 >URLEncode</h2>
+        <form method="post" action="/Debug/UrlEncode">
+            <textarea cols="50" rows="20" name="text" style="width: 353px; height: 355px;"></textarea>
+            <br />
+            <input type="submit" class="btn" />
+        </form>
+    </div>
+    <div class="span7">
+        <h2>itorm.api</h2>
+        <form method="post" action="/Debug/DebugApi">
+            <p>接口地址</p>
+            <input type="text" name="lcturl" placeholder="lct.api.url" style=" width:400px;" value="@(string.IsNullOrEmpty(Request.Form["lcturl"]) ? lcturl : Request.Form["lcturl"])" />
+            <p>用户名</p>
+            <input type="text" name="username" placeholder="lct.api.username" style=" width:400px;" value="@(string.IsNullOrEmpty(Request.Form["username"]) ? username : Request.Form["username"])" />
+            <p>密码</p>
+            <input type="text" name="password" placeholder="lct.api.password" style=" width:400px;" value="@(string.IsNullOrEmpty(Request.Form["password"]) ? webpass : Request.Form["password"])" />
+            <p>MD5干扰码</p>
+            <input type="text" name="strMd5Key" placeholder="lct.api.strMd5Key" style=" width:400px;" value="@(string.IsNullOrEmpty(Request.Form["strmd5key"]) ? strMd5Key : Request.Form["strmd5key"])" />
+            <p>命令行</p>
+            <input type="text" name="Target" placeholder="Target" style=" width:400px;" value="@(string.IsNullOrEmpty(Request.Form["target"]) ? Target : Request.Form["target"])" />
+            <p>版本号</p>
+            <input type="text" name="version" placeholder="版本号" style=" width:400px;" value="@(string.IsNullOrEmpty(Request.Form["version"]) ? version : Request.Form["version"])" />
+            <p>参数</p>
+            <textarea cols="50" rows="10" name="Param" style="width: 397px; height: 261px;" placeholder="Param">@(string.IsNullOrEmpty(Request.Form["Param"]) ? Param : Request.Form["Param"])</textarea>
+            <br />
+            <input type="submit" class="btn" />
+        </form>
+
+    </div>
+    <div class="span6">
+        <h2>
+            排序后的结果：
+        </h2>
+        <textarea cols="50" rows="10" style="width: 397px; height: 190px;">@(Model == null ? "" : Model.buildParam.Trim())</textarea>
+        <h2>
+            Md5加密前的字符串：
+
+        </h2>
+        <textarea cols="50" rows="10" style="width: 397px; height: 190px;">@(Model == null ? "" : Model.Md5Str)</textarea>
+        <h2>
+            Md5加密后的字符串：
+
+
+        </h2>
+        <input type="text" value="@(Model == null ? "" : Model.Md5Sign)" style=" width:300px;" />
+
+        <h2>
+            全部URL：
+
+        </h2>
+        <textarea cols="50" rows="10" style="width: 397px; height: 190px;">@(Model == null ? "" : Model.Url)</textarea>
+        <p></p>
+        <p></p>
+
+    </div>
