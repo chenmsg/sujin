@@ -992,6 +992,7 @@ namespace ITOrm.Api.Controllers
 
         public string AccountRecord(int UserId, int pageIndex = 1, int pageSize = 10)
         {
+            //Logs.WriteLog($"AccountRecord,UserId:{UserId},pageIndex{pageIndex},pageSize:{pageSize}", "d:\\Log\\", "AccountRecord");
             int totalCount = 0;
             //int TypeId = (int)Logic.AccountType.刷卡分润; 开通会员分润
             var listAccountRecord = accountRecordDao.GetPaged(pageSize, pageIndex, out totalCount, "UserId=@UserId ", new { UserId }, "order by ID desc");
