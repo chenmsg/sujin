@@ -148,7 +148,7 @@ namespace ITOrm.Api.Controllers
                 data["ID"] = 100;
                 data["Title"] = "火爆上线";
                 data["WapURL"] = "";
-                data["ImgUrl"] = ITOrm.Utility.Const.Constant.StaticHost + "upload/banner/default.jpg";
+                data["ImgUrl"] = ITOrm.Utility.Const.Constant.StaticHost + "upload/banner/default.png";
                 list.Add(data);
                 return ApiReturnStr.getApiDataList(list);
             }
@@ -191,7 +191,7 @@ namespace ITOrm.Api.Controllers
             list.Add(obj1);
 
             JObject obj2 = new JObject();
-            obj2["Title"] = "邀请收益";
+            obj2["Title"] = (cid == (int)Logic.Platform.iOS && version == serverVersion) ? "使用指南":"邀请收益";
             obj2["icon"] = Constant.StaticHost + "upload/btn/02.png"; 
             obj2["WapUrl"] = (cid == (int)Logic.Platform.iOS && version == serverVersion) ? Constant.CurrentApiHost : "InviteIncome";
             list.Add(obj2);
@@ -207,7 +207,7 @@ namespace ITOrm.Api.Controllers
             JObject obj4 = new JObject();
             obj4["Title"] = "火爆上线";
             obj4["icon"] = Constant.StaticHost + "upload/btn/04.png";
-            obj4["WapUrl"] = (cid == (int)Logic.Platform.iOS && version == serverVersion) ?Constant.CurrentApiHost: "HuoBao";
+            obj4["WapUrl"] = (cid == (int)Logic.Platform.iOS && version == serverVersion) ?(Constant.CurrentApiHost+"HuoBao.html"): "HuoBao";
             list.Add(obj4);
 
             JObject obj5 = new JObject();

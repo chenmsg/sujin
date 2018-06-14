@@ -105,7 +105,7 @@ namespace ITOrm.Payment.Const
                     Logs.WriteLog($"自我检查:PayId:{PayId},UserId:{UserId},checkGiveVipResult:{JsonConvert.SerializeObject(checkGiveVipResult)}", "d:\\Log\\", "NoticeSuccess");
                     if (checkGiveVipResult.backState == 0)
                     {
-                        var uv = UpdateChannelVip(UserId, (int)Logic.VipType.Vip用户, (int)Logic.Platform.系统);
+                        var uv = UpdateChannelVip(UserId, (int)Logic.VipType.VIP, (int)Logic.Platform.系统);
                         Logs.WriteLog($"自我第三方升级:PayId:{PayId},UserId:{UserId},UpdateChannelVip:{JsonConvert.SerializeObject(uv)}", "d:\\Log\\", "NoticeSuccess");
                     }
 
@@ -122,7 +122,7 @@ namespace ITOrm.Payment.Const
                         Logs.WriteLog($"邀请人检查:PayId:{PayId},user.BaseUserId:{user.BaseUserId},checkGiveVipResult:{JsonConvert.SerializeObject(checkGiveVipResult)}", "d:\\Log\\", "NoticeSuccess");
                         if (checkGiveVipResult.backState == 0)
                         {
-                            var uv = UpdateChannelVip(user.BaseUserId, (int)Logic.VipType.Vip用户, (int)Logic.Platform.系统);
+                            var uv = UpdateChannelVip(user.BaseUserId, (int)Logic.VipType.VIP, (int)Logic.Platform.系统);
                             Logs.WriteLog($"邀请人第三方升级:PayId:{PayId},user.BaseUserId:{user.BaseUserId},UpdateChannelVip:{JsonConvert.SerializeObject(uv)}", "d:\\Log\\", "NoticeSuccess");
                         }
                     }

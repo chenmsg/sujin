@@ -395,8 +395,8 @@ namespace ITOrm.Api.Controllers
                 {
                     var result1 = YeepayDepository.FeeSetApi(item.UserId, 1, Payment.Yeepay.Enums.YeepayType.设置费率1, "0.0048");
                     //var result3 = YeepayDepository.FeeSetApi(item.UserId, 1, Payment.Yeepay.Enums.YeepayType.设置费率3, "2");
-                    var result2 = MasgetDepository.SamenameUpdate(item.UserId, 1, Logic.ChannelType.荣邦科技积分, Logic.VipType.Vip用户);
-                    item.VipType = (int)Logic.VipType.Vip用户;
+                    var result2 = MasgetDepository.SamenameUpdate(item.UserId, 1, Logic.ChannelType.荣邦科技积分, Logic.VipType.VIP);
+                    item.VipType = (int)Logic.VipType.VIP;
                     item.UTime = DateTime.Now;
                     usersDao.Update(item);
                 }

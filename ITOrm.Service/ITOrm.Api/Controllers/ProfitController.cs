@@ -231,8 +231,8 @@ namespace ITOrm.Api.Controllers
             JObject vip3 = new JObject();
             vip3["Title"] = "升级SVIP";
             vip3["CurrentPrice"] = "69";
-            vip3["OriginalPrice"] = "原价￥119";
-            vip3["QRcode"] = Constant.StaticHost + "upload/QRcode/u69svip.png";//u119svip
+            vip3["OriginalPrice"] = "原价￥129";
+            vip3["QRcode"] = Constant.StaticHost + "upload/QRcode/u69svip.png";//u129svip
             list.Add(vip3);
 
             data["listTitle"] = "微信扫码支付";
@@ -242,7 +242,7 @@ namespace ITOrm.Api.Controllers
 
             JArray list2 = new JArray();
             string  str = "1.超低费率；2.邀请好友超高返佣；3.单单分润";
-            string str2 = "SVIP有积分0.43%，无积分0.39% VIP有积分0.48%，无积分0.44%；好友开通SVIP一次性最高返现79元；好友每次刷卡，即可享受高达0.1%的利润返现";
+            string str2 = "SVIP有积分0.43%，无积分0.39%\nVIP有积分0.48%，无积分0.44%；好友开通SVIP一次性最高返现79元；好友每次刷卡，即可享受高达0.1%的利润返现";
             string[] strs2 = str.Split('；');
             string[] strs3 = str2.Split('；');
             for (int i = 0; i < strs2.Length; i++)

@@ -127,6 +127,7 @@
     <Content Include="html\banksbin.txt" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Huobao.html" />
     <Content Include="index.html" />
     <Content Include="bankcard.html" />
     <Content Include="Swipe.html" />

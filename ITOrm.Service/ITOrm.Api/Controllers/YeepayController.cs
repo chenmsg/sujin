@@ -27,6 +27,7 @@ using ITOrm.Payment.Masget;
 using ITOrm.Payment.Const;
 using ITOrm.Payment.Teng;
 using ITOrm.Payment.MiShua;
+using System.Threading;
 
 namespace ITOrm.Api.Controllers
 {
@@ -109,6 +110,9 @@ namespace ITOrm.Api.Controllers
         /// <returns></returns>
         public string Register(int cid = 0, int UserId = 0, string IdCard = "", string RealName = "", string BankName = "", string BankAccountNumber = "", string AreaCode = "", int BankCardPhoto = 0, int IdCardPhoto = 0, int IdCardBackPhoto = 0, int PersonPhoto = 0)
         {
+
+            //Thread.Sleep(3000);
+            //return ApiReturnStr.getError(-100, "注册失败，测试终点");
 
             Logs.WriteLog($"Register,cid:{cid},UserId:{UserId},IdCard:{IdCard},RealName:{RealName},BankName:{BankName},BankAccountNumber:{BankAccountNumber},AreaCode:{AreaCode},BankCardPhoto:{BankCardPhoto},IdCardPhoto:{IdCardPhoto},IdCardBackPhoto:{IdCardBackPhoto},PersonPhoto:{PersonPhoto}", "d:\\Log\\Yeepay", "Register");
             #region 参数验证
@@ -310,6 +314,7 @@ namespace ITOrm.Api.Controllers
 
 
             #region 测试通道
+            //Thread.Sleep(3000);
             //int ChannelType = 4;
             //data["ChannelType"] = ChannelType;
             //data["BankID"] = BankID;

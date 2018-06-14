@@ -44,8 +44,8 @@ namespace ITOrm.Utility.Const
         {
             Boss = 0,
             顶级代理=1,
-            SVip用户 = 2,
-            Vip用户 = 3,
+            SVIP = 2,
+            VIP = 3,
             普通用户 = 4
         }
 

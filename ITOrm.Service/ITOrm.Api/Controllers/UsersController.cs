@@ -129,7 +129,7 @@ namespace ITOrm.Api.Controllers
             model.UserName = mobile;
             model.UTime = DateTime.Now;
             model.RealTime = DateTime.Now;
-            model.VipType = (int)Logic.VipType.SVip用户;
+            model.VipType = (int)Logic.VipType.SVIP;
             var result = userDao.Insert(model);
             var account = new Account();
             account.UserId = result;
@@ -589,7 +589,7 @@ namespace ITOrm.Api.Controllers
                     obj["OpeningSerialBank"] = item.OpeningSerialBank;
                     obj["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
                     obj["State"] = item.State;
-
+                    obj["ICON"] = $"{Constant.StaticHost}upload/bank/80/{item.BankCode}.png";
                     list.Add(obj);
                 }
             }
@@ -601,8 +601,9 @@ namespace ITOrm.Api.Controllers
 
         #region 获得银行卡列表
 
+        public readonly static string bankList = "工商银行、农业银行、招商银行、建设银行、交通银行、中信银行、光大银行、北京银行、平安银行、中国银行、兴业银行、民生银行、华夏银行、广发银行、浦发银行";
 
-        public string GetBankList()
+        public string GetBankList(int TypeId=0)
         {
             //Logs.WriteLog($"1111", "d:\\Log\\", "GetBankList");
             List<Bank> listBank = MemcachHelper.Get<List<Bank>>(Constant.list_bank_key, DateTime.Now.AddHours(1), () =>
@@ -620,7 +621,20 @@ namespace ITOrm.Api.Controllers
                     obj["BankCode"] = item.BankCode;
                     obj["State"] = item.State;
                     obj["StateTxt"] = item.State == 0 ? "可用" : "不可用";
-                    list.Add(obj);
+                    obj["ICON"] = $"{Constant.StaticHost}upload/bank/80/{item.BankCode}.png";
+
+                    if (TypeId == 1)//实名认证所用
+                    {
+                        if (bankList.Contains(item.BankName))//收款支持的银行
+                        {
+                            list.Add(obj);
+                        }
+                    }
+                    else//信用卡所用
+                    {
+                        list.Add(obj);
+                    }
+                    
                 }
             }
             return ApiReturnStr.getApiDataList(list);
@@ -775,7 +789,7 @@ namespace ITOrm.Api.Controllers
             userEventDao.BankCardActivate(cid, UserId, Ip.GetClientIp(), 0, TQuery.GetString("version"), BankID, ChannelType);
             Logic.ChannelType ct = (Logic.ChannelType)ChannelType;
             var ubk = userBankCardDao.Single(BankID);
-            //Thread.Sleep(2000);
+            //Thread.Sleep(3000);
             //return ApiReturnStr.getError(0, "验证码发送成功");
             if (ubk == null)
             {
@@ -835,7 +849,7 @@ namespace ITOrm.Api.Controllers
         #region 确认开通快捷协议
         public string BankCardSubmitActivateCode(int cid = 0, int UserId = 0, int BankID = 0, int ChannelType = 0, string Code = "")
         {
-            //Thread.Sleep(2000);
+            //Thread.Sleep(3000);
             //return ApiReturnStr.getError(-100, "开通失败，测试终点");
             var result = MasgetDepository.TreatyConfirm(BankID, Code, cid, (Logic.ChannelType)ChannelType);
             userEventDao.BankCardSubmitActivateCode(cid, UserId, Ip.GetClientIp(), result.backState == 0 ? 1 : 0, TQuery.GetString("version"), BankID, ChannelType, Code);
@@ -892,7 +906,7 @@ namespace ITOrm.Api.Controllers
                     obj["CTime"] = item.CTime.ToString("yyyy-MM-dd HH:mm:ss");
                     obj["PayTime"] = item.State == 10 ? item.PayTime.ToString("yyyy-MM-dd HH:mm:ss") : "--";
                     obj["PayState"] = item.State;
-                    obj["PayStateTxt"] = ((PayRecordState)item.State).ToString();
+                    obj["PayStateTxt"] = item.State==10?"支付成功":((PayRecordState)item.State).ToString();
                     obj["Message"] = item.State == 10 ? "" : item.Message;
                     obj["BankCode"] = item.BankCode;
                     obj["BankCard"] = Util.GetHiddenString(item.BankCard, 6, 4);

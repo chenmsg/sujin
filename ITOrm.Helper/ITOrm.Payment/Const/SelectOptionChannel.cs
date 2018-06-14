@@ -32,7 +32,7 @@ namespace ITOrm.Payment.Const
         /// </summary>
         /// <param name="BankId"></param>
         /// <param name="PayType"></param>
-        public static ResultModelData<int> Optimal(int UserId,decimal Amount=0, string BankCode = "",int PayType=0)
+        public static ResultModelData<int> Optimal(int UserId,decimal Amount=0, string BankCode = "",int PayType=0,string mobile="")
         {
 
 
@@ -62,7 +62,10 @@ namespace ITOrm.Payment.Const
 
             //只获得可用通道
             listChannelPay = listChannelPay.FindAll(m => m.State == 0);
-
+            if (mobile.Substring(0, 2) == "17")//17号段的用户排除荣邦通道 
+            {
+                listChannelPay = listChannelPay.FindAll(m => m.KeyId != 1&& m.KeyId!=4);
+            }
             Users user = usersDao.Single(UserId);
             var rate = Constant.GetRate(PayType, (Logic.VipType)user.VipType);
 
@@ -142,7 +145,7 @@ namespace ITOrm.Payment.Const
         public static ResultModelData<int> Optimal( decimal Amount = 0, int BankId=0, int PayType = 0)
         {
             var model = userBankCardDao.Single(BankId);
-            return Optimal(model.UserId, Amount, model.BankCode, PayType);
+            return Optimal(model.UserId, Amount, model.BankCode, PayType,model.Mobile);
         }
 
 
