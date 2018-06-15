@@ -459,5 +459,18 @@ namespace ITOrm.Api.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
+        public string hhhh()
+        {
+            var list = payRecordDao.GetQuery(" ChannelType=4 ");
+            foreach (var item in list)
+            {
+                //ToolPay tp = new ToolPay(Amount, r[0], 0, r[1], 0, 0);
+                ToolPay tp = new ToolPay(item.Amount,item.Rate, item.Fee3, 0.0040M, 1);
+                item.Income = tp.Income;
+                item.DrawIncome= tp.Rate3 - 1;//结算收益
+                payRecordDao.Update(item);
+            }
+            return DateTime.Now.ToString();
+        }
     }
 }

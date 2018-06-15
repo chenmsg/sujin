@@ -23,10 +23,7 @@ namespace ITOrm.Api.Filters
         public static ChannelBLL channelDao = new ChannelBLL();
         public static JsonSerializerSettings jSetting = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
-        public  static List<Channel> listChannel = MemcachHelper.Get<List<Channel>>(Constant.list_api_channel_key , DateTime.Now.AddDays(7), () =>
-        {
-            return channelDao.GetQuery(" 1=1 ");
-        });
+        public static List<Channel> listChannel = null;
 
         //
         // 摘要:
@@ -195,6 +192,10 @@ namespace ITOrm.Api.Filters
             //if (userName == "ITOrm" && passWord == "ITOrm" && md5key == "ITOrm")
             //    return true;
 
+            listChannel= MemcachHelper.Get<List<Channel>>(Constant.list_api_channel_key, DateTime.Now.AddDays(7), () =>
+            {
+                return channelDao.GetQuery(" 1=1 ");
+            });
             Channel api = listChannel.Find(m => m.CName.Equals(userName));
 
             if (api != null)
