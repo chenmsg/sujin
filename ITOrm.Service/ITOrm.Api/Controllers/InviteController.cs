@@ -44,11 +44,11 @@ namespace ITOrm.Api.Controllers
         [HttpPost]
         public ActionResult Reg(string mobile,string mcode,string pwd,string baseUserId, string regGuid)
         {
-            Thread.Sleep(5000);
+            //Thread.Sleep(5000);
             ResultModelData<Users> result = new ResultModelData<Users>();
             result.backState = -100;
             result.message = "参数有误";
-            return View("Reg2", result);
+            //return View("Reg2", result);
 
             //密码加密
             pwd = ITOrm.Utility.Encryption.SecurityHelper.GetMD5String(pwd);
@@ -64,9 +64,9 @@ namespace ITOrm.Api.Controllers
                 result.backState = -100;
                 result.message = regResult.message;
             }
-            var user = usersDao.Single(baseUserId);
+            var user = usersDao.Single(Convert.ToInt32( baseUserId));
             result.Data = user;
-            return View(result);
+            return View("Reg2", result);
         }
 
         [ValidateInput(false)]

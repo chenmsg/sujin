@@ -20,9 +20,10 @@
     <script src="/Themes/js/guid.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
-        html {
+        body {
             background: url(/Themes/img/suMoney-banner.jpg) no-repeat;
-            background-size: 100% 105%;
+            background-size: 100% 100%;
+            min-height: 100%;
         }
     </style>
 </head>
@@ -89,8 +90,7 @@
 
     $(function () {
         $(".suMoney-join-btn").click(function () {
-            timeop();
-            //$("#form1").submit();
+            $("#form1").submit();
         });
         $("#form1").submit(function () {
             return submitValidate();
@@ -149,7 +149,7 @@
             return false;
         }
 
-        if ($(".suMoney-join-btn").hasClass("gray")) {
+        if ($(".suMoney-join-btn").hasClass("suMoney-join-gray")) {
             return false;
         }
 
