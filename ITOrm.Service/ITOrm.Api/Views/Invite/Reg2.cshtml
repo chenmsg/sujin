@@ -90,8 +90,7 @@
 
     $(function () {
         $(".suMoney-join-btn").click(function () {
-            timeop();
-            //$("#form1").submit();
+            $("#form1").submit();
         });
         $("#form1").submit(function () {
             return submitValidate();
@@ -150,7 +149,7 @@
             return false;
         }
 
-        if ($(".suMoney-join-btn").hasClass("gray")) {
+        if ($(".suMoney-join-btn").hasClass("suMoney-join-gray")) {
             return false;
         }
 

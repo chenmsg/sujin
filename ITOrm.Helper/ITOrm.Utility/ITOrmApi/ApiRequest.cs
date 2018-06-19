@@ -40,8 +40,8 @@ namespace ITOrm.Utility.ITOrmApi
             string ret = string.Empty;
             string userName = ConfigHelper.GetAppSettings("itorm.api.itormName"); 
             var passWord = ConfigHelper.GetAppSettings("itorm.api.webpass"); 
-            var md5key = ConfigHelper.GetAppSettings("itorm.api.strMd5Key"); 
-          
+            var md5key = ConfigHelper.GetAppSettings("itorm.api.strMd5Key");
+            var version = ConfigHelper.GetAppSettings("itorm.api.version");
             var buildParam = param;
             var arrayParam = param.ToArray();
             Array.Sort(arrayParam);//对字符串进行排序
@@ -57,14 +57,14 @@ namespace ITOrm.Utility.ITOrmApi
             if (!string.IsNullOrEmpty(param))
             {
 
-                body = string.Format("itormName={0}&sign={1}&{2}", userName, sign, param);
+                body = string.Format("itormName={0}&sign={1}&{2}&version={3}", userName, sign, param,version);
 
                 if (method.ToLower().Contains("get"))
                     requestStringUri.AppendFormat("?{0}", body);
             }
             else
             {
-                body = string.Format("itormName={0}&sign={1}", userName, sign);
+                body = string.Format("itormName={0}&sign={1}&version={2}", userName, sign,version);
                 if (method.ToLower().Contains("get"))
                     requestStringUri.AppendFormat("?{0}", body);
             }
