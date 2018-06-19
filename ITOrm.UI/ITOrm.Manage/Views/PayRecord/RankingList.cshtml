@@ -1,7 +1,9 @@
-﻿@model List<dynamic>
+﻿@model ResultModel
 @{
     ViewBag.Title = "收款列表";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    JArray listPay = (JArray)Model.data["listPay"];
+    JArray listProfit = (JArray)Model.data["listProfit"];
 }
 @section css
 {
@@ -12,6 +14,10 @@
         .form-group {
             float:left;
             margin-right:8px;
+        }
+        table {
+            float:left;
+            margin-right:10px;
         }
     </style>
 }
@@ -42,41 +48,76 @@
     </form>
 </div>
 
+
+    <table class="table table-hover table-bordered table-striped" style="width:400px;">
+        <thead>
+
+            <tr>
+                <th>N</th>
+                <th>用户ID</th>
+                <th>姓名</th>
+                <th>累计交易金额</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @if (listPay != null && listPay.Count > 0)
+            {
+
+                foreach (var item in listPay)
+                {
+                    <tr>
+                        <td>@item["N"]</td>
+                        <td>
+                            @item["UserId"]
+                        </td>
+                        <td>
+                            @item["RealName"]
+                        </td>
+                        <td>
+                            @item["Amount"]
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
 <table class="table table-hover table-bordered table-striped" style="width:400px;">
     <thead>
+
         <tr>
             <th>N</th>
             <th>用户ID</th>
             <th>姓名</th>
-            <th>累计交易金额</th>
-       
+            <th>累计收益金额</th>
+
         </tr>
     </thead>
     <tbody>
-        @if (Model != null && Model.Count > 0)
-        {
-            int i = 0;
-            foreach (var item in Model)
+        @if (listProfit != null && listProfit.Count > 0)
             {
-                i++;
+
+                foreach (var item in listProfit)
+                {
                 <tr>
+                    <td>@item["N"]</td>
                     <td>
-                        @i
+                        @item["UserId"]
                     </td>
                     <td>
-                        @item.UserId
+                        @item["RealName"]
                     </td>
                     <td>
-                        @item.RealName
-                    </td>
-                    <td>
-                        @item.Amount
+                        @item["Amount"]
                     </td>
                 </tr>
             }
         }
-        
     </tbody>
 </table>
+
+
+
 
 

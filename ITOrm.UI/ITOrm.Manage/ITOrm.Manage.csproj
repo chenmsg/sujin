@@ -124,6 +124,7 @@
     <Content Include="Views\Home\Main.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AccountRecordController.cs" />
     <Compile Include="Controllers\AppController.cs" />
     <Compile Include="Controllers\BankQuotaController.cs" />
     <Compile Include="Controllers\BannerController.cs" />
@@ -200,6 +201,7 @@
     <Content Include="Views\Banner\Index.cshtml" />
     <Content Include="Views\Banner\Edit.cshtml" />
     <Content Include="Views\Debug\Index.cshtml" />
+    <Content Include="Views\AccountRecord\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

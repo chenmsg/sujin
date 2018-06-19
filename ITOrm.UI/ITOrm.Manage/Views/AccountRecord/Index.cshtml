@@ -1,6 +1,6 @@
 ﻿@model ResultModel
 @{
-    ViewBag.Title = "用户管理";
+    ViewBag.Title = "资金记录";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section css
@@ -19,7 +19,7 @@
 <ul class="breadcrumb">
     <li><a href="#">系统配置</a> <span class="divider">/</span></li>
     <li><a href="#">权限管理</a> <span class="divider">/</span></li>
-    <li class="active">用户管理</li>
+    <li class="active">资金记录</li>
 </ul>
 
 <div class="bs-docs-example">
@@ -28,33 +28,36 @@
             <label for="exampleInputEmail1">按用户</label>
 
             @{
-            List<SelectListItem> listType = new List<SelectListItem>();
-            listType.Add(new SelectListItem() { Value="0",Text="ID"});
-            listType.Add(new SelectListItem() { Value = "1", Text = "手机号" });
-            listType.Add(new SelectListItem() { Value = "2", Text = "姓名" });
-            listType.Add(new SelectListItem() { Value = "3", Text = "身份证" });
+                List<SelectListItem> listType = new List<SelectListItem>();
+                listType.Add(new SelectListItem() { Value="0",Text="用户ID"});
+                listType.Add(new SelectListItem() { Value = "1", Text = "手机号" });
+                listType.Add(new SelectListItem() { Value = "2", Text = "姓名" });
+                listType.Add(new SelectListItem() { Value = "3", Text = "身份证" });
+                listType.Add(new SelectListItem() { Value = "4", Text = "关联ID" });
             }
             @Html.MyDrop(listType, "请选择", "-1", TQuery.GetString("Type"), new { @name = "Type", @style="width:80px"})
             <input type="text" style="width:150px" value="@TQuery.GetString("KeyValue")" class="form-control" name="KeyValue" placeholder="按类型搜索">
         </div>
         <div class="form-group">
-            <label for="exampleInputEmail1">实名认证</label>
+            <label for="exampleInputEmail1">业务名称</label>
             @{
-        List<SelectListItem> listReal = new List<SelectListItem>();
-        listReal.Add(new SelectListItem() { Value = "0", Text = "未实名" });
-        listReal.Add(new SelectListItem() { Value = "1", Text = "已实名" });
+                var listTypeId = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(Logic.AccountType));
             }
-            @Html.MyDrop(listReal, "全部", "-1", TQuery.GetString("IsRealState"), new { @name = "IsRealState", @style = "width:80px" })
+            @Html.MyDrop(listTypeId, "全部", "-1", TQuery.GetString("TypeId"), new { @name = "TypeId", @style = "width:80px" })
         </div>
         <div class="form-group">
-            <label for="exampleInputEmail1">Vip类型</label>
+            <label for="exampleInputEmail1">变动类型</label>
             @{
-                var listVip =ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(Logic.VipType));
+
+                List<SelectListItem> listInOrOut = new List<SelectListItem>();
+                listInOrOut.Add(new SelectListItem() { Value = "1", Text = "+" });
+                listInOrOut.Add(new SelectListItem() { Value = "0", Text = "冻结" });
+                listInOrOut.Add(new SelectListItem() { Value = "-1", Text = "-" });
             }
-            @Html.MyDrop(listVip, "全部", "-1", TQuery.GetString("VipType"), new { @name = "VipType", @style = "width:100px" })
+            @Html.MyDrop(listInOrOut, "全部", "-100", TQuery.GetString("InOrOut"), new { @name = "InOrOut", @style = "width:100px" })
         </div>
         <div class="form-group">
-            <label for="exampleInputEmail1">注册时间</label>
+            <label for="exampleInputEmail1">发生时间</label>
             <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("StartTime")" onfocus="WdatePicker({ readOnly: true})" name="StartTime" placeholder="开始检索时间">
             <input type="text" style="width:100px" class="input Wdate form-control" value="@TQuery.GetString("EndTime")" onfocus="WdatePicker({ readOnly: true})" name="EndTime" placeholder="结束检索时间">
         </div>
@@ -67,123 +70,87 @@
     </form>
 </div>
 
-<table class="table table-hover table-bordered table-striped">
+<table class="table table-hover table-bordered">
     <thead>
         <tr>
+            <th>Id</th>
             <th>用户ID</th>
-            <th>手机号码</th>
-            <th>总金额</th>
             <th>姓名</th>
-            <th>注册时间</th>
-            <th>实名时间</th>
-            <th>来源</th>
-            <th>用户类型</th>
-            <th>用户状态</th>
-            <th>邀请人</th>
-            <th>操作</th>
+            <th>业务</th>
+            <th>变动</th>
+            <th>计算前金额</th>
+            <th>交易金额</th>
+            <th>计算后金额</th>
+            <th>冻结金额</th>
+            <th>创建时间</th>
+            <th>备注</th>
         </tr>
     </thead>
     <tbody>
-        
-        @foreach (var item in Model.list)
-        {
-            <tr>
-                <td>@item["UserId"].ToInt()</td>
-                <td>@item["Mobile"]</td>
-                <td>
-                    @{ 
+        @{
+          
+            if (Model.list != null&&Model.list.Count>0)
+            {
+                foreach (var item in Model.list)
+                {
+                    <tr>
+                        <td>@item["ID"].ToInt()</td>
+                        <td>@item["UserId"].ToInt()</td>
+                        <td>@item["RealName"]</td>
 
-                        string[] accounts = new string[] { "可用余额：" + item["Available"].ToString(), "冻结金额：" + item["Frozen"] };
-                    }
-                    @Html.MyTips(item["Total"].ToString(), "详细信息", accounts)
-                </td>
-                <td>
-                    @if (item["IsRealState"].ToInt() == 1)
-                    {
-                        string[] contents = new string[] { "身份证：" + item["IdCard"].ToString(),"结算银行："+item["BankName"], "卡号："+item["BankCard"] };
-                        @Html.MyTips(item["RealName"].ToString(), "详细信息", contents)
-                    }
-                </td>
-                <td>@(item["CTime"].ToDateTime().ToString("yyyy-MM-dd HH:mm:ss"))</td>
-                <td>
-                    @(item["IsRealState"].ToInt() > 0?item["RealTime"].ToDateTime().ToString("yyyy-MM-dd HH:mm:ss") :"--")
-                 
-   
-                </td>
-                <td>@(((Logic.Platform)item["PlatForm"].ToInt()).ToString())</td>
-                <td>
-                    @{
-                        Logic.VipType vip = (Logic.VipType)item["VipType"].ToInt();
-                        switch (vip)
-                        {
-                            case Logic.VipType.Boss:
-                                @Html.MySpan(vip.ToString(), "red");
-                                break;
-                            case Logic.VipType.顶级代理:
-                                @Html.MySpan(vip.ToString(), "red");
-                                break;
-                            case Logic.VipType.普通用户:
-                                @Html.MySpan(vip.ToString(), "");
-                                break;
-                            case Logic.VipType.VIP:
-                                @Html.MySpan(vip.ToString(), "green");
-                                break;
-                            case Logic.VipType.SVIP:
-                                @Html.MySpan(vip.ToString(), "green");
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-               
-                </td>
-                <td>
-                    @if (item["State"].ToInt() == 0)
-                    {
-                        @Html.MySpan("正常", "green");
-                    }
-                    else
-                    {
-                        @Html.MySpan("注销", "red");
-                    }
-                </td>
-
-                <td>@(item["BaseRealName"])@(item["BaseUserId"].ToInt()>0?"("+item["BaseUserId"] +")":"")</td>
-                <td>
-
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            操作 <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="/users/info/@item["UserId"]">查看</a></li>
-                            @if (item["Available"].ToDecimal() > 0M)
-                            {
-                               
-                            }
-                            <li><a href="javascript:selectLog(@item["UserId"],'@item["Available"].ToDecimal().ToString("F2")');">提现</a></li>
-                            <li><a href="/users/AuditMerchant?UserId=@item["UserId"]">审核通过</a></li>
+                        <td>
                             @{
-                                foreach (SelectListItem it in listVip)
+                                string txt = ((Logic.AccountType)@item["TypeId"].ToInt()).ToString();
+                                switch (item["InOrOut"].ToInt())
                                 {
-                                    if (it.Value != "0" && it.Value != "4" && Convert.ToInt32( it.Value) < item["VipType"].ToInt())
-                                    {
-                                        <li><a href="javascript:UpgradeVip(@item["UserId"],@it.Value,'@it.Text');">升级@(it.Text)</a></li>
-                                    }
+                                    case -1:
+                                        @Html.MySpan(txt, "red");
+                                        break;
+                                    case 0:
+                                        @Html.MySpan(txt, "#FD9D06");
+                                        break;
+                                    case 1:
+                                        @Html.MySpan(txt, "green");
+                                        break;
+                                    default:
+                                        break;
                                 }
                             }
-                          
-                            <li><a href="/AccountRecord?Type=0&KeyValue=@item["UserId"]">查看资金记录</a></li>
-   
-                        </ul>
-                    </div>
-                    
-                    
-                </td>
-            </tr>
-        }
+                        </td>
+                        <td>
+                            @{
+
+                                switch (item["InOrOut"].ToInt())
+                                {
+                                    case -1:
+                                        @Html.MySpan("-", "red");
+                                        break;
+                                    case 0:
+                                        @Html.MySpan("-", "#FD9D06");
+                                        break;
+                                    case 1:
+                                        @Html.MySpan("+", "green");
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                        </td>
+                        <td>@item["Remain"].ToDecimal().ToString("F2")</td>
+                        <td>@item["Amount"].ToDecimal().ToString("F2")</td>
+                        <td>@item["Available"].ToDecimal().ToString("F2")</td>
+                        <td>@item["Frozen"].ToDecimal().ToString("F2")</td>
+                        <td>@item["CTime"].ToDateTime().ToString()</td>
+                        <td>@item["Remark"].ToString()</td>
+                    </tr>
+                                    }
+                            }
+
+                        }
+
     </tbody>
 </table>
+
 @Html.Pager("pageIndex", 10, Model.totalCount)
 
 <!-- Modal -->

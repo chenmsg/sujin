@@ -162,8 +162,48 @@ namespace ITOrm.Manage.Controllers
         {
             StartTime = string.IsNullOrEmpty(StartTime) ?"2018-01-01" : StartTime;
             EndTime = string.IsNullOrEmpty(EndTime) ? DateTime.Now.AddMonths(1).ToString("yyyy-MM-01") : EndTime;
-            var list = ITOrm.Utility.Helper.DapperHelper.ExecuteProcedure<dynamic>("proc_QueryTopPaySum", new { Top,StartTime,EndTime });
-            return View(list);
+            var listPay = ITOrm.Utility.Helper.DapperHelper.ExecuteProcedure<dynamic>("proc_QueryTopPaySum", new { Top,StartTime,EndTime });
+            var listProfit = ITOrm.Utility.Helper.DapperHelper.ExecuteProcedure<dynamic>("proc_QueryTopSumProfit", new { Top, StartTime, EndTime });
+
+            ResultModel result = new ResultModel();
+            JObject data = new JObject();
+            result.data = data;
+
+            JArray list1 = new JArray();
+            if (listPay != null&&listPay.Count>0)
+            {
+                int i = 0;
+                foreach (var item in listPay)
+                {
+                    i++;
+                    JObject obj = new JObject();
+                    obj["N"] = i;
+                    obj["UserId"] = item.UserId;
+                    obj["RealName"] = item.RealName;
+                    obj["Amount"] = item.Amount;
+                    list1.Add(obj);
+                }
+            }
+
+            JArray list2 = new JArray();
+            if (listProfit != null && listProfit.Count > 0)
+            {
+                int i = 0;
+                foreach (var item in listProfit)
+                {
+                    i++;
+                    JObject obj = new JObject();
+                    obj["N"] = i;
+                    obj["UserId"] = item.UserId;
+                    obj["RealName"] = item.RealName;
+                    obj["Amount"] = item.Amount;
+                    list2.Add(obj);
+                }
+            }
+            data["listPay"] = list1;
+            data["listProfit"] = list2;
+
+            return View(result);
         }
     }
 }

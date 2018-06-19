@@ -98,7 +98,7 @@ namespace ITOrm.Manage.Controllers
                     item["Available"] = 0;
                     item["Frozen"] = 0;
                     var account = accountDao.Single($"UserId={UserId}");
-                    if (account.ID > 0)
+                    if (account!=null&&account.ID > 0)
                     {
                         item["Total"] = account.Total;
                         item["Available"] = account.Available;
@@ -247,6 +247,8 @@ namespace ITOrm.Manage.Controllers
             result.message = "操作失败!";
             return JsonConvert.SerializeObject(result);
         }
+
+
     }
     
 }
