@@ -598,6 +598,21 @@ namespace ITOrm.Payment.Masget
     }
     #endregion
 
+    #region 修改协议信息 masget.pay.collect.router.treaty.modify
+    public class reqTreatyModifyModel
+    {
+      
+        public string treatycode { get; set; }
+        public string cvv2 { get; set; }
+        public string expirationdate { get; set; }
+    }
+
+    public class respTreatyModifyModel
+    {
+        
+    }
+    #endregion
+
     #region 查询快捷协议 masget.pay.collect.router.treaty.query
     public class reqTreatyQueryModel
     {

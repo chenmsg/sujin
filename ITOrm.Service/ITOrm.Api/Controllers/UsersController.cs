@@ -129,7 +129,7 @@ namespace ITOrm.Api.Controllers
             model.UserName = mobile;
             model.UTime = DateTime.Now;
             model.RealTime = DateTime.Now;
-            model.VipType = (int)Logic.VipType.SVIP;
+            model.VipType = (int)Logic.VipType.普通用户;
             var result = userDao.Insert(model);
             var account = new Account();
             account.UserId = result;
@@ -748,6 +748,14 @@ namespace ITOrm.Api.Controllers
             }
             else
             {
+                var list = bankTreatyApplyDao.GetQuery(" State=2 And UbkID=@BankID",new { BankID });
+                if (list != null && list.Count > 0)
+                {
+                    foreach (var item in list)
+                    {
+                        MasgetDepository.TreatyModify(BankID,cvn2, expiresYear, expiresMouth,cid,(Logic.ChannelType)item.ChannelType);
+                    }
+                }
                 flag = userBankCardDao.Update(model);
                 return ApiReturnStr.getError(flag ? 0 : -100, flag ? "修改成功" : "修改失败");
             }

@@ -55,7 +55,7 @@ namespace ITOrm.Api.Controllers
             UserShare us = new UserShare();
             us.Title = "速金派邀请您一起刷卡赚收益";
             us.ShareUrl = url;
-            us.ImageUrl = Constant.StaticHost+ "upload/icon/logotest.png";
+            us.ImageUrl = Constant.StaticHost+ "upload/icon/logo.png";
             us.Context = "速金派，移动刷卡神器。价格低，秒到账，邀请好友享收益。";
             us.Platform = cid;
             us.Ip = Ip.GetClientIp();

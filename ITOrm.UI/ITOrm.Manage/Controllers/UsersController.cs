@@ -13,6 +13,8 @@ using ITOrm.Manage.Filters;
 using ITOrm.Utility.Const;
 using System.Text;
 using ITOrm.Payment.Const;
+using ITOrm.Payment.Masget;
+
 namespace ITOrm.Manage.Controllers
 {
     public class UsersController : Controller
@@ -24,6 +26,7 @@ namespace ITOrm.Manage.Controllers
         public static AccountBLL accountDao = new AccountBLL();
         public static AccountRecordBLL accountRecordDao = new AccountRecordBLL();
         public static AccountQueueBLL accountQueueDao = new AccountQueueBLL();
+        public static BankTreatyApplyBLL bankTreatyApplyDao = new BankTreatyApplyBLL();
         string url = "/users/";
         string msg = "";
         // GET: Users
@@ -135,7 +138,7 @@ namespace ITOrm.Manage.Controllers
                 return new RedirectResult($"/Prompt?state={-100}&msg=已审核&url={url}");
             }
 
-            var result=YeepayDepository.AuditMerchant(UserId, 1, Enums.AuditMerchant.SUCCESS, "审核成功");
+            var result=YeepayDepository.AuditMerchant(UserId, 1,ITOrm.Payment.Yeepay.Enums.AuditMerchant.SUCCESS, "审核成功");
             if (result.backState == 0)
             {
                 return new RedirectResult($"/Prompt?state=0&msg={result.message}&url={url}");
@@ -176,7 +179,15 @@ namespace ITOrm.Manage.Controllers
                 bank.ExpiresYear = ExpiresYear;
                 bank.ExpiresMouth = ExpiresMouth;
 
-                
+                var list = bankTreatyApplyDao.GetQuery(" State=2 And UbkID=@ID", new { ID });
+                if (list != null && list.Count > 0)
+                {
+                    foreach (var item in list)
+                    {
+                        MasgetDepository.TreatyModify(ID, CVN2, ExpiresYear, ExpiresMouth, (int)Logic.Platform.系统, (Logic.ChannelType)item.ChannelType);
+                    }
+                }
+
                 var result= userBankCardDao.Update(bank);
                 backState = result ? 0 : -100;
                 msg= result ? "修改成功" :"修改失败";

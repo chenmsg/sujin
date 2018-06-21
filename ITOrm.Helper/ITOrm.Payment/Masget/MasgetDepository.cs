@@ -260,6 +260,59 @@ namespace ITOrm.Payment.Masget
         }
         #endregion
 
+        #region 修改协议信息 masget.pay.collect.router.treaty.modify
+        public static respMasgetModel<respTreatyModifyModel> TreatyModify(int UbkId, string cvv2,string expirationYear,string expirationMonuth, int Platform, Logic.ChannelType chanel)
+        {
+            string LogDic = "修改协议信息";
+
+            int TypeId = (int)chanel;
+            BankTreatyApply bta = bankTreatyApplyDao.Single(" UbkId=@UbkId and ChannelType=@TypeId", new { UbkId, TypeId });
+            if (bta == null)
+            {
+                Logs.WriteLog($"未查到协议记录：UserId:{bta.UserId},Platform:{Platform},BtaId:{bta.ID}", MasgetLogDic, LogDic);
+                return new respMasgetModel<respTreatyModifyModel>() { ret = -9999, message = "未查到协议记录" };
+            }
+            if (bta.State != 2)
+            {
+                Logs.WriteLog($"快捷协议未开通：UserId:{bta.UserId},Platform:{Platform},BtaId:{bta.ID}", MasgetLogDic, LogDic);
+                return new respMasgetModel<respTreatyModifyModel>() { ret = -9999, message = "快捷协议未开通" };
+            }
+            MasgetUser mUser = masgetUserDao.Single(" UserId=@UserId and TypeId=@TypeId", new { bta.UserId, TypeId });
+            if (mUser == null)
+            {
+                Logs.WriteLog($"未查到用户：UserId:{bta.UserId},Platform:{Platform},BtaId:{bta.ID}", MasgetLogDic, LogDic);
+                return new respMasgetModel<respTreatyModifyModel>() { ret = -9999, message = "用户未进件" };
+            }
+            Users user = usersDao.Single(bta.UserId);
+            bool flag = false;
+
+            //获取请求流水号
+            int requestId = yeepayLogDao.Init((int)Masget.Enums.MasgetType.修改协议信息, bta.UserId, Platform, bta.ID, (int)chanel);
+            Logs.WriteLog($"获取请求流水号：UserId:{bta.UserId},Platform:{Platform},requestId:{requestId},BtaId:{bta.ID}", MasgetLogDic, LogDic);
+
+            reqTreatyModifyModel model = new reqTreatyModifyModel();
+            model.cvv2 = cvv2;
+            model.expirationdate = expirationMonuth + expirationYear;
+            model.treatycode = bta.Treatycode;
+
+            //model.accountrule = "1";
+            string json = Order<reqTreatyModifyModel>(model);
+            var resp = PostUrl<respTreatyModifyModel>(requestId, "masget.pay.collect.router.treaty.modify", json, LogDic, chanel, mUser.ID);
+            if (resp.backState == 0)
+            {
+                //更新银行卡对应通道可用
+                //UserBankCard ubk = userBankCardDao.Single(UbkId);
+                //ubk.UTime = DateTime.Now;
+                //ubk.CVN2 = cvv2;
+                //ubk.ExpiresYear = expirationYear;
+                //ubk.ExpiresMouth = expirationMonuth;
+                //flag = userBankCardDao.Update(ubk);
+                //Logs.WriteLog($"更新银行卡信息：UserId:{bta.UserId},Platform:{Platform},requestId:{requestId},UbkId:{UbkId},flag:{flag}", MasgetLogDic, LogDic);
+            }
+            return resp;
+        }
+        #endregion
+
         #region 查询快捷协议 masget.pay.compay.router.samename.update 
         public static respMasgetModel<respTreatyQueryModel> TreatyQuery( int Platform, Logic.ChannelType chanel,string bankaccount)
         {
