@@ -49,10 +49,10 @@ namespace ITOrm.Api.Controllers
             result.backState = -100;
             result.message = "参数有误";
             //return View("Reg2", result);
-
+            string ip = ITOrm.Utility.Client.Ip.GetClientIp();
             //密码加密
             pwd = ITOrm.Utility.Encryption.SecurityHelper.GetMD5String(pwd);
-            string parms = $"mobile={mobile}&mcode={mcode}&password={pwd}&regGuid={regGuid}&baseUserId={baseUserId}";
+            string parms = $"mobile={mobile}&mcode={mcode}&password={pwd}&regGuid={regGuid}&baseUserId={baseUserId}&ip={ip}";
             var regResult = ApiRequest.getApiData<JObject>("Users/Register", parms);
 
             if (regResult.backState == 0)
@@ -112,8 +112,8 @@ namespace ITOrm.Api.Controllers
         /// <returns></returns>
         public string SendMsgCode(int cid = 0, string mobile = "", string vcode = "", string guid = "")
         {
-            
-            var result = ApiRequest.getApiData<JObject>("Users/SendMsgCode", $"mobile={mobile}&vcode={vcode}&guid={guid}");
+            string ip = ITOrm.Utility.Client.Ip.GetClientIp();
+            var result = ApiRequest.getApiData<JObject>("Users/SendMsgCode", $"mobile={mobile}&vcode={vcode}&guid={guid}&ip={ip}");
             return JsonConvert.SerializeObject(result);
 
         }

@@ -205,9 +205,9 @@ namespace ITOrm.Api.Controllers
 
 
             JObject obj4 = new JObject();
-            obj4["Title"] = "火爆上线";
+            obj4["Title"] = (cid == (int)Logic.Platform.iOS && version == serverVersion)?"火爆上线": "极速办卡";
             obj4["icon"] = Constant.StaticHost + "upload/btn/04.png";
-            obj4["WapUrl"] = (cid == (int)Logic.Platform.iOS && version == serverVersion) ?(Constant.CurrentApiHost+"HuoBao.html"): "HuoBao";
+            obj4["WapUrl"] = (cid == (int)Logic.Platform.iOS && version == serverVersion) ?(Constant.CurrentApiHost+"HuoBao.html"): "http://www.51ley.com/front/card?uid=fc42c00a05784006aefe49dc0c12fa57&rm=1&time=1529568826349";
             list.Add(obj4);
 
             JObject obj5 = new JObject();

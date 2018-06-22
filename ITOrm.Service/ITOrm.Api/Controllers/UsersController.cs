@@ -61,7 +61,7 @@ namespace ITOrm.Api.Controllers
         /// <param name="regGuid">令牌</param>
         /// <param name="baseUserId">推荐人</param>
         /// <returns></returns>
-        public string Register(int cid = 0, string mobile = "", string password = "", string mcode = "", string regGuid = "", int baseUserId = 0)
+        public string Register(int cid = 0, string mobile = "", string password = "", string mcode = "", string regGuid = "", int baseUserId = 0,string ip="")
         {
             Logs.WriteLog($"Register,cid:{cid},mobile:{mobile},password:{password},mcode:{mcode},regGuid:{regGuid},baseUserId:{baseUserId}", "d:\\Log\\ITOrm", "Register");
             #region 验证
@@ -112,13 +112,13 @@ namespace ITOrm.Api.Controllers
                 return ApiReturnStr.getError(-100, "该手机号已注册");
             }
             #endregion
-
+            ip = string.IsNullOrEmpty(ip) ? ITOrm.Utility.Client.Ip.GetClientIp() : ip;
             var model = new Users();
             model.BaseUserId = baseUserId;
             model.CTime = DateTime.Now;
             model.Email = "";
             model.IdCard = "";
-            model.IP = ITOrm.Utility.Client.Ip.GetClientIp();
+            model.IP = ip;
             model.IsRealState = 0;
             model.Mobile = mobile;
             model.Password = password;
@@ -143,7 +143,7 @@ namespace ITOrm.Api.Controllers
             {
                 JObject obj = new JObject();
                 obj["UserId"] = result;
-                userEventDao.UserRegister(cid, Ip.GetClientIp(), result, 1, mobile, password, mcode, regGuid, baseUserId, TQuery.GetString("version"));
+                userEventDao.UserRegister(cid, ip, result, 1, mobile, password, mcode, regGuid, baseUserId, TQuery.GetString("version"));
                 ITOrm.Utility.Cache.MemcachHelper.Delete(key);//销毁本次验证码缓存
                 return ApiReturnStr.getApiData(0, "注册成功", obj);
             }
@@ -178,7 +178,7 @@ namespace ITOrm.Api.Controllers
         /// 发送短信验证码
         /// </summary>
         /// <returns></returns>
-        public string SendMsgCode(int cid = 0, string mobile = "", string vcode = "", string guid = "")
+        public string SendMsgCode(int cid = 0, string mobile = "", string vcode = "", string guid = "",string ip="")
         {
             #region 验证
             if (!ITOrm.Utility.StringHelper.TypeParse.IsMobile(mobile))
@@ -218,8 +218,8 @@ namespace ITOrm.Api.Controllers
             #endregion
 
             var regGuid = ITOrm.Utility.StringHelper.Util.GetGUID;
-
-
+            ip = string.IsNullOrEmpty(ip) ? ITOrm.Utility.Client.Ip.GetClientIp() : ip;
+            
 
             //发送短信
             var resultMsg = SystemSendMsg.Send(Logic.EnumSendMsg.注册短信, mobile);
@@ -228,7 +228,7 @@ namespace ITOrm.Api.Controllers
             model.TypeId = (int)Logic.EnumSendMsg.注册短信;
             model.Context = resultMsg.content;
             model.CTime = DateTime.Now;
-            model.IP = ITOrm.Utility.Client.Ip.GetClientIp();
+            model.IP = ip;
             model.Merchant = resultMsg.Merchant;
             model.Mobile = mobile;
             model.Platform = cid;
