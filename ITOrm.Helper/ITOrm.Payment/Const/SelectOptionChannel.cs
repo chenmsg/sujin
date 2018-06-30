@@ -62,7 +62,7 @@ namespace ITOrm.Payment.Const
 
             //只获得可用通道
             listChannelPay = listChannelPay.FindAll(m => m.State == 0);
-            if (mobile.Substring(0, 2) == "17")//17号段的用户排除荣邦通道 
+            if (mobile.Substring(0, 3) == "177")//17号段的用户排除荣邦通道 
             {
                 listChannelPay = listChannelPay.FindAll(m => m.KeyId != 1&& m.KeyId!=4);
             }
