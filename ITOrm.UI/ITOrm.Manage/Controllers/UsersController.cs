@@ -14,6 +14,7 @@ using ITOrm.Utility.Const;
 using System.Text;
 using ITOrm.Payment.Const;
 using ITOrm.Payment.Masget;
+using ITOrm.Utility.Log;
 
 namespace ITOrm.Manage.Controllers
 {
@@ -120,6 +121,7 @@ namespace ITOrm.Manage.Controllers
 
         public ActionResult FeeSetApi(int UserId,int VipType)
         {
+            Logs.WriteLog($"Action:User,Cmd:FeeSetApi,UserId:{UserId},VipType：{VipType},ip:{ITOrm.Utility.Client.Ip.GetClientIp()}", "d:\\Log\\ITOrm", "FeeSetApi");
             var result= UsersDepository.UpgradeVip(UserId, VipType, (int)Logic.Platform.系统);
             return new RedirectResult($"/Prompt?state={result.backState}&msg={result.message}&url={url}");
 
