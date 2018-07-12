@@ -118,7 +118,7 @@ namespace ITOrm.Host.BLL
             pay.UTime = DateTime.Now;
             pay.PayTime = DateTime.Now;
             pay.State = State;
-            pay.Message = meesgage;
+            pay.Message =string.IsNullOrEmpty(pay.Message)? meesgage:pay.Message;
             return Update(pay);
         }
 

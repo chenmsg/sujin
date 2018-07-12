@@ -81,6 +81,8 @@ namespace ITOrm.AutoService
                 ,tbxTimedTaskFail
                 ,tbxAccountQueueSuccess
                 ,tbxAccountQueueFail
+                ,tbxWithDrawSuccess
+                ,tbxWithDrawFail
                 , StartTime
                 );
         }

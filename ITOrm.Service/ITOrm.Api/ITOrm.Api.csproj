@@ -192,6 +192,7 @@
     <Content Include="Themes\img\GDB.png" />
     <Content Include="Themes\img\HX.png" />
     <Content Include="Themes\img\ICBC.png" />
+    <Content Include="Themes\img\JSB.png" />
     <Content Include="Themes\img\SPDB.png" />
     <Content Include="Themes\img\success-bg.png" />
     <Content Include="Themes\img\suMoney-banner.jpg" />

@@ -65,6 +65,11 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
+            this.tbxWithDrawFail = new System.Windows.Forms.TextBox();
+            this.tbxWithDrawSuccess = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label3
@@ -285,7 +290,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(54, 270);
+            this.button1.Location = new System.Drawing.Point(42, 300);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 31;
@@ -295,7 +300,7 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(153, 270);
+            this.button2.Location = new System.Drawing.Point(141, 300);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 32;
@@ -305,7 +310,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(245, 270);
+            this.button3.Location = new System.Drawing.Point(233, 300);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 33;
@@ -403,11 +408,61 @@
             this.label18.TabIndex = 39;
             this.label18.Text = "资金队列：";
             // 
+            // tbxWithDrawFail
+            // 
+            this.tbxWithDrawFail.Location = new System.Drawing.Point(342, 251);
+            this.tbxWithDrawFail.Name = "tbxWithDrawFail";
+            this.tbxWithDrawFail.ReadOnly = true;
+            this.tbxWithDrawFail.Size = new System.Drawing.Size(50, 21);
+            this.tbxWithDrawFail.TabIndex = 48;
+            this.tbxWithDrawFail.Text = "0";
+            // 
+            // tbxWithDrawSuccess
+            // 
+            this.tbxWithDrawSuccess.Location = new System.Drawing.Point(198, 251);
+            this.tbxWithDrawSuccess.Name = "tbxWithDrawSuccess";
+            this.tbxWithDrawSuccess.ReadOnly = true;
+            this.tbxWithDrawSuccess.Size = new System.Drawing.Size(50, 21);
+            this.tbxWithDrawSuccess.TabIndex = 47;
+            this.tbxWithDrawSuccess.Text = "0";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(295, 254);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(41, 12);
+            this.label19.TabIndex = 46;
+            this.label19.Text = "失败：";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(151, 254);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(41, 12);
+            this.label20.TabIndex = 45;
+            this.label20.Text = "成功：";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(64, 254);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(65, 12);
+            this.label21.TabIndex = 44;
+            this.label21.Text = "结算检查：";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(491, 418);
+            this.Controls.Add(this.tbxWithDrawFail);
+            this.Controls.Add(this.tbxWithDrawSuccess);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.label20);
+            this.Controls.Add(this.label21);
             this.Controls.Add(this.tbxAccountQueueFail);
             this.Controls.Add(this.tbxAccountQueueSuccess);
             this.Controls.Add(this.label16);
@@ -492,6 +547,11 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox tbxWithDrawFail;
+        private System.Windows.Forms.TextBox tbxWithDrawSuccess;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label21;
     }
 }
 

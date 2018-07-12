@@ -16,6 +16,11 @@ using Newtonsoft.Json;
 using ITOrm.Utility.Message;
 using Newtonsoft.Json.Linq;
 using ITOrm.Utility.Cache;
+using ITOrm.Utility.Helper;
+using ITOrm.Payment.Masget;
+using ITOrm.Payment.Teng;
+using ITOrm.Payment.MiShua;
+using ITOrm.Payment.Const;
 
 namespace ITOrm.AutoService
 {
@@ -66,6 +71,10 @@ namespace ITOrm.AutoService
         private TextBox _tbxAccountQueueSuccess;
         private TextBox _tbxAccountQueueFail;
 
+        //结算检查
+        private TextBox _tbxWithDrawSuccess;
+        private TextBox _tbxWithDrawFail;
+
         //开始时间
         TextBox _StartTime;
 
@@ -102,7 +111,10 @@ namespace ITOrm.AutoService
             //资金队列
             , TextBox tbxAccountQueueSuccess
             , TextBox tbxAccountQueueFail
-
+            
+            //结算检查
+            , TextBox tbxWithDrawSuccess
+            , TextBox tbxWithDrawFail
             //开始时间
             , TextBox StartTime
             )
@@ -131,7 +143,9 @@ namespace ITOrm.AutoService
             //资金队列
             _tbxAccountQueueSuccess = tbxAccountQueueSuccess;
             _tbxAccountQueueFail = tbxAccountQueueFail;
-
+            //结算检查
+            _tbxWithDrawSuccess = tbxWithDrawSuccess;
+            _tbxWithDrawFail = tbxWithDrawFail;
             //开始时间
             _StartTime = StartTime;
 
@@ -184,7 +198,8 @@ namespace ITOrm.AutoService
                     TimedTaskHandle();
                     //资金队列
                     AccountQueueHandle();
-
+                    //结算检查
+                    WithDrawHandle();
                     Thread.Sleep(1000);
                     if (runState == RunNing.暂停等待中)
                     {
@@ -252,13 +267,15 @@ namespace ITOrm.AutoService
         public static TimedTaskBLL timedTaskDao = new TimedTaskBLL();
         public static KeyValueBLL keyValueDao = new KeyValueBLL();
         public static AccountQueueBLL accountQueueDao = new AccountQueueBLL();
+        public static ViewPayRecordBLL viewPayRecordDao = new ViewPayRecordBLL();
+
         private List<UserImage> listUserImage = null;
         private List<YeepayUser> listAudit = null;
         private List<YeepayUser> listSetFee = null;
         private List<PayRecord> listPayRecord = null;
         private List<TimedTask> listTimedTask = null;
         private List<AccountQueue> listAccountQueue = null;
-
+        private List<ViewPayRecord> listViewPayRecord = null;
 
         #region 处理图片
         private bool UserImageHandle()
@@ -315,7 +332,7 @@ namespace ITOrm.AutoService
                 {
                     var item = listAudit[0];
                     //审核
-                    var result= YeepayDepository.AuditMerchant(item.UserId, (int)Logic.Platform.系统, Enums.AuditMerchant.SUCCESS, "审核成功");
+                    var result= YeepayDepository.AuditMerchant(item.UserId, (int)Logic.Platform.系统,ITOrm.Payment.Yeepay.Enums.AuditMerchant.SUCCESS, "审核成功");
                     Logs.WriteLog($"处理ID:{item.ID},UserId:{item.UserId},结果json:{JsonConvert.SerializeObject(result)}", "d:\\Log\\自动处理", string.Format("商户审核{0}", result.backState==0?"成功":"失败"));
                     if (result.backState == 0)
                     {
@@ -364,13 +381,13 @@ namespace ITOrm.AutoService
                     rate1 = r[0];
                     rate3 = r[1];
                     //审核
-                    var result1 = YeepayDepository.FeeSetApi(item.UserId, (int)Logic.Platform.系统,  Enums.YeepayType.设置费率1, rate1.ToString("F4"));
+                    var result1 = YeepayDepository.FeeSetApi(item.UserId, (int)Logic.Platform.系统, ITOrm.Payment.Yeepay.Enums.YeepayType.设置费率1, rate1.ToString("F4"));
                     if (vip == Logic.VipType.顶级代理)
                     {
-                        var result3 = YeepayDepository.FeeSetApi(item.UserId, (int)Logic.Platform.系统, Enums.YeepayType.设置费率3, rate3.ToString("F0"));
+                        var result3 = YeepayDepository.FeeSetApi(item.UserId, (int)Logic.Platform.系统, ITOrm.Payment.Yeepay.Enums.YeepayType.设置费率3, rate3.ToString("F0"));
                     }
-                    var result4 = YeepayDepository.FeeSetApi(item.UserId, (int)Logic.Platform.系统, Enums.YeepayType.设置费率4, "0");
-                    var result5 = YeepayDepository.FeeSetApi(item.UserId, (int)Logic.Platform.系统, Enums.YeepayType.设置费率5, "0");
+                    var result4 = YeepayDepository.FeeSetApi(item.UserId, (int)Logic.Platform.系统, ITOrm.Payment.Yeepay.Enums.YeepayType.设置费率4, "0");
+                    var result5 = YeepayDepository.FeeSetApi(item.UserId, (int)Logic.Platform.系统, ITOrm.Payment.Yeepay.Enums.YeepayType.设置费率5, "0");
                     Logs.WriteLog($"处理ID:{item.ID},UserId:{item.UserId},设置费率1:{JsonConvert.SerializeObject(result1)},设置费率4:{JsonConvert.SerializeObject(result4)},设置费率5:{JsonConvert.SerializeObject(result5)}", "d:\\Log\\自动处理", string.Format("商户设置费率{0}",(result1.backState == 0 && result4.backState == 0 && result5.backState == 0)?"成功":"失败"));
                     if (result1.backState == 0&& result4.backState==0 && result5.backState==0)
                     {
@@ -553,6 +570,102 @@ namespace ITOrm.AutoService
         }
         #endregion
 
+        #region 结算检查
+        private bool WithDrawHandle()
+        {
+            bool flag = false;
+            if (listViewPayRecord != null && listViewPayRecord.Count > 0)
+            {
+                while (listViewPayRecord.Count > 0)
+                {
+                    var item = listViewPayRecord[0];
 
+                    Logic.ChannelType Channel = (Logic.ChannelType)item.ChannelType;
+                    ResultModel result = new ResultModel();
+                    result.backState = -100;
+                    string msg = "";
+                    switch (Channel)
+                    {
+                        case Logic.ChannelType.易宝:
+                            msg = "支付失败";
+                            var yeepayResult = YeepayDepository.TradeReviceQuery(item.RequestId.ToString(),(int)Logic.Platform.系统);
+                            if (yeepayResult.backState == 0 && yeepayResult.tradeReceives.Count > 0 && yeepayResult.tradeReceives[0].status == "SUCCESS")
+                            {
+                                result.backState = 0;
+                                msg = "支付成功";
+                            }
+                            break;
+                        case Logic.ChannelType.荣邦科技积分:
+                        case Logic.ChannelType.荣邦3:
+                            msg = "支付失败";
+                            var masgettResult = MasgetDepository.PaymentjournalGet(item.RequestId, (int)Logic.Platform.系统,Channel);
+                            if (masgettResult.backState == 0 && masgettResult.data.respcode == 2)
+                            {
+                                result.backState = 0;
+                                msg = "支付成功";
+                            }
+                            break;
+                        case Logic.ChannelType.荣邦科技无积分:
+                            break;
+                        case Logic.ChannelType.腾付通:
+                            var TengResult = TengDepository.PayDebitQuery(item.RequestId, (int)Logic.Platform.系统);
+                            if (TengResult.backState == 0 && TengResult.status == "3")
+                            {
+                                result.backState = 0;
+                                msg = "支付成功";
+                            }
+                            else
+                            {
+                                msg = TengResult.respMsg;
+                            }
+                            break;
+                        case Logic.ChannelType.米刷:
+                            var mishuaResult = MiShuaDepository.CheckDzero(item.RequestId, Logic.Platform.系统);
+                            if (mishuaResult.backState == 0 && mishuaResult.Data.status == "00" && mishuaResult.Data.qfStatus == "SUCCESS")
+                            {
+                                result.backState = 0;
+                                msg = "支付成功";
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    bool f = false;
+                    //Logs.WriteLog($"处理数据：{JsonConvert.SerializeObject(result)}", "d:\\Log\\自动处理", "资金队列");
+                    //处理数据
+                    f = payRecordDao.UpdateState(item.ID, result.backState == 0 ? 10 : -1, msg);
+                    if (f)
+                    {
+                        //交易成功回调
+                        UsersDepository.NoticeSuccess(item.ID, item.UserId);
+
+                        int num = Convert.ToInt32(_tbxWithDrawSuccess.Text);
+                        num++;
+                        _tbxWithDrawSuccess.Text = num.ToString();
+                    }
+                    else
+                    {
+                        int num = Convert.ToInt32(_tbxWithDrawFail.Text);
+                        num++;
+                        _tbxWithDrawFail.Text = num.ToString();
+                    }
+
+
+                    listViewPayRecord.Remove(item);
+                    Thread.Sleep(ConfigInfo.theadTime);
+                }
+            }
+            else
+            {
+                //两小时前的数据被处理
+                listViewPayRecord = viewPayRecordDao.GetQuery(10, " State not in(10,-1) and DATEDIFF(HOUR,CTime,GETDATE())>2  ", null, "order by id asc");
+                if (listViewPayRecord != null && listViewPayRecord.Count > 0)
+                {
+                    return WithDrawHandle();
+                }
+            }
+            return flag;
+        }
+        #endregion
     }
 }
