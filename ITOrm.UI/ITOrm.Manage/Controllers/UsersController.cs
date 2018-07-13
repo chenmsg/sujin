@@ -28,7 +28,7 @@ namespace ITOrm.Manage.Controllers
         public static AccountRecordBLL accountRecordDao = new AccountRecordBLL();
         public static AccountQueueBLL accountQueueDao = new AccountQueueBLL();
         public static BankTreatyApplyBLL bankTreatyApplyDao = new BankTreatyApplyBLL();
-        string url = "/users/";
+        string url = "/users/"; 
         string msg = "";
         // GET: Users
         [AdminFilter]
