@@ -185,5 +185,8 @@ namespace ITOrm.Manage.Controllers
 
             return new RedirectResult($"/Prompt?state={backState}&msg={message}&url=/debug/");
         }
+
+
+
     }
 }
