@@ -86,7 +86,7 @@ namespace ITOrm.Utility.Const
             开通VIP分润 = 102,
             升级SVIP分润=103,
             开通顶级代理  = 104,
-
+            二级收款分润=105,
 
             升级会员 =150,
             //资金冻结
