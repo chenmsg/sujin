@@ -152,7 +152,7 @@ namespace ITOrm.Api.Controllers
         {
             int totalCount = 0;
             //int TypeId = (int)Logic.AccountType.刷卡分润; 开通会员分润
-            var listAccountRecord = accountRecordDao.GetPaged(pageSize, pageIndex, out totalCount, "UserId=@UserId and TypeId in(100,101,102,103,104)", new { UserId }, "order by ID desc");
+            var listAccountRecord = accountRecordDao.GetPaged(pageSize, pageIndex, out totalCount, "UserId=@UserId and TypeId in(100,101,102,103,104,105)", new { UserId }, "order by ID desc");
             JArray list = new JArray();
             if (listAccountRecord != null && listAccountRecord.Count > 0)
             {
@@ -168,13 +168,14 @@ namespace ITOrm.Api.Controllers
 
                     data["RealName"] = "";
                     data["Mobile"] = "";
-                    if (item.TypeId == (int)Logic.AccountType.收款分润)
+                    if (item.TypeId == (int)Logic.AccountType.收款分润|| item.TypeId== (int)Logic.AccountType.二级收款分润)
                     {
                         var pay = payRecordDao.Single(item.KeyId);
                         var user = usersDao.Single(pay.UserId);
                         data["RealName"] = user.RealName;
                         data["Mobile"] = user.Mobile;
                     }
+
                     else
                     {
                         var user = usersDao.Single(item.KeyId);
