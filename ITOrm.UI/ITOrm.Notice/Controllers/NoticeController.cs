@@ -289,7 +289,6 @@ namespace ITOrm.Notice.Controllers
                     //payRecord.PayerName = model.payerName;
                     payRecord.LastNo = model.lastNo;
                     payRecord.Message = model.message;
-                    payRecord.BankCode = model.bankCode;
                     payRecord.Fee = Convert.ToDecimal(model.fee);
                     payRecord.Src = model.src;
                     flag = payRecordDao.Update(payRecord);
