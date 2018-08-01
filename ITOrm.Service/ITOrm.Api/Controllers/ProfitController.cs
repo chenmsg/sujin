@@ -218,22 +218,22 @@ namespace ITOrm.Api.Controllers
             JArray list = new JArray();
             JObject vip1 = new JObject();
             vip1["Title"] = "SVIP会员";
-            vip1["CurrentPrice"] = "99";
+            vip1["CurrentPrice"] = "199";
             vip1["OriginalPrice"] = "原价￥199";
-            vip1["QRcode"] = Constant.StaticHost+ "upload/QRcode/99svip.png"; //199svip.png
+            vip1["QRcode"] = Constant.StaticHost+ "upload/QRcode/199svip.png"; //199svip.png 99svip.png
             list.Add(vip1);
             JObject vip2 = new JObject();
             vip2["Title"] = "VIP会员";
-            vip2["CurrentPrice"] = "49";
+            vip2["CurrentPrice"] = "99";
             vip2["OriginalPrice"] = "原价￥99";
-            vip2["QRcode"] = Constant.StaticHost + "upload/QRcode/49vip.png";//99vip.png
+            vip2["QRcode"] = Constant.StaticHost + "upload/QRcode/99vip.png";//99vip.png  49vip.png
             list.Add(vip2);
 
             JObject vip3 = new JObject();
             vip3["Title"] = "升级SVIP";
-            vip3["CurrentPrice"] = "69";
+            vip3["CurrentPrice"] = "129";
             vip3["OriginalPrice"] = "原价￥129";
-            vip3["QRcode"] = Constant.StaticHost + "upload/QRcode/u69svip.png";//u129svip
+            vip3["QRcode"] = Constant.StaticHost + "upload/QRcode/u129svip.png";//u129svip  u69svip.png
             list.Add(vip3);
 
             data["listTitle"] = "微信扫码支付";
