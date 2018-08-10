@@ -2,6 +2,7 @@
 using ITOrm.Host.BLL;
 using ITOrm.Host.Models;
 using ITOrm.Utility.Cache;
+using ITOrm.Utility.Const;
 using ITOrm.Utility.Log;
 using System;
 using System.Collections.Generic;
@@ -113,6 +114,12 @@ namespace ITOrm.AutoService
             model.UTime = DateTime.Now;
             bool flag= wi.Update(model);
             MessageBox.Show(flag.ToString());
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            MemcachHelper.Delete(Constant.list_keyvalue_key + (int)Logic.KeyValueType.支付通道管理);//清理缓存
         }
     }
 }
