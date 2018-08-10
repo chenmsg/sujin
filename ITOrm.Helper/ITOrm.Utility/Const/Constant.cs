@@ -206,7 +206,7 @@ namespace ITOrm.Utility.Const
         public static string SystemAESKey = "776c8680cb97f1e1";
 
         //积分
-        public static decimal[] fee1Rate1 = new decimal[] { 0.0041M,0.0041M, 0.0043M, 0.0048M, 0.0053M};
+        public static decimal[] fee1Rate1 = new decimal[] { 0.0042M,0.0043M, 0.0045M, 0.0050M, 0.0055M};
         public static decimal[] fee1Rate3 = new decimal[] { 1M,2M, 2M, 2M ,2M};
 
         //无积分

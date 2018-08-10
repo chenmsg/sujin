@@ -472,5 +472,35 @@ namespace ITOrm.Api.Controllers
             }
             return DateTime.Now.ToString();
         }
+
+        public string ybaofee()
+        {
+            YeepayUserBLL yee = new YeepayUserBLL();
+            var list = yee.GetQuery(" 1=1 ");
+            foreach (var item in list)
+            {
+                var user = usersDao.Single(item.UserId);
+                Logic.VipType vip = (Logic.VipType)user.VipType;
+                decimal[] r = Constant.GetRate((int)Logic.PayType.积分, vip);
+               var result=  YeepayDepository.FeeSetApi(item.UserId, 1, Payment.Yeepay.Enums.YeepayType.设置费率1, r[0].ToString("F4"));
+            }
+
+            return "";
+        }
+
+        public string masfee()
+        {
+            
+            var list = masgetUserDao.GetQuery(" typeid in(1,4) and state=1 and UserId=100095 ");
+            foreach (var item in list)
+            {
+                var user = usersDao.Single(item.UserId);
+                Logic.VipType vip = (Logic.VipType)user.VipType;
+                decimal[] r = Constant.GetRate((int)Logic.PayType.积分, vip);
+                var result = MasgetDepository.SamenameUpdate(item.UserId,1,(Logic.ChannelType)item.TypeId,vip);
+            }
+
+            return "";
+        }
     }
 }
