@@ -59,7 +59,14 @@ namespace ITOrm.Payment.Const
             {
                 return keyValueDao.GetQuery(" typeid=@TypeId  ", new { TypeId }, "order by Sort desc,CTime desc");
             });
-
+            bool isallnotChannel = true;//标记有积分通道，是否全部关闭 true 是全部关闭
+            foreach (var item in listChannelPay)
+            {
+                if (item.State == 0 && item.KeyId != 2)
+                {
+                    isallnotChannel = false;
+                }
+            }
             //只获得可用通道
             listChannelPay = listChannelPay.FindAll(m => m.State == 0);
             if (mobile.Substring(0, 3) == "177")//17号段的用户排除荣邦通道 
@@ -102,6 +109,13 @@ namespace ITOrm.Payment.Const
                 result.backState = 0;
                 result.message = $"匹配到最佳通道,收益：{maxIncom}";
                 result.Data = optimalChannelType;
+                return result;
+            }
+
+            if (isallnotChannel)
+            {
+                result.backState = -100;
+                result.message = "通道额度已用尽，请明日再试";
                 return result;
             }
 
