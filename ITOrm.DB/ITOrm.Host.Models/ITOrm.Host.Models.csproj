@@ -64,6 +64,9 @@
     <Compile Include="Channel.cs">
       <DependentUpon>Host.tt</DependentUpon>
     </Compile>
+    <Compile Include="DebarBankChannel.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
     <Compile Include="Host.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

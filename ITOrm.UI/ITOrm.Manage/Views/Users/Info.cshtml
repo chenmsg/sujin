@@ -5,6 +5,7 @@
     ViewPayRecordBLL viewPayRecordDao = new ViewPayRecordBLL();
     AccountRecordBLL accountRecordDao = new AccountRecordBLL();
     AccountBLL accountDao = new AccountBLL();
+    DebarBankChannelBLL debarBankChannelDao = new DebarBankChannelBLL();
     var ukb = userBankCardDao.Single("UserId=@UserId and TypeId=0", new { Model.UserId });
     var account = accountDao.Single("UserId=@UserId",new { Model.UserId});
     ViewBag.Title = "Index";
@@ -405,7 +406,34 @@
                                         }
                                     </td>
                                     <td>@item.CTime</td>
-                                    <td><a href="/users/updatebankcard/@item.ID" >修改</a></td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                操作 <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="/users/updatebankcard/@item.ID">修改</a></li>
+                                                @{
+                                                    var listDebarBankChannel = ITOrm.Utility.Cache.MemcachHelper.Get<List<DebarBankChannel>>(Constant.debarbankchannel_key, DateTime.Now.AddDays(7), () =>
+                                                    {
+                                                        return debarBankChannelDao.GetQuery(" 1=1  ", null, "order by CTime desc");
+                                                    });
+                                                    var listChannelType = ITOrm.Utility.Helper.EnumHelper.GetEnumItemToListItem(typeof(ITOrm.Utility.Const.Logic.ChannelType));
+                                                    foreach (var em in listChannelType)
+                                                    {
+                                                        int chan = Convert.ToInt32(em.Value);
+                                                        if (listDebarBankChannel.FindIndex(m => m.ChannelID == chan && m.BankID == item.ID) < 0)
+                                                        {
+                                                            <li><a href="/Users/DebarBank?ChannelId=@(chan)&BankId=@(item.ID)&UserId=@Model.UserId">排除@(em.Text)通道</a></li>
+                                                        }
+                                                    }
+                                                }
+                                            </ul>
+                                        </div>
+
+                              
+
+                                    </td>
                                 </tr>
                             }
                         }

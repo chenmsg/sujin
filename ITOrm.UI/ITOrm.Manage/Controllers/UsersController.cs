@@ -15,6 +15,7 @@ using System.Text;
 using ITOrm.Payment.Const;
 using ITOrm.Payment.Masget;
 using ITOrm.Utility.Log;
+using ITOrm.Utility.Cache;
 
 namespace ITOrm.Manage.Controllers
 {
@@ -28,6 +29,7 @@ namespace ITOrm.Manage.Controllers
         public static AccountRecordBLL accountRecordDao = new AccountRecordBLL();
         public static AccountQueueBLL accountQueueDao = new AccountQueueBLL();
         public static BankTreatyApplyBLL bankTreatyApplyDao = new BankTreatyApplyBLL();
+        public static DebarBankChannelBLL debarBankChannelDao = new DebarBankChannelBLL();
         string url = "/users/"; 
         string msg = "";
         // GET: Users
@@ -261,6 +263,26 @@ namespace ITOrm.Manage.Controllers
             return JsonConvert.SerializeObject(result);
         }
 
+
+        public ActionResult DebarBank(int BankId,int ChannelId,int UserId)
+        {
+            int backState = -100;
+            string msg = string.Empty;
+       
+            string ubcurl = "/users/info/" + UserId;
+            if (BankId > 0 && ChannelId>0 && UserId>0)
+            {
+                DebarBankChannel dbc = new DebarBankChannel();
+                dbc.BankID = BankId;
+                dbc.ChannelID = ChannelId;
+                dbc.UserId = UserId;
+                var result = debarBankChannelDao.Insert(dbc);
+                backState = result >0? 0 : -100;
+                msg = result >0? "操作成功" : "操作失败";
+                MemcachHelper.Delete(Constant.debarbankchannel_key);//清理缓存
+            }
+            return new RedirectResult($"/Prompt?state={backState}&msg={msg}&url={ubcurl}");
+        }
 
     }
     

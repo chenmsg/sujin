@@ -170,6 +170,11 @@ namespace ITOrm.Utility.Const
         public static string income_total_key = Debug + "-income-total-key-";
 
         /// <summary>
+        /// 排除某卡的通道匹配
+        /// </summary>
+        public static string debarbankchannel_key= Debug + "-income-total-key";
+
+        /// <summary>
         /// 当前API站点域名
         /// </summary>
         public static string CurrentApiHost

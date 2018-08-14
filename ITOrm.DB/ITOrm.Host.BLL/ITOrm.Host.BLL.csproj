@@ -51,6 +51,9 @@
     <Compile Include="Core\BannerBLL.cs">
       <DependentUpon>Host.tt</DependentUpon>
     </Compile>
+    <Compile Include="Core\DebarBankChannelBLL.cs">
+      <DependentUpon>Host.tt</DependentUpon>
+    </Compile>
     <Compile Include="Core\ShareProfitBLL.cs">
       <DependentUpon>Host.tt</DependentUpon>
     </Compile>

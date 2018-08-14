@@ -24,6 +24,7 @@ namespace ITOrm.Payment.Const
         public static KeyValueBLL keyValueDao = new KeyValueBLL();
         public static UsersBLL usersDao = new UsersBLL();
         public static UserBankCardBLL userBankCardDao = new UserBankCardBLL();
+        public static DebarBankChannelBLL debarBankChannelDao = new DebarBankChannelBLL();
         /// <summary>
         /// 选择最优通道
         /// 1.利润优先
@@ -32,7 +33,7 @@ namespace ITOrm.Payment.Const
         /// </summary>
         /// <param name="BankId"></param>
         /// <param name="PayType"></param>
-        public static ResultModelData<int> Optimal(int UserId,decimal Amount=0, string BankCode = "",int PayType=0,string mobile="")
+        public static ResultModelData<int> Optimal(int UserId, decimal Amount = 0, string BankCode = "", int PayType = 0, string mobile = "", int BankID = 0)
         {
 
 
@@ -45,12 +46,12 @@ namespace ITOrm.Payment.Const
             //    return result;
             //}
             //获得通道支持的银行
-            List<ViewBankQuota> listBankQuota = MemcachHelper.Get<List<ViewBankQuota>>(Constant.list_bank_quota_key , DateTime.Now.AddDays(7), () =>
-            {
-                return viewBankQuotaDao.GetQuery(" state=0 ", null , " order by id asc ");
-            });
+            List<ViewBankQuota> listBankQuota = MemcachHelper.Get<List<ViewBankQuota>>(Constant.list_bank_quota_key, DateTime.Now.AddDays(7), () =>
+           {
+               return viewBankQuotaDao.GetQuery(" state=0 ", null, " order by id asc ");
+           });
             //筛选支持的BankCode的通道  并且 限额满足 并按限额排序
-            var listBank = listBankQuota.FindAll(m => m.BankCode == BankCode && Amount <= m.SingleQuota).OrderByDescending(m=>m.SingleQuota).ToList();
+            var listBank = listBankQuota.FindAll(m => m.BankCode == BankCode && Amount <= m.SingleQuota).OrderByDescending(m => m.SingleQuota).ToList();
 
 
             int TypeId = (int)Logic.KeyValueType.支付通道管理;
@@ -71,8 +72,23 @@ namespace ITOrm.Payment.Const
             listChannelPay = listChannelPay.FindAll(m => m.State == 0);
             if (mobile.Substring(0, 3) == "177")//17号段的用户排除荣邦通道 
             {
-                listChannelPay = listChannelPay.FindAll(m => m.KeyId != 1&& m.KeyId!=4);
+                listChannelPay = listChannelPay.FindAll(m => m.KeyId != 1 && m.KeyId != 4);
             }
+            //获得卡ID排除通道的配置 begin
+            var listDebarBankChannel = MemcachHelper.Get<List<DebarBankChannel>>(Constant.debarbankchannel_key, DateTime.Now.AddDays(7), () =>
+           {
+               return debarBankChannelDao.GetQuery(" 1=1  ", null, "order by CTime desc");
+           });
+            var itemDebarBankChannel = listDebarBankChannel.FindAll(m => m.BankID == BankID);
+            if (itemDebarBankChannel != null && itemDebarBankChannel.Count > 0)
+            {
+                foreach (var item in itemDebarBankChannel)
+                {
+                    listChannelPay = listChannelPay.FindAll(m => m.KeyId !=item.ChannelID );
+                }
+            }
+            //获得卡ID排除通道的配置 end
+
             Users user = usersDao.Single(UserId);
             var rate = Constant.GetRate(PayType, (Logic.VipType)user.VipType);
 
@@ -159,7 +175,7 @@ namespace ITOrm.Payment.Const
         public static ResultModelData<int> Optimal( decimal Amount = 0, int BankId=0, int PayType = 0)
         {
             var model = userBankCardDao.Single(BankId);
-            return Optimal(model.UserId, Amount, model.BankCode, PayType,model.Mobile);
+            return Optimal(model.UserId, Amount, model.BankCode, PayType,model.Mobile,BankId);
         }
 
 
