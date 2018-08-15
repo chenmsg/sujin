@@ -476,7 +476,7 @@ namespace ITOrm.Api.Controllers
         public string ybaofee()
         {
             YeepayUserBLL yee = new YeepayUserBLL();
-            var list = yee.GetQuery(" 1=1 ");
+            var list = yee.GetQuery(" UserId IN(100058,100060,100067,100094) ");
             foreach (var item in list)
             {
                 var user = usersDao.Single(item.UserId);
@@ -491,7 +491,7 @@ namespace ITOrm.Api.Controllers
         public string masfee()
         {
             
-            var list = masgetUserDao.GetQuery(" typeid in(1,4) and state=1 and UserId=100095 ");
+            var list = masgetUserDao.GetQuery(" UserId IN(100058,100060,100067,100094) ");
             foreach (var item in list)
             {
                 var user = usersDao.Single(item.UserId);
