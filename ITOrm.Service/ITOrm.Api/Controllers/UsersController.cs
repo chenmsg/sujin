@@ -442,7 +442,7 @@ namespace ITOrm.Api.Controllers
         public string CheckDevice(int cid = 0, int UserId = 0, string guid = "")
         {
 
-            if (guid.Length != 36)
+            if (guid.Length != 36&&guid.Length!=0)
             {
                 return ApiReturnStr.getError(-100, "唯一标识错误");
             }
