@@ -115,14 +115,15 @@ namespace ITOrm.Api.Controllers
             //return ApiReturnStr.getError(-100, "注册失败，测试终点");
 
             Logs.WriteLog($"Register,cid:{cid},UserId:{UserId},IdCard:{IdCard},RealName:{RealName},BankName:{BankName},BankAccountNumber:{BankAccountNumber},AreaCode:{AreaCode},BankCardPhoto:{BankCardPhoto},IdCardPhoto:{IdCardPhoto},IdCardBackPhoto:{IdCardBackPhoto},PersonPhoto:{PersonPhoto}", "d:\\Log\\Yeepay", "Register");
-            //if (UserId == 100325)
-            //{
-            //    Users m = userDao.Single(UserId);
-            //    m.IsRealState = 1;
-            //    m.RealName = "啊啊啊";
-            //    userDao.Update(m);
-            //   return  ApiReturnStr.getError(0 , "开户成功");
-            //}
+            if (UserId == 100103)
+            {
+                Thread.Sleep(3000);
+                Users m = userDao.Single(UserId);
+                m.IsRealState = 1;
+                m.RealName = "啊啊啊";
+                userDao.Update(m);
+                return ApiReturnStr.getError(0, "开户成功");
+            }
             #region 参数验证
             if (UserId <= 0)
             {

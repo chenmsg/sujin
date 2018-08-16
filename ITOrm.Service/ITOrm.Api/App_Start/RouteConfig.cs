@@ -20,13 +20,14 @@ namespace ITOrm.Api
             );
 
 
-
-
+            //默认添加区域itapi
             routes.MapRoute(
-                name: "home-index",
-                url: "home/index",
-                defaults: new { controller = "Home", action = "Index" }
+                 "Default1",
+                 "",
+                 new { controller = "Home", action = "Index"}
             );
+
+            
         }
     }
 }

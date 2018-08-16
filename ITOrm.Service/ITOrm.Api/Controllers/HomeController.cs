@@ -19,8 +19,6 @@ namespace ITOrm.Api.Controllers
 
         public ActionResult Index()
         {
-
-
             return View();
         }
        
