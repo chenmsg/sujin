@@ -101,13 +101,13 @@ namespace ITOrm.Payment.Const
                 {
                     //自己检查是否刷卡达8万
                     //刷卡升级Vip检查
-                    //var checkGiveVipResult = userDao.CheckGiveVip(UserId, (int)Logic.Platform.系统);
-                    //Logs.WriteLog($"自我检查:PayId:{PayId},UserId:{UserId},checkGiveVipResult:{JsonConvert.SerializeObject(checkGiveVipResult)}", "d:\\Log\\", "NoticeSuccess");
-                    //if (checkGiveVipResult.backState == 0)
-                    //{
-                    //    var uv = UpdateChannelVip(UserId, (int)Logic.VipType.VIP, (int)Logic.Platform.系统);
-                    //    Logs.WriteLog($"自我第三方升级:PayId:{PayId},UserId:{UserId},UpdateChannelVip:{JsonConvert.SerializeObject(uv)}", "d:\\Log\\", "NoticeSuccess");
-                    //}
+                    var checkGiveVipResult = userDao.CheckGiveVip(UserId, (int)Logic.Platform.系统);
+                    Logs.WriteLog($"自我检查:PayId:{PayId},UserId:{UserId},checkGiveVipResult:{JsonConvert.SerializeObject(checkGiveVipResult)}", "d:\\Log\\", "NoticeSuccess");
+                    if (checkGiveVipResult.backState == 0)
+                    {
+                        var uv = UpdateChannelVip(UserId, (int)Logic.VipType.VIP, (int)Logic.Platform.系统);
+                        Logs.WriteLog($"自我第三方升级:PayId:{PayId},UserId:{UserId},UpdateChannelVip:{JsonConvert.SerializeObject(uv)}", "d:\\Log\\", "NoticeSuccess");
+                    }
 
                 }
                 if (user.BaseUserId > 0)

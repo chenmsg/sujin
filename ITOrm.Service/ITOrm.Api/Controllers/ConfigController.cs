@@ -92,6 +92,11 @@ namespace ITOrm.Api.Controllers
                 decimal[] r = Constant.GetRate(PayType, vip);
                 data["Fee"] = $"{r[0].perCent()}+{r[1].ToString("F1")}元/笔";
                 list.Add(data);
+                if (PayType == 0)
+                {
+     
+                }
+                
             }
             return ApiReturnStr.getApiDataList(list);
         }
