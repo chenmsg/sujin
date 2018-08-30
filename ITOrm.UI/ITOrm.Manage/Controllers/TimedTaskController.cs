@@ -59,9 +59,14 @@ namespace ITOrm.Manage.Controllers
                 JObject value = new JObject();
                 value["keyId"] = kv.ID;
                 value["remark"] = $"{ct}通道定时开启";
+                //不能五分钟内连续创建任务
+                if (timedTaskDao.Count(" DATEDIFF(MINUTE,CTime,GETDATE())<5 ") > 0)
+                {
+                    return new RedirectResult($"/Prompt?state=-100&msg=不能五分钟内连续创建任务&url=/TimedTask/");
+                }
                 resultId = timedTaskDao.Init(Logic.TimedTaskType.通道开启, execTime, value.ToString());
-                result.backState = resultId>0?0:-100;
-                result.message = resultId > 0? "任务创建成功" : "任务创建失败";
+                result.backState = resultId > 0 ? 0 : -100;
+                result.message = resultId > 0 ? "任务创建成功" : "任务创建失败";
             }
 
             return new RedirectResult($"/Prompt?state={result.backState}&msg={result.message}&url=/TimedTask/");
