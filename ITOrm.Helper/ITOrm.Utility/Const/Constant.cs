@@ -215,9 +215,11 @@ namespace ITOrm.Utility.Const
         public static decimal[] fee1Rate3 = new decimal[] { 1M,2M, 2M, 2M ,2M};
 
         //无积分
-        public static decimal[] fee2Rate1 = new decimal[] { 0.0030M, 0.0030M, 0.0039M, 0.0044M, 0.0049M};
-        public static decimal[] fee2Rate3 = new decimal[] { 0.5M,2M, 2M, 2M,2M };
+        public static decimal[] fee2Rate1 = new decimal[] { 0.0030M, 0.0030M, 0.0039M, 0.0044M, 0.0049M };
+        public static decimal[] fee2Rate3 = new decimal[] { 0.5M, 2M, 2M, 2M, 2M };
 
+        //public static decimal[] fee2Rate1 = new decimal[] { 0.0054M, 0.0054M, 0.0056M, 0.0061M, 0.0066M };
+        //public static decimal[] fee2Rate3 = new decimal[] { 1M, 2M, 2M, 2M, 2M };
 
         public static decimal[] GetRate(int payType, Logic.VipType vipType)
         {

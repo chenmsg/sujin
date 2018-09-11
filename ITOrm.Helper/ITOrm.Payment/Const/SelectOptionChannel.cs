@@ -51,7 +51,8 @@ namespace ITOrm.Payment.Const
                return viewBankQuotaDao.GetQuery(" state=0 ", null, " order by id asc ");
            });
             //筛选支持的BankCode的通道  并且 限额满足 并按限额排序
-            var listBank = listBankQuota.FindAll(m => m.BankCode == BankCode && Amount <= m.SingleQuota).OrderByDescending(m => m.SingleQuota).ToList();
+            var listBank = listBankQuota.FindAll(m => m.BankCode == BankCode.Trim() && Amount <= m.SingleQuota).OrderByDescending(m => m.SingleQuota).ToList();
+
 
 
             int TypeId = (int)Logic.KeyValueType.支付通道管理;
