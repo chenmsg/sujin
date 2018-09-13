@@ -156,11 +156,14 @@
         var IdCardBackPhoto = $("#IdCardBackPhoto").attr("data-val");
         var IdCardPhoto = $("#IdCardPhoto").attr("data-val");
         $.post("/users/CustomerPictureUpdate", { UserId: UserId, BankCardPhoto: BankCardPhoto, IdCardBackPhoto: IdCardBackPhoto, IdCardPhoto: IdCardPhoto }, function (data) {
-            if (data.backState == 0 && data.data.status=="True")
-            {
+            if (data.backState == 0 && data.status == "True") {
                 alert("修改成功");
             }
+            else {
+                alert("修改失败");
+            }
         },"json");
+
         
     }
 </script>

@@ -1310,8 +1310,8 @@ namespace ITOrm.Payment.Yeepay
             int requestId = yeepayLogDao.Init((int)Yeepay.Enums.YeepayType.子商户图片修改, UserId, Platform);
             Logs.WriteLog($"获取请求流水号：UserId:{UserId},Platform:{Platform},requestId:{requestId}", YeepayLogDic, LogDic);
             reqCustomerPictureUpdateModel model = new reqCustomerPictureUpdateModel();
-
-
+            var yUser= yeepayUserDao.Single("UserId="+ UserId);
+            model.customerNumber =yUser.CustomerNumber;
             model.bankCardPhoto = userImageDao.GetUrlAndUpdateState(BankCardPhoto, 0);
             model.idCardPhoto = userImageDao.GetUrlAndUpdateState(IdCardPhoto, 0);
             model.idCardBackPhoto = userImageDao.GetUrlAndUpdateState(IdCardBackPhoto, 0);
@@ -1359,6 +1359,9 @@ namespace ITOrm.Payment.Yeepay
                 user.IdCardBackPhoto = IdCardBackPhoto;
                 user.UTime = DateTime.Now;
                 bool f= usersDao.Update(user);
+                userImageDao.UpdateState(BankCardPhoto, 1);
+                userImageDao.UpdateState(IdCardPhoto, 1);
+                userImageDao.UpdateState(IdCardBackPhoto, 1);
                 var fstr = (f ? "成功" : "失败");
                 Logs.WriteLog($"数据库信息修改{fstr},UserId:{UserId},BankCardPhoto:{BankCardPhoto},IdCardPhoto:{IdCardPhoto},IdCardBackPhoto:{IdCardBackPhoto}", YeepayLogDic, LogDic);
             }
