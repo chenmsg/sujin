@@ -1297,6 +1297,79 @@ namespace ITOrm.Payment.Yeepay
         }
         #endregion
 
+
+        #region 子商户图片修改接口 customerPictureUpdate
+
+        public static respCustomerPictureUpdateModel customerPictureUpdate(int UserId, int Platform, int IdCardPhoto, int IdCardBackPhoto, int BankCardPhoto)
+        {
+            string LogDic = "子商户图片修改接口";
+
+            int num = 0;
+            bool flag = false;
+            //获取请求流水号
+            int requestId = yeepayLogDao.Init((int)Yeepay.Enums.YeepayType.子商户图片修改, UserId, Platform);
+            Logs.WriteLog($"获取请求流水号：UserId:{UserId},Platform:{Platform},requestId:{requestId}", YeepayLogDic, LogDic);
+            reqCustomerPictureUpdateModel model = new reqCustomerPictureUpdateModel();
+
+
+            model.bankCardPhoto = userImageDao.GetUrlAndUpdateState(BankCardPhoto, 0);
+            model.idCardPhoto = userImageDao.GetUrlAndUpdateState(IdCardPhoto, 0);
+            model.idCardBackPhoto = userImageDao.GetUrlAndUpdateState(IdCardBackPhoto, 0);
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(model.mainCustomerNumber);
+            sb.Append(model.customerNumber);
+            string sn = sb.ToString();
+            var hmac = ITOrm.Utility.Encryption.EncryptionHelper.HMACMD5(YeepayHmacKey, sn);
+            model.hmac = hmac;
+
+            //拼接所有传递参数
+            //公共字段
+            NameValueCollection objNVC = new NameValueCollection();
+            PropertyInfo[] pis = typeof(reqCustomerPictureUpdateModel).GetProperties();
+            foreach (PropertyInfo pi in pis)
+            {
+                object keyName = pi.GetValue(model, null);
+                if (keyName != null && !string.IsNullOrEmpty(keyName.ToString()) && keyName.ToString() != "bankCardPhoto" && keyName.ToString() != "idCardPhoto" && keyName.ToString() != "idCardBackPhoto" && keyName.ToString() != "personPhoto")
+                {
+                    objNVC.Add(pi.Name, pi.GetValue(model, null).ToString());
+                }
+            }
+
+            string action = YeepayDomain + "customerPictureUpdate.action";
+            //action = "http://api.itorm.com/itapi/server/register";
+            string result = "";
+            //请求前日志记录
+            Logs.WriteLog("提交参数：" + JsonConvert.SerializeObject(model), YeepayLogDic, LogDic);
+            yeepayLogParasDao.Init(requestId, JsonConvert.SerializeObject(model), 0);
+            string[] filePath = new string[] { Constant.StaticDic + model.bankCardPhoto, Constant.StaticDic + model.idCardPhoto, Constant.StaticDic + model.idCardBackPhoto };
+            string[] fileKeyName = new string[] { "bankCardPhoto", "idCardPhoto", "idCardBackPhoto" };
+            //执行请求
+            int responseState = ITOrm.Utility.Client.HttpHelper.HttpPostData(action, Encoding.UTF8, filePath, fileKeyName, objNVC, out result);
+            //返回后日志记录
+            Logs.WriteLog("返回参数：" + result, YeepayLogDic, LogDic);
+            yeepayLogParasDao.Init(requestId, result, 1);
+
+            respCustomerPictureUpdateModel resp = JsonConvert.DeserializeObject<respCustomerPictureUpdateModel>(result);
+            if (resp.backState == 0&&resp.status== "True")
+            {
+                Users user = usersDao.Single(UserId);
+                user.BankCardPhoto = BankCardPhoto;
+                user.IdCardPhoto = IdCardPhoto;
+                user.IdCardBackPhoto = IdCardBackPhoto;
+                user.UTime = DateTime.Now;
+                bool f= usersDao.Update(user);
+                var fstr = (f ? "成功" : "失败");
+                Logs.WriteLog($"数据库信息修改{fstr},UserId:{UserId},BankCardPhoto:{BankCardPhoto},IdCardPhoto:{IdCardPhoto},IdCardBackPhoto:{IdCardBackPhoto}", YeepayLogDic, LogDic);
+            }
+            //易宝日志状态更新
+            flag = yeepayLogDao.UpdateState(requestId, resp.code, resp.message, resp.code == "0000" ? 10 : -1);
+            Logs.WriteLog($"易宝日志状态更新：requestId:{requestId},code:{resp.code},message:{ resp.message},State:{flag}", YeepayLogDic, LogDic);
+
+            return resp;
+        }
+        #endregion
+
         private static T PostUrl<T>(int requestId, string action, string data, object json, string logPath, int state = 10)
         {
 

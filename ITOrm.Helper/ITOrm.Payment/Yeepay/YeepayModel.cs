@@ -1187,6 +1187,53 @@ namespace ITOrm.Payment.Yeepay
     }
     #endregion
 
+
+    #region 子商户图片修改接口 CustomerPictureUpdate
+
+    public class reqCustomerPictureUpdateModel : reqModel
+    {
+        /// <summary>
+        /// 子商户编号
+        /// </summary>
+        public string customerNumber { get; set; }
+        /// <summary>
+        /// 身份证正面照
+        /// </summary>
+        public string idCardPhoto { get; set; }
+        /// <summary>
+        /// 身份证背面照
+        /// </summary>
+        public string idCardBackPhoto { get; set; }
+        /// <summary>
+        /// 银行卡正面照
+        /// </summary>
+        public string bankCardPhoto { get; set; }
+        /// <summary>
+        /// 手持身份证he银行卡与本人合照
+        /// </summary>
+        public string personPhoto { get; set; }
+        /// <summary>
+        /// 营业执照
+        /// </summary>
+        public string businessLicensePhoto { get; set; }
+        /// <summary>
+        /// 电子协议
+        /// </summary>
+        public string electronicAgreement { get; set; }
+
+    }
+    public class respCustomerPictureUpdateModel : respModel
+    {
+
+        /// <summary>
+        /// True:修改成功 
+        /// False:修改失败
+        /// </summary>
+        public string status { get; set; }
+    }
+    #endregion
+
+
     #region 通用基类
 
 

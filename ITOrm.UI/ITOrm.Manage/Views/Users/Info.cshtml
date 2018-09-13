@@ -23,6 +23,7 @@
     }
 </style>
 <script type="text/javascript" src="http://static.anxin.com/js/jquery-1.7.1.js"></script>
+<script src="/Themes/js/ajaxupload.js"></script>
 <script type="text/javascript">
 
     $(function () {
@@ -36,7 +37,132 @@
             $(".content").eq(index).show();
 
         })
+
+
+
+        // 创建一个上传参数
+        var uploadOption =
+        {
+            // 提交目标
+            action: "/Upload/UpImg",
+            // 自动提交
+            autoSubmit: true,
+            // 选择文件之后…
+            onChange: function (file, extension) {
+                if (new RegExp(/(jpg)|(jpeg)|(bmp)|(gif)|(png)/i).test(extension)) {
+                    //$("#filepath").val(file);
+                } else {
+                    alert("只限上传图片文件，请重新选择！");
+                }
+            },
+            // 开始上传文件
+            onSubmit: function (file, extension) {
+                //$("#IdCardPhoto").val("正在上传...");
+            },
+            // 上传完成之后
+            onComplete: function (file, response) {
+
+                var obj = JSON.parse(response); //由JSON字符串转换为JSON对象
+                if (obj.backStatus == 0) {
+                    $("#IdCardPhoto").attr("src", obj.data.ImgUrl);
+                    $("#IdCardPhoto").attr("data-val", obj.data.ImgId)
+                }
+                else {
+                    alert("上传失败");
+                }
+            }
+        }
+        // 初始化图片上传框
+        var oAjaxUpload = new AjaxUpload('#IdCardPhoto', uploadOption);
+
+        // 创建一个上传参数
+        var uploadOption2 =
+        {
+            // 提交目标
+            action: "/Upload/UpImg",
+            // 自动提交
+            autoSubmit: true,
+            // 选择文件之后…
+            onChange: function (file, extension) {
+                if (new RegExp(/(jpg)|(jpeg)|(bmp)|(gif)|(png)/i).test(extension)) {
+                    //$("#filepath").val(file);
+                } else {
+                    alert("只限上传图片文件，请重新选择！");
+                }
+            },
+            // 开始上传文件
+            onSubmit: function (file, extension) {
+                //$("#IdCardBackPhoto").val("正在上传...");
+            },
+            // 上传完成之后
+            onComplete: function (file, response) {
+
+                var obj = JSON.parse(response); //由JSON字符串转换为JSON对象
+                if (obj.backStatus == 0) {
+                    $("#IdCardBackPhoto").attr("src", obj.data.ImgUrl);
+                    $("#IdCardBackPhoto").attr("data-val", obj.data.ImgId)
+                }
+                else {
+                    alert("上传失败");
+                }
+            }
+        }
+        // 初始化图片上传框
+        var oAjaxUpload2 = new AjaxUpload('#IdCardBackPhoto', uploadOption2);
+
+
+        // 创建一个上传参数
+        var uploadOption3 =
+        {
+            // 提交目标
+            action: "/Upload/UpImg",
+            // 自动提交
+            autoSubmit: true,
+            // 选择文件之后…
+            onChange: function (file, extension) {
+                if (new RegExp(/(jpg)|(jpeg)|(bmp)|(gif)|(png)/i).test(extension)) {
+                    //$("#filepath").val(file);
+                } else {
+                    alert("只限上传图片文件，请重新选择！");
+                }
+            },
+            // 开始上传文件
+            onSubmit: function (file, extension) {
+                //$("#BankCardPhoto").val("正在上传...");
+            },
+            // 上传完成之后
+            onComplete: function (file, response) {
+
+                var obj = JSON.parse(response); //由JSON字符串转换为JSON对象
+                if (obj.backStatus == 0) {
+                    $("#BankCardPhoto").attr("src", obj.data.ImgUrl);
+                    $("#BankCardPhoto").attr("data-val", obj.data.ImgId)
+                }
+                else {
+                    alert("上传失败");
+                }
+            }
+        }
+        // 初始化图片上传框
+        var oAjaxUpload3 = new AjaxUpload('#BankCardPhoto', uploadOption3);
+
+        
     })
+    function CustomerPictureUpdate()
+    {
+        $("#btnCustomerPictureUpdate").val("请等待...");
+        var UserId = '@Model.UserId';
+        var BankCardPhoto = $("#BankCardPhoto").attr("data-val");
+        var IdCardBackPhoto = $("#IdCardBackPhoto").attr("data-val");
+        var IdCardPhoto = $("#IdCardPhoto").attr("data-val");
+        $.post("/users/CustomerPictureUpdate", { UserId: UserId, BankCardPhoto: BankCardPhoto, IdCardBackPhoto: IdCardBackPhoto, IdCardPhoto: IdCardPhoto }, function (data) {
+            if (data.backState == 0 && data.data.status=="True")
+            {
+                alert("修改成功");
+            }
+        },"json");
+        
+    }
 </script>
 <ul class="breadcrumb">
     <li><a href="#">系统配置</a> <span class="divider">/</span></li>
@@ -170,12 +296,13 @@
     @*上传照片*@
     <div class="content" style="display:none;">
         <div class="bs-docs-example">
+            
             @if (Model.IdCardPhoto > 0)
             {
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail">
-                            <img src="http://static.sujintech.com/@(userImageDao.GetUrl(Model.IdCardPhoto))" alt="身份证正面">
+                            <img id="IdCardPhoto" data-val="@Model.IdCardPhoto"  src="http://static.sujintech.com/@(userImageDao.GetUrl(Model.IdCardPhoto))" alt="身份证正面">
                             <div class="caption">
                                 <h3>身份证正面</h3>
 
@@ -185,12 +312,12 @@
                 </div>
             }
 
-            @if (Model.IdCardPhoto > 0)
+            @if (Model.IdCardBackPhoto > 0)
             {
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail">
-                            <img src="http://static.sujintech.com/@(userImageDao.GetUrl(Model.IdCardBackPhoto))" alt="身份证反面">
+                            <img id="IdCardBackPhoto" data-val="@Model.IdCardBackPhoto"  src="http://static.sujintech.com/@(userImageDao.GetUrl(Model.IdCardBackPhoto))" alt="身份证反面">
                             <div class="caption">
                                 <h3>身份证反面</h3>
 
@@ -204,10 +331,10 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="thumbnail">
-                            <img src="http://static.sujintech.com/@(userImageDao.GetUrl(Model.BankCardPhoto))" alt="银行卡照片">
+                            <img id="BankCardPhoto" data-val="@Model.BankCardPhoto" src="http://static.sujintech.com/@(userImageDao.GetUrl(Model.BankCardPhoto))" alt="银行卡照片">
                             <div class="caption">
                                 <h3>银行卡照片</h3>
-
+                                <button class="btn btn-default" type="button" id="btnCustomerPictureUpdate" onclick="CustomerPictureUpdate()">修改照片</button>
                             </div>
                         </div>
                     </div>
@@ -221,13 +348,14 @@
                             <img src="http://static.sujintech.com/@(userImageDao.GetUrl(Model.PersonPhoto))" alt="三证合一">
                             <div class="caption">
                                 <h3>三证合一</h3>
-
+        
                             </div>
                         </div>
                     </div>
                 </div>
             }
-        </div>
+
+            </div>
     </div>
     @*交易记录*@
     <div class="content" style="display:none;">
@@ -531,3 +659,4 @@
 
     </div>
 </form>
+

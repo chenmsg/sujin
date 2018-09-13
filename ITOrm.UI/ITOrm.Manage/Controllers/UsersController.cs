@@ -284,6 +284,12 @@ namespace ITOrm.Manage.Controllers
             return new RedirectResult($"/Prompt?state={backState}&msg={msg}&url={ubcurl}");
         }
 
+
+        public string CustomerPictureUpdate(int UserId, int IdCardPhoto, int IdCardBackPhoto, int BankCardPhoto)
+        {
+            var result = YeepayDepository.customerPictureUpdate(UserId, (int)Logic.Platform.系统, IdCardPhoto, IdCardBackPhoto, BankCardPhoto);
+            return JsonConvert.SerializeObject(result);
+        }
     }
     
 }

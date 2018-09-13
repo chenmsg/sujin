@@ -1,4 +1,6 @@
-﻿using ITOrm.Utility.Client;
+﻿using ITOrm.Host.BLL;
+using ITOrm.Host.Models;
+using ITOrm.Utility.Client;
 using ITOrm.Utility.Const;
 using ITOrm.Utility.ITOrmApi;
 using ITOrm.Utility.Log;
@@ -15,11 +17,12 @@ namespace ITOrm.Manage.Controllers
 {
     public class UploadController : Controller
     {
+        public static UserImageBLL userImageDao = new UserImageBLL();
         // GET: Upload
         public string UpImg()
         {
             int cid = 1;
-            int UserId = 0;
+            int UserId = TQuery.GetInt("UserId");
             try
             {
                 if (Request.Files.Count == 0) return "";
@@ -46,6 +49,12 @@ namespace ITOrm.Manage.Controllers
                 if (state == 200)
                 {
                     reqApiModel<JObject> model = JsonConvert.DeserializeObject<reqApiModel<JObject>>(json);
+                    UserImage img = new UserImage();
+                    img.UserId = UserId;
+                    img.Url = model.Data["Url"].ToString();
+                    img.PlatForm = (int)ITOrm.Utility.Const.Logic.Platform.系统;
+                    int ImgId= userImageDao.Insert(img);
+                    model.Data["ImgId"] = ImgId;
                     return ApiReturnStr.getApiData(model.backState,model.message, model.Data);
                 }
                 return ApiReturnStr.getApiData(-100, $"上传失败:httpStatus:{state},message:{json}");
