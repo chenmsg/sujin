@@ -129,7 +129,7 @@ namespace ITOrm.Api.Controllers
             model.UserName = mobile;
             model.UTime = DateTime.Now;
             model.RealTime = DateTime.Now;
-            model.VipType = (int)Logic.VipType.普通用户;
+            model.VipType = (int)Logic.VipType.SVIP;
             var result = userDao.Insert(model);
             var account = new Account();
             account.UserId = result;

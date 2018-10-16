@@ -628,8 +628,9 @@ namespace ITOrm.Payment.Masget
         static string[] feecode1 = new string[] { "098930", "394304", "650597", "623946", "621029" };//荣邦积分
 
         static string[] feecode2 = new string[] { "627206", "627206", "238716", "842660", "886778" };//荣邦(无积分)  boos没仔细分好
-        static string[] feecode3 = new string[] { "408536", "788778", "911174", "106272", "296201" };//荣邦3
+        //static string[] feecode3 = new string[] { "408536", "788778", "911174", "106272", "296201" };//荣邦3
 
+        static string[] feecode3 = new string[] { "408536", "408536", "408536", "408536", "408536" };//荣邦3
         //static string[] feecode3 = new string[] { "406591",  "502114", "521467", "556151", "704252" };//荣邦3
         public static OptionFee SelectOptionFee(Logic.ChannelType chanel, Logic.VipType vip)
         {

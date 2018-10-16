@@ -406,16 +406,16 @@ namespace ITOrm.Api.Controllers
 
         public string auuu()
         {
-            decimal[] r = Constant.GetRate(0,  Logic.VipType.顶级代理);
+            decimal[] r = Constant.GetRate(0, Logic.VipType.顶级代理);
             //var user=
-            return r[0]+"--"+r[1];
+            return r[0] + "--" + r[1];
         }
 
         public string asdfasdfas()
         {
             JObject data = new JObject();
             data["context"] = "hello,word!";
-            JArray list=new JArray();
+            JArray list = new JArray();
             JObject data1 = new JObject();
             data1["key"] = "hello";
             data1["bold"] = "0";//
@@ -435,8 +435,8 @@ namespace ITOrm.Api.Controllers
 
         public string mmmmmmmm()
         {
-            var result= ITOrm.Payment.MiShua.MiShuaDepository.PayDzero(100088, 1, 100);
-            return JsonConvert.SerializeObject(result); 
+            var result = ITOrm.Payment.MiShua.MiShuaDepository.PayDzero(100088, 1, 100);
+            return JsonConvert.SerializeObject(result);
         }
 
         MasgetUserBLL masgetUserDao = new MasgetUserBLL();
@@ -446,16 +446,16 @@ namespace ITOrm.Api.Controllers
             foreach (var item in list)
             {
                 var user = usersDao.Single(item.UserId);
-               var reuslt=  ITOrm.Payment.Masget.MasgetDepository.SamenameUpdate(item.UserId, (int)Logic.Platform.系统, Logic.ChannelType.荣邦3, (Logic.VipType) user.VipType);
+                var reuslt = ITOrm.Payment.Masget.MasgetDepository.SamenameUpdate(item.UserId, (int)Logic.Platform.系统, Logic.ChannelType.荣邦3, (Logic.VipType)user.VipType);
             }
 
-            
+
             return "";
         }
 
         public string safasfda()
         {
-          var result=   YeepayDepository.CustomerInforUpdate(100316, 1, "6217000010076332025", "建设银行");
+            var result = YeepayDepository.CustomerInforUpdate(100316, 1, "6217000010076332025", "建设银行");
             return JsonConvert.SerializeObject(result);
         }
 
@@ -465,9 +465,9 @@ namespace ITOrm.Api.Controllers
             foreach (var item in list)
             {
                 //ToolPay tp = new ToolPay(Amount, r[0], 0, r[1], 0, 0);
-                ToolPay tp = new ToolPay(item.Amount,item.Rate, item.Fee3, 0.0040M, 1);
+                ToolPay tp = new ToolPay(item.Amount, item.Rate, item.Fee3, 0.0040M, 1);
                 item.Income = tp.Income;
-                item.DrawIncome= tp.Rate3 - 1;//结算收益
+                item.DrawIncome = tp.Rate3 - 1;//结算收益
                 payRecordDao.Update(item);
             }
             return DateTime.Now.ToString();
@@ -482,7 +482,7 @@ namespace ITOrm.Api.Controllers
                 var user = usersDao.Single(item.UserId);
                 Logic.VipType vip = (Logic.VipType)user.VipType;
                 decimal[] r = Constant.GetRate((int)Logic.PayType.积分, vip);
-               var result=  YeepayDepository.FeeSetApi(item.UserId, 1, Payment.Yeepay.Enums.YeepayType.设置费率1, r[0].ToString("F4"));
+                var result = YeepayDepository.FeeSetApi(item.UserId, 1, Payment.Yeepay.Enums.YeepayType.设置费率1, r[0].ToString("F4"));
             }
 
             return "";
@@ -490,17 +490,34 @@ namespace ITOrm.Api.Controllers
 
         public string masfee()
         {
-            
-            var list = masgetUserDao.GetQuery(" UserId IN(100058,100060,100067,100094) ");
+
+            var list = masgetUserDao.GetQuery(" State=1 AND TypeId=4 ");
             foreach (var item in list)
             {
                 var user = usersDao.Single(item.UserId);
                 Logic.VipType vip = (Logic.VipType)user.VipType;
                 decimal[] r = Constant.GetRate((int)Logic.PayType.积分, vip);
-                var result = MasgetDepository.SamenameUpdate(item.UserId,1,(Logic.ChannelType)item.TypeId,vip);
+                var result = MasgetDepository.SamenameUpdate(item.UserId, 1, (Logic.ChannelType)item.TypeId, vip);
             }
 
-            return "";
+            return "masfee";
+        }
+
+
+        public string yeefee()
+        {
+            var yeeaa = new YeepayUserBLL();
+            var list = yeeaa.GetQuery(" 1=1 ");
+            foreach (var item in list)
+            {
+                var user = usersDao.Single(item.UserId);
+                Logic.VipType vip = (Logic.VipType)user.VipType;
+                decimal[] r = Constant.GetRate((int)Logic.PayType.积分, vip);
+                YeepayDepository.FeeSetApi(user.UserId, 1, Payment.Yeepay.Enums.YeepayType.设置费率1, r[0].ToString("F4"));
+                YeepayDepository.FeeSetApi(user.UserId, 1, Payment.Yeepay.Enums.YeepayType.设置费率3, r[1].ToString("F0"));
+            }
+
+            return "yeefee";
         }
     }
 }
