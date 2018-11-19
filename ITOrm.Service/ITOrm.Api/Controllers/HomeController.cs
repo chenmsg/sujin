@@ -14,7 +14,7 @@ using ITOrm.Core.Memcached.Impl;
 using Memcached.ClientLibrary;
 namespace ITOrm.Api.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
 
         public ActionResult Index()

@@ -45,6 +45,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITOrm.Payment", "ITOrm.Help
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITOrm.Static", "ITOrm.Service\ITOrm.Static\ITOrm.Static.csproj", "{7D8FFA86-FCD6-4679-8C80-ADFFD8CA370D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsApplication1", "WindowsFormsApplication1\WindowsFormsApplication1.csproj", "{D29566E7-A14D-4338-BB86-1CC18C9CACF7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -115,6 +117,10 @@ Global
 		{7D8FFA86-FCD6-4679-8C80-ADFFD8CA370D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D8FFA86-FCD6-4679-8C80-ADFFD8CA370D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D8FFA86-FCD6-4679-8C80-ADFFD8CA370D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D29566E7-A14D-4338-BB86-1CC18C9CACF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D29566E7-A14D-4338-BB86-1CC18C9CACF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D29566E7-A14D-4338-BB86-1CC18C9CACF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D29566E7-A14D-4338-BB86-1CC18C9CACF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -136,5 +142,6 @@ Global
 		{2D262D15-355F-4B81-8D66-6A13936087F0} = {BC3F9A9E-D0D5-4E33-86B0-775B72755C6D}
 		{6D2C67F5-29AF-41FB-993D-E17BD0BD90D0} = {BFCE1F72-C8EB-435B-82AC-B4BCE6B06DC6}
 		{7D8FFA86-FCD6-4679-8C80-ADFFD8CA370D} = {2C25120C-4598-4DF2-8B8E-4FD10CF46DD0}
+		{D29566E7-A14D-4338-BB86-1CC18C9CACF7} = {34C3E21B-92F3-4A46-8811-4737C9747B27}
 	EndGlobalSection
 EndGlobal

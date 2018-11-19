@@ -101,6 +101,7 @@
     <Compile Include="App_Start\CacheConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ConfigController.cs" />
     <Compile Include="Controllers\DebugController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
